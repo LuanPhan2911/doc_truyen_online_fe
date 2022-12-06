@@ -2,8 +2,8 @@ import { BsSearch } from "react-icons/bs";
 const Search = () => {
   return (
     <>
-      <input type={"text"} />
-      <BsSearch />
+      <input type={"text"} className="search-content" />
+      <BsSearch className="search-logo" />
     </>
   );
 };

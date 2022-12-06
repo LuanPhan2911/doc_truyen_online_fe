@@ -3,6 +3,8 @@ import logo from "../../../assets/logo.svg";
 import Category from "./Header/Category";
 import Ranking from "./Header/Ranking";
 import Search from "./Header/Search";
+import Login from "../../Auth/Login";
+import Register from "../../Auth/Register";
 const Header = () => {
   return (
     <div className="header-container">
@@ -19,10 +21,10 @@ const Header = () => {
         <Search />
       </div>
       <div className="login">
-        <p>Dang nhap</p>
+        <Login />
       </div>
       <div className="register">
-        <p>Dang ky</p>
+        <Register />
       </div>
     </div>
   );

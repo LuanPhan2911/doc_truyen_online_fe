@@ -32,6 +32,18 @@
         width : 35%;
         border: 1px;
         border: 1px solid green;
+
+        .search-content {
+            border-radius: 10px;
+            width        : 350px;
+            height       : 40px;
+            margin       : 5px 10px;
+        }
+
+        .search-logo {
+            font-size: 25px;
+            cursor   : pointer;
+        }
     }
 
     .login {

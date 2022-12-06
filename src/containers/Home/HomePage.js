@@ -1,10 +1,11 @@
+import Body from "./sections/Body";
 import Header from "./sections/Header";
 
 const HomePage = () => {
   return (
     <div className="container">
-      <div>Hello world from HomePage</div>
       <Header />
+      <Body />
     </div>
   );
 };

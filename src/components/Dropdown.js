@@ -25,7 +25,7 @@ const Dropdown = ({ title, options }) => {
   //       isActive: false,
   //     },
   //   ]);
-  const [isOverButton, setIsOverButton] = useState(true);
+  const [isOverButton, setIsOverButton] = useState(false);
   return (
     <div className="dropdown">
       <button
