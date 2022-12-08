@@ -5,11 +5,14 @@ import Ranking from "./Header/Ranking";
 import Search from "./Header/Search";
 import Login from "../../Auth/Login";
 import Register from "../../Auth/Register";
+import { Link } from "react-router-dom";
 const Header = () => {
   return (
     <div className="header-container">
       <div className="logo">
-        <img src={logo} alt="Not found" className="logo-image" />
+        <Link to={"/"}>
+          <img src={logo} alt="Not found" className="logo-image" />
+        </Link>
       </div>
       <div className="category">
         <Category />
@@ -21,10 +24,10 @@ const Header = () => {
         <Search />
       </div>
       <div className="login">
-        <Login />
+        <Login show={true} />
       </div>
       <div className="register">
-        <Register />
+        <Register show={true} />
       </div>
     </div>
   );

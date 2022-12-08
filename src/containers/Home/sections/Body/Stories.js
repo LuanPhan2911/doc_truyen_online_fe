@@ -8,7 +8,7 @@ const Stories = () => {
         {stories &&
           stories.length > 0 &&
           stories.map((item, index) => {
-            return <Story />;
+            return <Story key={index} />;
           })}
       </div>
     </>

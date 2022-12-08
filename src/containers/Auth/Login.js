@@ -1,14 +1,15 @@
 import { useState } from "react";
 import { Button } from "react-bootstrap";
 import Modals from "../../components/Modals";
+import HomePage from "../Home/HomePage";
 import LoginForm from "./LoginForm";
 
-const Login = () => {
+const Login = ({ show }) => {
   const [isShown, setIsShown] = useState(false);
   const handleShow = () => setIsShown(true);
   const handleClose = () => setIsShown(false);
   const title = "Dang nhap";
-  return (
+  return show ? (
     <>
       <Button variant="primary" onClick={handleShow}>
         Dang nhap
@@ -20,6 +21,12 @@ const Login = () => {
         RenderView={LoginForm}
         title={title}
       />
+    </>
+  ) : (
+    <>
+      <HomePage>
+        <LoginForm />
+      </HomePage>
     </>
   );
 };

@@ -14,7 +14,11 @@ const Story = () => {
           </div>
           <div className="row">
             <div className="col-6">Vong ngu</div>
-            <div className="col-6 border border-primary">Tien hiep</div>
+            <div className="col-6 center">
+              <span className="border border-primary text-center p-1">
+                Tien hiep
+              </span>
+            </div>
           </div>
         </div>
       </div>

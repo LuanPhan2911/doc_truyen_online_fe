@@ -1,21 +1,21 @@
 const RegisterForm = () => {
   return (
     <>
-      <div className="container login-form-container">
-        <div className="form-group">
+      <div className="container d-flex flex-column align-items-center">
+        <div className="col-6 form-group">
           <label>Email</label>
           <input type={"email"} className="form-control" />
         </div>
-        <div className="form-group">
+        <div className="col-6 form-group">
           <label>Password</label>
           <input type={"password"} className="form-control" />
         </div>
-        <div className="form-group">
+        <div className="col-6 form-group">
           <label>Nhap lai mat khau</label>
           <input type={"password"} className="form-control" />
         </div>
-        <div class="d-grid gap-2 my-1">
-          <button class="btn btn-primary" type="button">
+        <div className="col-6 d-grid gap-2 my-1">
+          <button className="btn btn-primary" type="button">
             Dang ky
           </button>
         </div>

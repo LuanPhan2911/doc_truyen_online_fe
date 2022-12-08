@@ -2,14 +2,16 @@ import Modals from "../../components/Modals";
 import { useState } from "react";
 import { Button } from "react-bootstrap";
 import RegisterForm from "./RegisterForm";
-const Register = () => {
+import HomePage from "../Home/HomePage";
+const Register = ({ show }) => {
   const [isShown, setIsShown] = useState(false);
   const handleShow = () => setIsShown(true);
   const handleClose = () => setIsShown(false);
   const title = "Dang ky";
-  return (
+  return show ? (
     <>
       <Button variant="primary" onClick={handleShow}>
+        {" "}
         Dang ky
       </Button>
       <Modals
@@ -19,6 +21,12 @@ const Register = () => {
         RenderView={RegisterForm}
         title={title}
       />
+    </>
+  ) : (
+    <>
+      <HomePage>
+        <RegisterForm />
+      </HomePage>
     </>
   );
 };

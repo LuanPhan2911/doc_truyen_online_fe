@@ -3,7 +3,7 @@ import Modal from "react-bootstrap/Modal";
 const Modals = ({ isShown, handleClose, RenderView, title }) => {
   return (
     <>
-      <Modal show={isShown} onHide={handleClose}>
+      <Modal show={isShown} onHide={handleClose} size="lg">
         <Modal.Header closeButton>
           <Modal.Title>{title}</Modal.Title>
         </Modal.Header>

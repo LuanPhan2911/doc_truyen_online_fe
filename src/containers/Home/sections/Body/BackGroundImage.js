@@ -2,7 +2,13 @@ import background from "../../../../assets/background/6003102db8cee56306b947451b
 const BackGroundImage = () => {
   return (
     <>
-      <img src={background} alt={"Not found"} className="image" />
+      <img
+        src={background}
+        alt={"Not found"}
+        className="image"
+        height={"40%"}
+        width={"100%"}
+      />
     </>
   );
 };
