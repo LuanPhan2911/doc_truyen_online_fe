@@ -1,6 +1,6 @@
 import Modals from "../../components/Modals";
 import { useState } from "react";
-import { Button } from "react-bootstrap";
+// import { Button } from "react-bootstrap";
 import RegisterForm from "./RegisterForm";
 import HomePage from "../Home/HomePage";
 const Register = ({ show }) => {
@@ -10,10 +10,17 @@ const Register = ({ show }) => {
   const title = "Dang ky";
   return show ? (
     <>
-      <Button variant="primary" onClick={handleShow}>
-        {" "}
+      <button
+        onClick={() => handleShow()}
+        style={{
+          border: "none",
+          outline: "none",
+          backgroundColor: "transparent",
+          contain: "content",
+        }}
+      >
         Dang ky
-      </Button>
+      </button>
       <Modals
         isShown={isShown}
         handleClose={handleClose}

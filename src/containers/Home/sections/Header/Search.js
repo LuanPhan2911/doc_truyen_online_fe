@@ -1,10 +1,12 @@
 import { BsSearch } from "react-icons/bs";
 const Search = () => {
   return (
-    <>
-      <input type={"text"} className="search-content" />
-      <BsSearch className="search-logo" />
-    </>
+    <div className="row">
+      <div className="col-6 form-group ">
+        <input type={"text"} className="form-control" />
+      </div>
+      <BsSearch className="col-3" />
+    </div>
   );
 };
 export default Search;

@@ -5,7 +5,7 @@ const Body = ({ children }) => {
       <div className="background-image">
         <BackGroundImage />
       </div>
-      <div className="body-container">{children}</div>
+      {children}
     </>
   );
 };

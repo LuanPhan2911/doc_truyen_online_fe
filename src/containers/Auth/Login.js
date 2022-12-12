@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button } from "react-bootstrap";
+// import { Button } from "react-bootstrap";
 import Modals from "../../components/Modals";
 import HomePage from "../Home/HomePage";
 import LoginForm from "./LoginForm";
@@ -11,9 +11,16 @@ const Login = ({ show }) => {
   const title = "Dang nhap";
   return show ? (
     <>
-      <Button variant="primary" onClick={handleShow}>
+      <button
+        onClick={() => handleShow()}
+        style={{
+          border: "none",
+          outline: "none",
+          backgroundColor: "transparent",
+        }}
+      >
         Dang nhap
-      </Button>
+      </button>
       <Modals
         isShown={isShown}
         handleClose={handleClose}
