@@ -1,22 +1,16 @@
-import Button from "react-bootstrap/Button";
-import Modal from "react-bootstrap/Modal";
-const Modals = ({ isShown, handleClose, RenderView, title }) => {
+import { Modal } from "react-bootstrap";
+const Modals = ({ size, isShown, handleClose, children }) => {
   return (
     <>
-      <Modal show={isShown} onHide={handleClose} size="lg">
+      <Modal show={isShown} onHide={handleClose} size={size}>
         <Modal.Header closeButton>
-          <Modal.Title>{title}</Modal.Title>
+          <Modal.Title>{children?.Title ? children.Title : <></>}</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
-          <RenderView />
-        </Modal.Body>
+        <Modal.Body>{children?.Element ? children.Element : <></>}</Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <button variant="secondary" onClick={handleClose}>
             Close
-          </Button>
-          <Button variant="primary" onClick={handleClose}>
-            Save Changes
-          </Button>
+          </button>
         </Modal.Footer>
       </Modal>
     </>

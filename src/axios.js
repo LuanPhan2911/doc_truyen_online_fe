@@ -2,12 +2,12 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { useSelector } from "react-redux";
 
-let token = Cookies.get("AUTH-TOKEN");
+// let token = Cookies.get("AUTH-TOKEN");
 axios.defaults.withCredentials = true;
 const instance = axios.create({
   baseURL: process.env.REACT_APP_BACKEND_URL,
 });
-axios.defaults.headers.common = { Authorization: `Bearer ${token}` };
+// axios.defaults.headers.common = { Authorization: `Bearer ${token}` };
 
 const onRequest = (config) => {
   // If http method is `post | put | delete` and XSRF-TOKEN cookie is

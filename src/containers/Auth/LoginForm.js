@@ -1,12 +1,9 @@
 import { useState } from "react";
-import Cookies from "js-cookie";
 import { handleLoginService } from "../../services/AuthServices";
-import { useDispatch } from "react-redux";
-import { handleLoginRedux } from "../../features/user/authSlice";
+import { useFetch } from "../../hooks/useFetch";
 import { useNavigate } from "react-router-dom";
 
-const LoginForm = () => {
-  const dispatch = useDispatch();
+const LoginForm = ({ handleDynamicModal }) => {
   const navigate = useNavigate();
   const [user, setUser] = useState({
     email: "",
@@ -24,26 +21,23 @@ const LoginForm = () => {
     }
     return true;
   };
-  const handleLogin = async () => {
+  const handleLogin = () => {
     if (handleValidateForm(user)) {
-      try {
-        let res = await handleLoginService(user);
-        if (res && res.data) {
-          let { token } = res.data;
-          Cookies.set("AUTH-TOKEN", token);
-          dispatch(handleLoginRedux(token));
-          navigate("/");
-        }
-      } catch (error) {
-        console.log(error);
-      }
     }
   };
   return (
     <>
-      <div className="container d-flex flex-column align-items-center">
-        <div className="col-6 form-group">
-          <label>Email</label>
+      <div className="container d-flex flex-column">
+        <div className="form-group">
+          <div className="d-flex justify-content-md-between">
+            <label>Email</label>
+            <button
+              className="btn-verify-email"
+              onClick={() => handleDynamicModal("verifyEmail")}
+            >
+              Gui lai email kich hoat
+            </button>
+          </div>
           <input
             type={"email"}
             className="form-control"
@@ -51,8 +45,16 @@ const LoginForm = () => {
             onChange={(e) => handleChangeInputForm(e, "email")}
           />
         </div>
-        <div className="col-6 form-group">
-          <label>Password</label>
+        <div className="form-group">
+          <div className="d-flex justify-content-md-between">
+            <label>Password</label>
+            <button
+              className="btn-forgot-password"
+              onClick={() => handleDynamicModal("forgotPassword")}
+            >
+              Quen mat khau?
+            </button>
+          </div>
           <input
             type={"password"}
             className="form-control"
@@ -60,11 +62,11 @@ const LoginForm = () => {
             onChange={(e) => handleChangeInputForm(e, "password")}
           />
         </div>
-        <div className="col-6 form-check">
+        <div className="form-check">
           <input className="form-check-input" type="checkbox" />
           <label className="form-check-label">Ghi nho tai khoan</label>
         </div>
-        <div className="col-6 d-grid gap-2">
+        <div className="d-grid gap-2">
           <button
             className="btn btn-primary"
             type="button"
@@ -75,7 +77,15 @@ const LoginForm = () => {
         </div>
 
         <div className="np-account">
-          <p>Ban chua co tai khoan</p>
+          <p>
+            Ban chua co tai khoan?{" "}
+            <button
+              className="btn-register"
+              onClick={() => handleDynamicModal("register")}
+            >
+              Dang ky ngay
+            </button>
+          </p>
         </div>
       </div>
     </>

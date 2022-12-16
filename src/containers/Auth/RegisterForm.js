@@ -26,8 +26,8 @@ const RegisterForm = () => {
   };
   return (
     <>
-      <div className="container d-flex flex-column align-items-center">
-        <div className="col-6 form-group">
+      <div className="container d-flex flex-column">
+        <div className=" form-group">
           <label>Email</label>
           <input
             type={"email"}
@@ -36,7 +36,7 @@ const RegisterForm = () => {
             onChange={(e) => handleChangeInputForm(e, "email")}
           />
         </div>
-        <div className="col-6 form-group">
+        <div className="form-group">
           <label>Password</label>
           <input
             type={"password"}
@@ -45,7 +45,7 @@ const RegisterForm = () => {
             onChange={(e) => handleChangeInputForm(e, "password")}
           />
         </div>
-        <div className="col-6 form-group">
+        <div className="form-group">
           <label>Nhap lai mat khau</label>
           <input
             type={"password"}
@@ -54,7 +54,7 @@ const RegisterForm = () => {
             onChange={(e) => handleChangeInputForm(e, "confirmPassword")}
           />
         </div>
-        <div className="col-6 d-grid gap-2 my-1">
+        <div className="d-grid gap-2 my-1">
           <button
             className="btn btn-primary"
             type="button"

@@ -2,17 +2,15 @@ import logo from "../../../assets/logo.svg";
 import Category from "./Header/Category";
 import Ranking from "./Header/Ranking";
 import Search from "./Header/Search";
-import Login from "../../Auth/Login";
-import Register from "../../Auth/Register";
 import { Link } from "react-router-dom";
-import Logout from "../../Auth/Logout";
+import ManageAuth from "../../Auth/ManageAuth";
+
 const Header = () => {
   return (
     <div
-      className="row sticky-top"
+      className="row"
       style={{
         height: "65px",
-        backgroundColor: "#bd953b",
       }}
     >
       <div className="col-1">
@@ -35,12 +33,8 @@ const Header = () => {
       <div className="col-3">
         <Search />
       </div>
-      <div className="col-2">
-        <Login show={true} />
-      </div>
-      <div className="col-2">
-        <Register show={true} />
-        <Logout />
+      <div className="col-4">
+        <ManageAuth />
       </div>
     </div>
   );

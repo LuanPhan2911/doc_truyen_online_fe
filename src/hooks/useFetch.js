@@ -1,0 +1,2 @@
+const useFetch = () => {};
+export { useFetch };
