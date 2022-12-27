@@ -1,10 +1,10 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Auth from "./Auth";
-import HomePage from "../containers/Home/HomePage";
 import HomeContent from "../containers/Home/sections/Body/HomeContent";
 import ErrorPage from "./ErrorPage";
 import Home from "../containers/Story/Home";
 import StoryHome from "../containers/Story/Section/StoryHome";
+import HomePage from "../containers/Home/HomePage";
 
 const Root = () => {
   const router = createBrowserRouter([
@@ -25,6 +25,10 @@ const Root = () => {
     {
       path: "/story/:name/chapter-:number",
       element: <StoryHome />,
+    },
+    {
+      path: "error-page",
+      element: <ErrorPage />,
     },
   ]);
   return <RouterProvider router={router} />;

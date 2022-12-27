@@ -1,7 +1,28 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import {
+  handleEmailNotificationService,
+  handleGetUserService,
+} from "../../services/AuthServices";
 
-const VerifyEmailForm = () => {
+const VerifyEmailForm = ({ handleCloseModal }) => {
   const [email, setEmail] = useState("");
+  useEffect(() => {
+    const handleGetUser = async () => {
+      let res = await handleGetUserService();
+      if (res?.success) {
+        let { data } = res;
+        setEmail(data?.email);
+      }
+    };
+    handleGetUser();
+  }, []);
+  const handleVerifyEmailNotification = async () => {
+    let res = await handleEmailNotificationService();
+    if (!res?.success) {
+      return;
+    }
+    handleCloseModal();
+  };
   return (
     <div className="form-group">
       <input
@@ -11,7 +32,12 @@ const VerifyEmailForm = () => {
         onChange={(e) => setEmail(e.target.value)}
       />
       <div className="d-grid gap-2">
-        <button className="btn btn-primary">Gui lai email</button>
+        <button
+          className="btn btn-primary"
+          onClick={() => handleVerifyEmailNotification()}
+        >
+          Gui lai email
+        </button>
       </div>
     </div>
   );

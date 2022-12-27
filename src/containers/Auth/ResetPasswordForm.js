@@ -1,11 +1,10 @@
 import { useState } from "react";
-import { handleRegisterService } from "../../services/AuthServices";
-// import validator from "validator";
-const RegisterForm = () => {
+import { handleResetPasswordService } from "../../services/AuthServices";
+
+const ResetPasswordForm = ({ handleResetPassword }) => {
   const [user, setUser] = useState({
-    email: "",
     password: "",
-    confirmPassword: "",
+    passwordConfirm: "",
   });
 
   const handleChangeInputForm = (event, key) => {
@@ -13,33 +12,9 @@ const RegisterForm = () => {
     useCopy[key] = event.target.value;
     setUser({ ...useCopy });
   };
-  const handleValidateForm = (user) => {
-    let { email, password, confirmPassword } = user;
-    if (!email || !password || !confirmPassword) {
-      return false;
-    }
-    return true;
-  };
-  const handleRegister = async (user) => {
-    if (handleValidateForm(user)) {
-      let res = await handleRegisterService(user);
-      if (res?.success) {
-        console.log(res);
-      }
-    }
-  };
   return (
     <>
       <div className="container d-flex flex-column">
-        <div className=" form-group">
-          <label>Email</label>
-          <input
-            type={"email"}
-            className="form-control"
-            value={user.email}
-            onChange={(e) => handleChangeInputForm(e, "email")}
-          />
-        </div>
         <div className="form-group">
           <label>Password</label>
           <input
@@ -55,20 +30,20 @@ const RegisterForm = () => {
             type={"password"}
             className="form-control"
             value={user.confirmPassword}
-            onChange={(e) => handleChangeInputForm(e, "confirmPassword")}
+            onChange={(e) => handleChangeInputForm(e, "passwordConfirm")}
           />
         </div>
         <div className="d-grid gap-2 my-1">
           <button
             className="btn btn-primary"
             type="button"
-            onClick={() => handleRegister(user)}
+            onClick={() => handleResetPassword(user)}
           >
-            Dang ky
+            Reset password
           </button>
         </div>
       </div>
     </>
   );
 };
-export default RegisterForm;
+export default ResetPasswordForm;

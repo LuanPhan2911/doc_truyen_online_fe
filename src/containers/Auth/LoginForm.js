@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { handleLoginService } from "../../services/AuthServices";
-import { useFetch } from "../../hooks/useFetch";
 import { useNavigate } from "react-router-dom";
 
 const LoginForm = ({ handleDynamicModal }) => {
@@ -21,8 +20,10 @@ const LoginForm = ({ handleDynamicModal }) => {
     }
     return true;
   };
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (handleValidateForm(user)) {
+      let res = await handleLoginService(user);
+      console.log(res);
     }
   };
   return (

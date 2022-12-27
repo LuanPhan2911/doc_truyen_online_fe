@@ -1,7 +1,20 @@
 import { useState } from "react";
+import { handleForgotPasswordService } from "../../services/AuthServices";
 
 const ForgotPasswordForm = () => {
   const [email, setEmail] = useState("");
+  const handleForgotPassword = async () => {
+    try {
+      let res = await handleForgotPasswordService({
+        email: email,
+      });
+      if (res?.success) {
+        console.log(res);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div className="form-group">
       <input
@@ -11,7 +24,12 @@ const ForgotPasswordForm = () => {
         onChange={(e) => setEmail(e.target.value)}
       />
       <div className="d-grid gap-2">
-        <button className="btn btn-primary">Gui mat khau</button>
+        <button
+          className="btn btn-primary"
+          onClick={() => handleForgotPassword()}
+        >
+          Gui mat khau
+        </button>
       </div>
     </div>
   );

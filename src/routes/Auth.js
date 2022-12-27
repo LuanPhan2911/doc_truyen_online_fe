@@ -1,27 +1,30 @@
+import Notify from "../components/Notify";
 import Logout from "../containers/Auth/Logout";
-import Profile from "../containers/User/Profile";
-import Authenticate from "../hoc/auth/Authenticate";
+import ResetPassword from "../containers/Auth/ResetPassword";
+import VerifyEmail from "../containers/Auth/VerifyEmail";
+import HomePage from "../containers/Home/HomePage";
 
 const Auth = [
-  // {
-  //   path: "/login",
-  //   element: <Login show={false} />,
-  // },
-  // {
-  //   path: "/register",
-  //   element: <Register show={false} />,
-  // },
   {
     path: "/logout",
     element: <Logout />,
   },
-
   {
-    path: "/profile",
+    path: "/email/verify/:id/:hash",
+    element: <VerifyEmail />,
+  },
+  {
+    path: "/reset-password",
+    element: <ResetPassword show={true} />,
+  },
+  {
+    path: "/test",
     element: (
-      <Authenticate>
-        <Profile />
-      </Authenticate>
+      <HomePage>
+        <Notify>
+          <ResetPassword />
+        </Notify>
+      </HomePage>
     ),
   },
 ];

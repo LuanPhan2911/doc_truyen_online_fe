@@ -31,6 +31,10 @@ const ManageAuth = () => {
     return data.isShow;
   };
   const [isShownModal, setIsShownModal] = useState(false);
+  const handleShowModal = () => setIsShownModal(true);
+  const handleCloseModal = () => {
+    setIsShownModal(false);
+  };
   const [isShowData, setIsShowData] = useState([
     {
       name: "login",
@@ -52,7 +56,7 @@ const ManageAuth = () => {
       name: "verifyEmail",
       isShow: false,
       Title: <TitleVerifyEMail />,
-      Element: <VerifyEmailForm />,
+      Element: <VerifyEmailForm handleCloseModal={handleCloseModal} />,
     },
     {
       name: "forgotPassword",
@@ -61,10 +65,6 @@ const ManageAuth = () => {
       Element: <ForgotPasswordForm />,
     },
   ]);
-  const handleShowModal = () => setIsShownModal(true);
-  const handleCloseModal = () => {
-    setIsShownModal(false);
-  };
 
   return (
     <>
@@ -76,9 +76,9 @@ const ManageAuth = () => {
         size={"md"}
       >
         {isShowData?.length > 0 &&
-          isShowData.filter((item, index) => {
+          isShowData.find((item, index) => {
             return item.isShow === true;
-          })[0]}
+          })}
       </Modals>
     </>
   );
