@@ -10,7 +10,7 @@ const VerifyEmail = () => {
   const navigator = useNavigate();
   const params = useParams();
   const queryString = useQueryString();
-  const { data, isLoading, error } = useFetch({
+  const { isLoading, error } = useFetch({
     handleFetchFn: handleVerifyEmailService,
     dataQuery: {
       ...params,

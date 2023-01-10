@@ -1,6 +1,5 @@
 import Root from "../routes/Root";
-import "./App.css";
-import HomePage from "./Home/HomePage";
+import "./App.scss";
 
 function App() {
   return (

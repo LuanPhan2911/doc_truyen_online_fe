@@ -1,7 +1,6 @@
 import { useState } from "react";
-import { Navigate } from "react-router-dom";
+
 import Modals from "../../components/Modals";
-import Notify from "../../components/Notify";
 import { useQueryString } from "../../hooks/useQueryString";
 import { handleResetPasswordService } from "../../services/AuthServices";
 import ResetPasswordForm from "./ResetPasswordForm";

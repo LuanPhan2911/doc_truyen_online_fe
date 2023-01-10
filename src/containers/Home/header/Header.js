@@ -9,7 +9,7 @@ const Header = () => {
   return (
     <header className="App-header">
       <nav className="navbar">
-        <div className="container d-flex">
+        <div className="container d-flex justify-content-center align-items-center gap-5">
           <Link to={"/"}>
             <img
               src={logo}
@@ -20,13 +20,9 @@ const Header = () => {
             />
           </Link>
           <Genre />
-          {/* <Ranking /> */}
-          {/* <div>
-            <Search />
-          </div>
-          <div>
-            <ManageAuth />
-          </div>  */}
+          <Ranking />
+          <Search />
+          <ManageAuth />
         </div>
       </nav>
     </header>

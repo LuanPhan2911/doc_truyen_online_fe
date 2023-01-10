@@ -1,6 +1,9 @@
 import story from "../../assets/stories/150.jpg";
 import { AiFillStar } from "react-icons/ai";
 import { Link } from "react-router-dom";
+import { FaGlasses } from "react-icons/fa";
+import { BsBookmark } from "react-icons/bs";
+import { GiCottonFlower } from "react-icons/gi";
 const StoryContent = () => {
   return (
     <div className="container">
@@ -10,13 +13,13 @@ const StoryContent = () => {
         </div>
         <div className="col-10">
           <div className="d-flex justify-content-start flex-column">
-            <div className="title">Dai cang truong sinh</div>
-            <ul className="list-unstyled d-flex flex-row">
-              <li className="px-3 border border-1 rounded-3 mx-2">Tieu thu</li>
-              <li className="px-3 border border-1 rounded-3 mx-2">Tieu thu</li>
-              <li className="px-3 border border-1 rounded-3 mx-2">Tieu thu</li>
-              <li className="px-3 border border-1 rounded-3 mx-2">Tieu thu</li>
-              <li className="px-3 border border-1 rounded-3 mx-2">Tieu thu</li>
+            <div className="story-title h3">Dai cang truong sinh</div>
+            <ul className="list-unstyled mt-2">
+              <li className="d-inline px-3 border border-3 rounded-5 mx-2 py-1">
+                <Link to={"#"} className="global-link text-secondary">
+                  Mai bao tieu lang quan
+                </Link>
+              </li>
             </ul>
             <ul className="list-unstyled d-flex">
               <li className="mx-4">
@@ -54,25 +57,20 @@ const StoryContent = () => {
               <span>/5</span>
               <span>(24 luot danh gia)</span>
             </div>
-            <ul className="list-unstyled d-flex">
-              <li className="mx-2">
-                <Link
-                  style={{
-                    cursor: "pointer",
-                    backgroundColor: "#b78a28",
-                    color: "rgb(255, 255, 255)",
-                    textDecoration: "none",
-                    height: "70px",
-                  }}
-                >
-                  Doc truyen
-                </Link>
+            <ul className="list-unstyled my-4">
+              <li className="d-inline border  rounded-5  p-2 mx-2 bg-black">
+                <FaGlasses color="white" size={"25px"} />
+                <button className="btn-read-story">
+                  <Link>Doc truyen</Link>
+                </button>
               </li>
-              <li className="mx-2">
-                <button>Danh dau</button>
+              <li className="d-inline border border-3 rounded-5 p-2 mx-2">
+                <BsBookmark size={"25px"} />
+                <button className="btn-story-bookmark">Danh dau</button>
               </li>
-              <li className="mx-2">
-                <button>De cu</button>
+              <li className="d-inline border border-3 rounded-5 p-2 mx-2">
+                <GiCottonFlower size={"25px"} />
+                <button className="btn-story-suggest">De cu</button>
               </li>
             </ul>
           </div>

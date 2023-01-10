@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import logo from "../../../assets/logo.svg";
 const Footer = () => {
   return (
-    <div className="container text-center py-5">
+    <footer className="container text-center py-5">
       <Link to={"/"}>
         <img src={logo} alt="Not found" width={"64px"} height={"64px"} />
       </Link>
@@ -20,7 +20,7 @@ const Footer = () => {
           <li className="px-2">Huong dan su dung</li>
         </ul>
       </div>
-    </div>
+    </footer>
   );
 };
 export default Footer;

@@ -11,7 +11,7 @@ const Root = () => {
     {
       path: "/",
       element: (
-        <HomePage>
+        <HomePage isShowBackground>
           <HomeContent />
         </HomePage>
       ),

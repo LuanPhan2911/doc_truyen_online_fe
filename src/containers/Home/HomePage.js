@@ -1,11 +1,11 @@
 import Body from "./body/Body";
 import Header from "./header/Header";
 import Footer from "./footer/Footer";
-const HomePage = ({ children }) => {
+const HomePage = ({ children, isShowBackground }) => {
   return (
     <>
       <Header />
-      <Body>{children}</Body>
+      <Body isShowBackground={isShowBackground}>{children}</Body>
       <Footer />
     </>
   );

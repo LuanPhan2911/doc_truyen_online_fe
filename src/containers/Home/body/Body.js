@@ -1,12 +1,19 @@
 import BackGroundImage from "./BackGroundImage";
-const Body = ({ children }) => {
+const Body = ({ children, isShowBackground }) => {
   return (
-    <>
-      <div className="background-image">
-        <BackGroundImage />
+    <main className="main">
+      {isShowBackground ? (
+        <div className="background-image">
+          <BackGroundImage />
+        </div>
+      ) : (
+        <></>
+      )}
+
+      <div className="container">
+        <div className="card p-3 main">{children}</div>
       </div>
-      {children}
-    </>
+    </main>
   );
 };
 export default Body;

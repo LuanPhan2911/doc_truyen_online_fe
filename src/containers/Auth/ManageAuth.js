@@ -5,7 +5,6 @@ import RegisterForm from "./RegisterForm";
 import VerifyEmailForm from "./VerifyEmailForm";
 import ForgotPasswordForm from "./ForgotPasswordForm";
 import { Title, TitleForgotPassword, TitleVerifyEMail } from "./AuthTitle";
-import "./Auth.scss";
 const ManageAuth = () => {
   const handleDynamicModal = (name) => {
     handleShowModal();
