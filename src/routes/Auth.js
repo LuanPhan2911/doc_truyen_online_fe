@@ -1,7 +1,7 @@
 import Notify from "../components/Notify";
-import Logout from "../containers/Auth/Logout";
-import ResetPassword from "../containers/Auth/ResetPassword";
-import VerifyEmail from "../containers/Auth/VerifyEmail";
+import Logout from "../containers/auth/Logout";
+import ResetPassword from "../containers/auth/ResetPassword";
+import VerifyEmail from "../containers/auth/VerifyEmail";
 import HomePage from "../containers/Home/HomePage";
 
 const Auth = [

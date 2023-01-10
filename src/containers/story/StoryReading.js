@@ -1,4 +1,4 @@
-import image from "../../../../assets/stories/150.jpg";
+import image from "../../assets/stories/150.jpg";
 const StoryReading = () => {
   return (
     <div className="row">

@@ -1,4 +1,4 @@
-import BackGroundImage from "./Body/BackGroundImage";
+import BackGroundImage from "./BackGroundImage";
 const Body = ({ children }) => {
   return (
     <>

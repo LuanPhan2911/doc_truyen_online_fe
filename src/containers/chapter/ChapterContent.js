@@ -1,7 +1,7 @@
-import Header from "../../Home/sections/Header";
+import Header from "../Home/header/Header";
 import Chapter from "./Chapter";
 
-const StoryHome = () => {
+const ChapterContent = () => {
   return (
     <div className="container">
       <Header />
@@ -9,4 +9,4 @@ const StoryHome = () => {
     </div>
   );
 };
-export default StoryHome;
+export default ChapterContent;

@@ -1,4 +1,4 @@
-import image from "../../../../assets/stories/150.jpg";
+import image from "../../assets/stories/150.jpg";
 const Story = () => {
   return (
     <div className="story-container col-6">

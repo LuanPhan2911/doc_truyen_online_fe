@@ -1,10 +1,10 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Auth from "./Auth";
-import HomeContent from "../containers/Home/sections/Body/HomeContent";
+import HomeContent from "../containers/Home/body/HomeContent";
 import ErrorPage from "./ErrorPage";
-import Home from "../containers/Story/Home";
-import StoryHome from "../containers/Story/Section/StoryHome";
 import HomePage from "../containers/Home/HomePage";
+import StoryContent from "../containers/story/StoryContent";
+import ChapterContent from "../containers/chapter/ChapterContent";
 
 const Root = () => {
   const router = createBrowserRouter([
@@ -20,11 +20,15 @@ const Root = () => {
     ...Auth,
     {
       path: "/story/:name",
-      element: <Home />,
+      element: (
+        <HomePage>
+          <StoryContent />
+        </HomePage>
+      ),
     },
     {
       path: "/story/:name/chapter-:number",
-      element: <StoryHome />,
+      element: <ChapterContent />,
     },
     {
       path: "error-page",

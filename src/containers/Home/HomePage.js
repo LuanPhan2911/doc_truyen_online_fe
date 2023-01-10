@@ -1,14 +1,13 @@
-import Body from "./sections/Body";
-import Footer from "./sections/Footer";
-import Header from "./sections/Header";
-
+import Body from "./body/Body";
+import Header from "./header/Header";
+import Footer from "./footer/Footer";
 const HomePage = ({ children }) => {
   return (
-    <div className="container">
+    <>
       <Header />
       <Body>{children}</Body>
       <Footer />
-    </div>
+    </>
   );
 };
 

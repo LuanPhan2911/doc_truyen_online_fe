@@ -1,7 +1,7 @@
 import story from "../../assets/stories/150.jpg";
 import { AiFillStar } from "react-icons/ai";
 import { Link } from "react-router-dom";
-const View = () => {
+const StoryContent = () => {
   return (
     <div className="container">
       <div className="row">
@@ -81,4 +81,4 @@ const View = () => {
     </div>
   );
 };
-export default View;
+export default StoryContent;

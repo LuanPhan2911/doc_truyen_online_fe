@@ -1,6 +1,5 @@
-import Stories from "./Stories";
-import UserRead from "./UserRead";
-
+import Stories from "../../story/Stories";
+import UserRead from "../../story/UserRead";
 const HomeContent = () => {
   return (
     <div className="row">
