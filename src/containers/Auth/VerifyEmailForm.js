@@ -8,20 +8,24 @@ const VerifyEmailForm = ({ handleCloseModal }) => {
   const [email, setEmail] = useState("");
   useEffect(() => {
     const handleGetUser = async () => {
-      let res = await handleGetUserService();
-      if (res?.success) {
-        let { data } = res;
-        setEmail(data?.email);
-      }
+      try {
+        let res = await handleGetUserService();
+        if (res?.success) {
+          let { data } = res;
+          setEmail(data?.email);
+        }
+      } catch (error) {}
     };
     handleGetUser();
   }, []);
   const handleVerifyEmailNotification = async () => {
-    let res = await handleEmailNotificationService();
-    if (!res?.success) {
-      return;
-    }
-    handleCloseModal();
+    try {
+      let res = await handleEmailNotificationService();
+      if (!res?.success) {
+        return;
+      }
+      handleCloseModal();
+    } catch (error) {}
   };
   return (
     <div className="form-group">

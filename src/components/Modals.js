@@ -1,17 +1,18 @@
 import { Modal } from "react-bootstrap";
-const Modals = ({ size, isShown, handleClose, children }) => {
+import { useDispatch, useSelector } from "react-redux";
+import { handleCloseModal } from "../features/app/appSlice";
+const Modals = ({ size, children }) => {
+  const dispatch = useDispatch();
+  const isShown = useSelector((state) => state.app.isShowModal);
+  const handleClose = () => dispatch(handleCloseModal());
+
   return (
     <>
-      <Modal show={isShown} onHide={handleClose} size={size}>
+      <Modal show={isShown} onHide={handleClose} size={size || "sm"}>
         <Modal.Header closeButton>
-          <Modal.Title>{children?.Title ? children.Title : <></>}</Modal.Title>
+          <Modal.Title>{children?.Title}</Modal.Title>
         </Modal.Header>
-        <Modal.Body>{children?.Element ? children.Element : <></>}</Modal.Body>
-        <Modal.Footer>
-          <button variant="secondary" onClick={handleClose}>
-            Close
-          </button>
-        </Modal.Footer>
+        <Modal.Body>{children?.Element}</Modal.Body>
       </Modal>
     </>
   );

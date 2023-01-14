@@ -1,9 +1,12 @@
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 import { handleLoginService } from "../../services/AuthServices";
-import { useNavigate } from "react-router-dom";
-
+import { handleLoginRedux } from "../../features/user/authSlice";
+import { handleCloseModal } from "../../features/app/appSlice";
 const LoginForm = ({ handleDynamicModal }) => {
-  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const authenSelector = useSelector((state) => state.authenticate);
   const [user, setUser] = useState({
     email: "",
     password: "",
@@ -22,8 +25,15 @@ const LoginForm = ({ handleDynamicModal }) => {
   };
   const handleLogin = async () => {
     if (handleValidateForm(user)) {
-      let res = await handleLoginService(user);
-      console.log(res);
+      try {
+        let res = await handleLoginService(user);
+        console.log(res);
+        if (res?.success) {
+          dispatch(handleLoginRedux());
+          dispatch(handleCloseModal());
+          toast.success(res.message);
+        }
+      } catch (error) {}
     }
   };
   return (

@@ -5,7 +5,7 @@ const useFetch = ({ handleFetchFn, dataQuery = {} }) => {
     try {
       setLoading(true);
       let res = await handleFetchFn(dataQuery);
-      if (res && res.data) {
+      if (res?.success) {
         setData(res.data);
         setLoading(false);
       }

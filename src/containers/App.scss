@@ -37,6 +37,11 @@
     &:hover{
         color: #bd953b;
     }
+    &.active{
+        color: #bd953b;
+        text-decoration: underline;
+    }
+
 }
 .story-image{
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
@@ -44,9 +49,6 @@
     &:hover{
         opacity: 1.0;
     }
-}
-.text-oveflow-2-line{
-   
 }
 .story-description{
     display: -webkit-box;
@@ -56,6 +58,13 @@
     text-overflow: ellipsis;
     font-size: .875rem;
     height: 42px;
+}
+.text-overflow-1-line{
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .global-link{
     text-decoration: none;
@@ -85,4 +94,61 @@
     background-color: transparent;
     width: 100px;
     font-weight: 700;
+}
+.btn-story-nav-bar{
+    font-weight: 600;
+    color: black;
+    text-decoration: none;
+    border: none;
+    outline: none;
+    font-size: 1.2rem;
+    background-color: transparent;
+    min-width: 100%;
+
+    &:hover{
+        color: #bd953b;
+    }
+    &.active{
+        color: aliceblue;
+        background-color: #bd953b;
+    }
+}
+.story-description-content{
+    font-weight: 400;
+    font-size: .985rem;
+    line-height: 1.5;
+    color: #333;
+    text-align: left;
+    background-color: #fff;
+}
+.box-shadow-under-line{
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+}
+.btn-story-sort{
+    cursor: pointer;
+}
+.override-link{
+    text-decoration: none;
+    color: #333;
+    &:hover{
+        color: #bd953b;
+    }
+}
+.user-avatar {
+   .img{
+    border-radius: 50%;
+   }
+}
+.comment-input{
+    width: 100%;
+    position: relative;
+    .comment-input-area{
+        min-height: 70px;
+    }
+    .btn-send-comment{
+        position: absolute;
+        top: 0;
+        right: 0.5rem;
+        bottom: 0;
+    }
 }

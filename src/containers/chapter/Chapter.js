@@ -11,7 +11,80 @@ import {
   AiOutlineComment,
 } from "react-icons/ai";
 import { BsPencilSquare, BsCursorText, BsSave } from "react-icons/bs";
+import { useEffect, useState } from "react";
 const Chapter = () => {
+  const menuData = [
+    {
+      active: false,
+      Element: (
+        <li>
+          <Link>
+            <AiOutlineMenu />
+          </Link>
+        </li>
+      ),
+    },
+    {
+      active: false,
+      Element: (
+        <li>
+          <Link>
+            <AiOutlineSetting />
+          </Link>
+        </li>
+      ),
+    },
+    {
+      active: false,
+      Element: (
+        <li>
+          <Link>
+            <AiOutlineArrowLeft />
+          </Link>
+        </li>
+      ),
+    },
+    {
+      active: false,
+      Element: (
+        <li>
+          <Link>
+            <AiOutlineInfoCircle />
+          </Link>
+        </li>
+      ),
+    },
+    {
+      active: false,
+      Element: (
+        <li>
+          <AiOutlineHeart />
+        </li>
+      ),
+    },
+    {
+      active: false,
+      Element: (
+        <li>
+          <BsSave />
+        </li>
+      ),
+    },
+    {
+      active: false,
+      Element: (
+        <li>
+          <AiOutlineComment />
+        </li>
+      ),
+    },
+  ];
+  const [menu, setMenu] = useState([]);
+  useEffect(() => {
+    setMenu(menuData);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <div className="container">
       <div className="row">
@@ -144,47 +217,12 @@ const Chapter = () => {
             nhân kia sẽ đạp lên hết thảy để được bên cạnh người mình yêu.
           </div>
         </div>
-        <div
-          className="col-3"
-          style={{
-            position: "fixed",
-            left: "1274.6px",
-            width: "70px",
-            bottom: "auto",
-          }}
-        >
+        <div className="col-3">
           <ul className="list-unstyled">
-            <li>
-              <Link>
-                <AiOutlineMenu />
-              </Link>
-            </li>
-            <li>
-              <Link>
-                <AiOutlineSetting />
-              </Link>
-            </li>
-            <li>
-              <Link>
-                <AiOutlineArrowLeft />
-              </Link>
-            </li>
-            <li>
-              <Link>
-                <AiOutlineInfoCircle />
-              </Link>
-            </li>
-          </ul>
-          <ul className="list-unstyled">
-            <li>
-              <AiOutlineHeart />
-            </li>
-            <li>
-              <BsSave />
-            </li>
-            <li>
-              <AiOutlineComment />
-            </li>
+            {menu?.length > 0 &&
+              menu.map((item, index) => {
+                return item.Element;
+              })}
           </ul>
         </div>
       </div>

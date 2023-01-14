@@ -4,14 +4,26 @@ import LoginForm from "./LoginForm";
 import RegisterForm from "./RegisterForm";
 import VerifyEmailForm from "./VerifyEmailForm";
 import ForgotPasswordForm from "./ForgotPasswordForm";
-import { Title, TitleForgotPassword, TitleVerifyEMail } from "./AuthTitle";
+import {
+  Title,
+  TitleForgotPassword,
+  TitleLoginSuccess,
+  TitleVerifyEMail,
+} from "./AuthTitle";
+import { useDispatch, useSelector } from "react-redux";
+import { handleShowModal } from "../../features/app/appSlice";
+import { handleLogoutService } from "../../services/AuthServices";
+import { handleLogoutRedux } from "../../features/user/authSlice";
+import { toast } from "react-toastify";
 const ManageAuth = () => {
+  const isAuth = useSelector((state) => state.authenticate.isAuth);
+  const dispatch = useDispatch();
   const handleDynamicModal = (name) => {
-    handleShowModal();
-    let copyIsShowData = isShowData;
-    copyIsShowData =
-      copyIsShowData?.length > 0 &&
-      copyIsShowData.map((item, index) => {
+    dispatch(handleShowModal());
+    let copyShowData = showData;
+    copyShowData =
+      copyShowData?.length > 0 &&
+      copyShowData.map((item, index) => {
         if (item["name"] === name) {
           item["isShow"] = true;
         } else {
@@ -19,22 +31,17 @@ const ManageAuth = () => {
         }
         return item;
       });
-    setIsShowData([...copyIsShowData]);
+    setShowData([...copyShowData]);
   };
   const isActive = (name) => {
     let data =
-      isShowData?.length > 0 &&
-      isShowData.find((item) => {
+      showData?.length > 0 &&
+      showData.find((item) => {
         return item.name === name;
       });
     return data.isShow;
   };
-  const [isShownModal, setIsShownModal] = useState(false);
-  const handleShowModal = () => setIsShownModal(true);
-  const handleCloseModal = () => {
-    setIsShownModal(false);
-  };
-  const [isShowData, setIsShowData] = useState([
+  const [showData, setShowData] = useState([
     {
       name: "login",
       isShow: false,
@@ -55,7 +62,7 @@ const ManageAuth = () => {
       name: "verifyEmail",
       isShow: false,
       Title: <TitleVerifyEMail />,
-      Element: <VerifyEmailForm handleCloseModal={handleCloseModal} />,
+      Element: <VerifyEmailForm />,
     },
     {
       name: "forgotPassword",
@@ -64,18 +71,27 @@ const ManageAuth = () => {
       Element: <ForgotPasswordForm />,
     },
   ]);
+  const handleLogout = async () => {
+    try {
+      let res = await handleLogoutService();
+      if (res?.success) {
+        dispatch(handleLogoutRedux());
+        toast.success(res.message);
+      }
+    } catch (error) {}
+  };
 
   return (
     <>
-      <Title isActive={isActive} handleDynamicModal={handleDynamicModal} />
-      <Modals
-        isShown={isShownModal}
-        handleClose={handleCloseModal}
-        handleShow={handleShowModal}
-        size={"md"}
-      >
-        {isShowData?.length > 0 &&
-          isShowData.find((item, index) => {
+      {isAuth ? (
+        <TitleLoginSuccess handleLogout={handleLogout} />
+      ) : (
+        <Title isActive={isActive} handleDynamicModal={handleDynamicModal} />
+      )}
+
+      <Modals size={"md"}>
+        {showData?.length > 0 &&
+          showData.find((item, index) => {
             return item.isShow === true;
           })}
       </Modals>

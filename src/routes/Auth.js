@@ -1,14 +1,10 @@
-import Notify from "../components/Notify";
-import Logout from "../containers/auth/Logout";
 import ResetPassword from "../containers/auth/ResetPassword";
 import VerifyEmail from "../containers/auth/VerifyEmail";
 import HomePage from "../containers/Home/HomePage";
+import Profile from "../containers/user/Profile";
+import Authenticate from "../hoc/auth/Authenticate";
 
 const Auth = [
-  {
-    path: "/logout",
-    element: <Logout />,
-  },
   {
     path: "/email/verify/:id/:hash",
     element: <VerifyEmail />,
@@ -18,12 +14,12 @@ const Auth = [
     element: <ResetPassword show={true} />,
   },
   {
-    path: "/test",
+    path: "/profile",
     element: (
       <HomePage>
-        <Notify>
-          <ResetPassword />
-        </Notify>
+        <Authenticate>
+          <Profile />
+        </Authenticate>
       </HomePage>
     ),
   },

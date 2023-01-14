@@ -28,7 +28,11 @@ const Root = () => {
     },
     {
       path: "/story/:name/chapter-:number",
-      element: <ChapterContent />,
+      element: (
+        <HomePage isShowBackground={false}>
+          <ChapterContent />
+        </HomePage>
+      ),
     },
     {
       path: "error-page",

@@ -4,7 +4,6 @@ import Ranking from "./Ranking";
 import Search from "./Search";
 import { Link } from "react-router-dom";
 import ManageAuth from "../../auth/ManageAuth";
-
 const Header = () => {
   return (
     <header className="App-header">

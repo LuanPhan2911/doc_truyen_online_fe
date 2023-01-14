@@ -4,6 +4,9 @@ import { Link } from "react-router-dom";
 import { FaGlasses } from "react-icons/fa";
 import { BsBookmark } from "react-icons/bs";
 import { GiCottonFlower } from "react-icons/gi";
+import ChapterList from "./ChapterList";
+import Description from "./Description";
+import Comments from "../comments/Comments";
 const StoryContent = () => {
   return (
     <div className="container">
@@ -76,6 +79,24 @@ const StoryContent = () => {
           </div>
         </div>
       </div>
+      <div className="col-8">
+        <div className="my-4 box-shadow-under-line">
+          <ul className="nav nav-fill">
+            <li className="nav-item">
+              <button className="btn-story-nav-bar active">Gioi thieu</button>
+            </li>
+            <li className="nav-item">
+              <button className="btn-story-nav-bar"> Danh sach chuong</button>
+            </li>
+            <li className="nav-item">
+              <button className="btn-story-nav-bar">Binh luan</button>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <Comments />
+      {/* <Description /> */}
+      {/* <ChapterList /> */}
     </div>
   );
 };

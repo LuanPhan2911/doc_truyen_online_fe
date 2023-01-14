@@ -4,11 +4,13 @@ import "./index.css";
 import App from "./containers/App";
 import reportWebVitals from "./reportWebVitals";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "react-toastify/dist/ReactToastify.css";
 import store from "./app/store";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistStore } from "redux-persist";
-import HomePage from "./containers/Home/HomePage";
+import { ToastContainer } from "react-toastify";
+import Modals from "./components/Modals";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 let persistor = persistStore(store);
 root.render(
@@ -16,6 +18,18 @@ root.render(
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
       <App />
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </PersistGate>
   </Provider>
   /* </React.StrictMode> */

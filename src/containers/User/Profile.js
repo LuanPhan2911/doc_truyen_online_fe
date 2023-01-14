@@ -8,9 +8,7 @@ const Profile = () => {
       console.log(res);
     }
     getUser();
-    return () => {
-      console.log("clean");
-    };
+    return () => {};
   }, []);
 
   return <h1>Hello from profile</h1>;

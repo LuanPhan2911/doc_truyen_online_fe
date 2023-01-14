@@ -1,9 +1,20 @@
 import _ from "lodash";
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
 const Authenticate = ({ children }) => {
-  const token = useSelector((state) => state.auth.token);
-  return !_.isEmpty(token) ? children : <Navigate to="/login" replace={true} />;
+  const authInfo = useSelector((state) => state.authenticate);
+  const navigate = useNavigate();
+  //TODO: check login
+  // if user not authenticate reuturn login form
+  useEffect(() => {
+    if (!authInfo?.isAuth) {
+      navigate("/");
+      return;
+    }
+  }, [authInfo]);
+  return children;
 };
 
 export default Authenticate;
