@@ -1,6 +1,5 @@
 import axios from "axios";
 import Cookies from "js-cookie";
-import { useSelector } from "react-redux";
 
 // let token = Cookies.get("AUTH-TOKEN");
 axios.defaults.withCredentials = true;

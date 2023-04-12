@@ -1,9 +1,5 @@
 import Chapter from "./Chapter";
 const ChapterContent = () => {
-  return (
-    <div className="container">
-      <Chapter />
-    </div>
-  );
+  return <Chapter />;
 };
 export default ChapterContent;

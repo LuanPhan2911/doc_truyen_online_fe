@@ -1,6 +1,6 @@
 import { Modal } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { handleCloseModal } from "../features/app/appSlice";
+import { handleCloseModal } from "../features/appSlice";
 const Modals = ({ size, children }) => {
   const dispatch = useDispatch();
   const isShown = useSelector((state) => state.app.isShowModal);

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 
-const useFetch = ({ handleFetchFn, dataQuery = {} }) => {
+const useFetch = (handleFetchFn, dataQuery = {}) => {
   const handleFetchData = useCallback(async () => {
     try {
       setLoading(true);

@@ -5,6 +5,8 @@ import ErrorPage from "./ErrorPage";
 import HomePage from "../containers/Home/HomePage";
 import StoryContent from "../containers/story/StoryContent";
 import ChapterContent from "../containers/chapter/ChapterContent";
+import CreateStoryForm from "../containers/admin/story/CreateStoryForm";
+import Test from "../components/Test";
 
 const Root = () => {
   const router = createBrowserRouter([
@@ -15,6 +17,11 @@ const Root = () => {
           <HomeContent />
         </HomePage>
       ),
+      errorElement: <ErrorPage />,
+    },
+    {
+      path: "/test",
+      element: <Test />,
       errorElement: <ErrorPage />,
     },
     ...Auth,
@@ -34,9 +41,18 @@ const Root = () => {
         </HomePage>
       ),
     },
+
     {
-      path: "error-page",
+      path: "/error-page",
       element: <ErrorPage />,
+    },
+    {
+      path: "/admin/story/create",
+      element: (
+        <HomePage>
+          <CreateStoryForm />
+        </HomePage>
+      ),
     },
   ]);
   return <RouterProvider router={router} />;

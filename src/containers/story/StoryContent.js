@@ -7,7 +7,37 @@ import { GiCottonFlower } from "react-icons/gi";
 import ChapterList from "./ChapterList";
 import Description from "./Description";
 import Comments from "../comments/Comments";
+import { useState } from "react";
 const StoryContent = () => {
+  const [show, setShow] = useState([
+    {
+      id: 0,
+      isShow: true,
+    },
+    {
+      id: 1,
+      isShow: false,
+    },
+    {
+      id: 2,
+      isShow: false,
+    },
+  ]);
+  const handleShow = ({ id }) => {
+    let copyShow = show;
+    copyShow =
+      copyShow?.length > 0 &&
+      copyShow.map((item) => {
+        if (item?.id === id) {
+          item.isShow = true;
+        } else {
+          item.isShow = false;
+        }
+        return item;
+      });
+    setShow(copyShow);
+  };
+
   return (
     <div className="container">
       <div className="row">
@@ -64,7 +94,7 @@ const StoryContent = () => {
               <li className="d-inline border  rounded-5  p-2 mx-2 bg-black">
                 <FaGlasses color="white" size={"25px"} />
                 <button className="btn-read-story">
-                  <Link>Doc truyen</Link>
+                  <Link to={"/story/abc/chapter-123"}>Doc truyen</Link>
                 </button>
               </li>
               <li className="d-inline border border-3 rounded-5 p-2 mx-2">
@@ -83,20 +113,49 @@ const StoryContent = () => {
         <div className="my-4 box-shadow-under-line">
           <ul className="nav nav-fill">
             <li className="nav-item">
-              <button className="btn-story-nav-bar active">Gioi thieu</button>
+              <button
+                className={
+                  show[0].isShow
+                    ? "btn-story-nav-bar active"
+                    : "btn-story-nav-bar"
+                }
+                onClick={() => handleShow({ id: 0 })}
+              >
+                Gioi thieu
+              </button>
             </li>
             <li className="nav-item">
-              <button className="btn-story-nav-bar"> Danh sach chuong</button>
+              <button
+                className={
+                  show[1].isShow
+                    ? "btn-story-nav-bar active"
+                    : "btn-story-nav-bar"
+                }
+                onClick={() => handleShow({ id: 1 })}
+              >
+                {" "}
+                Danh sach chuong
+              </button>
             </li>
             <li className="nav-item">
-              <button className="btn-story-nav-bar">Binh luan</button>
+              <button
+                className={
+                  show[2].isShow
+                    ? "btn-story-nav-bar active"
+                    : "btn-story-nav-bar"
+                }
+                onClick={() => handleShow({ id: 2 })}
+              >
+                Binh luan
+              </button>
             </li>
           </ul>
         </div>
       </div>
-      <Comments />
-      {/* <Description /> */}
-      {/* <ChapterList /> */}
+
+      {show[0].isShow ? <Description /> : <></>}
+      {show[1].isShow ? <ChapterList /> : <></>}
+      {show[2].isShow ? <Comments /> : <></>}
     </div>
   );
 };

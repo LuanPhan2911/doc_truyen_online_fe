@@ -1,7 +1,7 @@
 import BackGroundImage from "./BackGroundImage";
 const Body = ({ children, isShowBackground }) => {
   return (
-    <main className="main">
+    <div className="main">
       {isShowBackground ? (
         <div className="background-image">
           <BackGroundImage />
@@ -10,10 +10,8 @@ const Body = ({ children, isShowBackground }) => {
         <></>
       )}
 
-      <div className="container">
-        <div className="card p-3 main">{children}</div>
-      </div>
-    </main>
+      <div className="container">{children}</div>
+    </div>
   );
 };
 export default Body;

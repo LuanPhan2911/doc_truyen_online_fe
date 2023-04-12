@@ -21,6 +21,7 @@ const VerifyEmail = () => {
     if (!_.isEmpty(error)) {
       navigator("/");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return isLoading ? (
     <Triangle

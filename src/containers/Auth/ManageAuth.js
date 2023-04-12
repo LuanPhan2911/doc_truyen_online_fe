@@ -11,12 +11,12 @@ import {
   TitleVerifyEMail,
 } from "./AuthTitle";
 import { useDispatch, useSelector } from "react-redux";
-import { handleShowModal } from "../../features/app/appSlice";
+import { handleShowModal } from "../../features/appSlice";
 import { handleLogoutService } from "../../services/AuthServices";
-import { handleLogoutRedux } from "../../features/user/authSlice";
+import { handleLogoutRedux } from "../../features/authSlice";
 import { toast } from "react-toastify";
 const ManageAuth = () => {
-  const isAuth = useSelector((state) => state.authenticate.isAuth);
+  const isAuth = useSelector((state) => state.auth.isAuth);
   const dispatch = useDispatch();
   const handleDynamicModal = (name) => {
     dispatch(handleShowModal());

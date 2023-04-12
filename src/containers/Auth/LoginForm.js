@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { handleLoginService } from "../../services/AuthServices";
-import { handleLoginRedux } from "../../features/user/authSlice";
-import { handleCloseModal } from "../../features/app/appSlice";
+import { handleLoginRedux } from "../../features/authSlice";
+import { handleCloseModal } from "../../features/appSlice";
 const LoginForm = ({ handleDynamicModal }) => {
   const dispatch = useDispatch();
-  const authenSelector = useSelector((state) => state.authenticate);
+  // const authenSelector = useSelector((state) => state.authenticate);
   const [user, setUser] = useState({
     email: "",
     password: "",

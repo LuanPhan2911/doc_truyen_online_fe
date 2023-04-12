@@ -5,17 +5,19 @@ import { persistReducer } from "redux-persist";
 import autoMergeLevel2 from "redux-persist/lib/stateReconciler/autoMergeLevel2";
 import thunk from "redux-thunk";
 
-import authSlice from "../features/user/authSlice";
-import appSlice from "../features/app/appSlice";
+import authSlice from "../features/authSlice";
+import appSlice from "../features/appSlice";
+import storySlice from "../features/storySlice";
 const reducers = combineReducers({
-  authenticate: authSlice,
+  auth: authSlice,
   app: appSlice,
+  story: storySlice,
 });
 const persistConfig = {
   key: "root",
   storage: storage,
   stateReconciler: autoMergeLevel2,
-  whitelist: ["authenticate"],
+  whitelist: ["auth", "app", "story"],
 };
 const persistedReducer = persistReducer(persistConfig, reducers);
 const store = configureStore({

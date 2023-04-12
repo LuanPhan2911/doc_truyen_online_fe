@@ -1,5 +1,5 @@
 import Comment from "./Comment";
-import CommentForm from "./CommentForm";
+// import CommentForm from "./CommentForm";
 
 const Comments = () => {
   return (
