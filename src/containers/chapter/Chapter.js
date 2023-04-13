@@ -23,6 +23,14 @@ const Chapter = () => {
       }}
     </PopoverBase>
   );
+  const Setting = (
+    <PopoverBase>
+      {{
+        header: <div>Setting</div>,
+        body: <div>Chapter...</div>,
+      }}
+    </PopoverBase>
+  );
 
   return (
     <>
@@ -126,6 +134,11 @@ const Chapter = () => {
         <OverlayTrigger trigger="click" placement="left" overlay={ChapterList}>
           <button className="chapter-list">
             <AiOutlineMenu />
+          </button>
+        </OverlayTrigger>
+        <OverlayTrigger trigger="click" placement="left" overlay={Setting}>
+          <button className="setting">
+            <AiOutlineSetting />
           </button>
         </OverlayTrigger>
       </div>

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import image from "../../assets/stories/150.jpg";
 const Story = () => {
   return (
-    <div className="col-6 p-3">
+    <div className="col-lg-6 col-sm-12 p-3">
       <div className="row">
         <div className="image col-3">
           <Link to={"/story/abc"} className="story-image">

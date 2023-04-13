@@ -1,8 +1,8 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Auth from "./Auth";
-import HomeContent from "../containers/Home/body/HomeContent";
-import ErrorPage from "./ErrorPage";
 import HomePage from "../containers/Home/HomePage";
+import ErrorPage from "./ErrorPage";
+import HomeLayout from "../components/HomeLayout";
 import StoryContent from "../containers/story/StoryContent";
 import ChapterContent from "../containers/chapter/ChapterContent";
 import CreateStoryForm from "../containers/admin/story/CreateStoryForm";
@@ -13,9 +13,9 @@ const Root = () => {
     {
       path: "/",
       element: (
-        <HomePage isShowBackground>
-          <HomeContent />
-        </HomePage>
+        <HomeLayout isShowBackground>
+          <HomePage />
+        </HomeLayout>
       ),
       errorElement: <ErrorPage />,
     },
@@ -28,17 +28,17 @@ const Root = () => {
     {
       path: "/story/:name",
       element: (
-        <HomePage>
+        <HomeLayout>
           <StoryContent />
-        </HomePage>
+        </HomeLayout>
       ),
     },
     {
       path: "/story/:name/chapter-:number",
       element: (
-        <HomePage isShowBackground={false}>
+        <HomeLayout isShowBackground={false}>
           <ChapterContent />
-        </HomePage>
+        </HomeLayout>
       ),
     },
 

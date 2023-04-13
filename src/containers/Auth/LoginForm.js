@@ -1,9 +1,6 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { toast } from "react-toastify";
 import { handleLoginService } from "../../services/AuthServices";
-import { handleLoginRedux } from "../../features/authSlice";
-import { handleCloseModal } from "../../features/appSlice";
 const LoginForm = ({ handleDynamicModal }) => {
   const dispatch = useDispatch();
   // const authenSelector = useSelector((state) => state.authenticate);
@@ -29,9 +26,6 @@ const LoginForm = ({ handleDynamicModal }) => {
         let res = await handleLoginService(user);
         console.log(res);
         if (res?.success) {
-          dispatch(handleLoginRedux());
-          dispatch(handleCloseModal());
-          toast.success(res.message);
         }
       } catch (error) {}
     }

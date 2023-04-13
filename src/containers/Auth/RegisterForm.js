@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { handleRegisterService } from "../../services/AuthServices";
-// import validator from "validator";
 const RegisterForm = () => {
   const [user, setUser] = useState({
     email: "",
