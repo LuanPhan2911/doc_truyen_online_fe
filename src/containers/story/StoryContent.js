@@ -1,14 +1,21 @@
-import story from "../../assets/stories/150.jpg";
+import avatar from "../../assets/stories/150.jpg";
 import { AiFillStar } from "react-icons/ai";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaGlasses } from "react-icons/fa";
 import { BsBookmark } from "react-icons/bs";
 import { GiCottonFlower } from "react-icons/gi";
 import ChapterList from "./ChapterList";
 import Description from "./Description";
 import Comments from "../comments/Comments";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
 const StoryContent = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [story, setStory] = useState({});
+  useEffect(() => {
+    setStory({ ...location.state, chapterIndex: 1 });
+  }, [location]);
   const [show, setShow] = useState([
     {
       id: 0,
@@ -23,6 +30,7 @@ const StoryContent = () => {
       isShow: false,
     },
   ]);
+
   const handleShow = ({ id }) => {
     let copyShow = show;
     copyShow =
@@ -37,16 +45,20 @@ const StoryContent = () => {
       });
     setShow(copyShow);
   };
-
+  const handleShowChapter = ({ id: storyId, chapterIndex }) => {
+    navigate(`chapter/${chapterIndex}`, {
+      state: { storyId, chapterIndex },
+    });
+  };
   return (
     <div className="container">
       <div className="row">
-        <div className="col-2">
-          <img src={story} alt="Not found" width={"100%"} height={"270px"} />
+        <div className="col-lg-2 col-sm-12">
+          <img src={avatar} alt="Not found" width={"100%"} height={"270px"} />
         </div>
-        <div className="col-10">
+        <div className="col-lg-10 col-sm-12">
           <div className="d-flex justify-content-start flex-column">
-            <div className="story-title h3">Dai cang truong sinh</div>
+            <div className="story-title h3">{story?.name}</div>
             <ul className="list-unstyled mt-2">
               <li className="d-inline px-3 border border-3 rounded-5 mx-2 py-1">
                 <Link to={"#"} className="global-link text-secondary">
@@ -54,22 +66,22 @@ const StoryContent = () => {
                 </Link>
               </li>
             </ul>
-            <ul className="list-unstyled d-flex">
-              <li className="mx-4">
-                <div>1372</div>
-                <div>Chuong</div>
+            <ul className="list-unstyled d-lg-flex justify-content-lg-start">
+              <li className="d-lg-flex flex-lg-column">
+                <span>1372</span>
+                <span>Chuong</span>
               </li>
-              <li className="mx-4">
-                <div>11</div>
-                <div>Chuong/ tuan</div>
+              <li className="d-lg-flex flex-lg-column">
+                <span>11</span>
+                <span>Chuong/ tuan</span>
               </li>
-              <li className="mx-4">
-                <div>95.5k</div>
-                <div>Luot doc</div>
+              <li className="d-lg-flex flex-lg-column">
+                <span>95.5k</span>
+                <span>Luot doc</span>
               </li>
-              <li className="mx-4">
-                <div>1000</div>
-                <div>Cat tru</div>
+              <li className="d-lg-flex flex-lg-column">
+                <span>1000</span>
+                <span>Cat tru</span>
               </li>
             </ul>
             <div className="d-flex">
@@ -80,37 +92,34 @@ const StoryContent = () => {
                 <AiFillStar color="yellow" />
                 <AiFillStar color="yellow" />
               </div>
-              <span
-                style={{
-                  fontWeight: "600",
-                }}
-              >
-                4.62
-              </span>
+              <span>4.62</span>
               <span>/5</span>
               <span>(24 luot danh gia)</span>
             </div>
-            <ul className="list-unstyled my-4">
-              <li className="d-inline border  rounded-5  p-2 mx-2 bg-black">
-                <FaGlasses color="white" size={"25px"} />
-                <button className="btn-read-story">
-                  <Link to={"/story/abc/chapter-123"}>Doc truyen</Link>
+            <ul className="list-unstyled d-flex flex-lg-row justify-content-lg-start">
+              <li className="bg-primary rounded-pill d-flex flex-column align-items-center justify-content-center">
+                <FaGlasses color="white" />
+                <button
+                  className="btn-read-story"
+                  onClick={() => handleShowChapter(story)}
+                >
+                  Doc truyen
                 </button>
               </li>
-              <li className="d-inline border border-3 rounded-5 p-2 mx-2">
-                <BsBookmark size={"25px"} />
+              <li className="rounded-pill bg-info d-flex flex-column align-items-center justify-content-center">
+                <BsBookmark />
                 <button className="btn-story-bookmark">Danh dau</button>
               </li>
-              <li className="d-inline border border-3 rounded-5 p-2 mx-2">
-                <GiCottonFlower size={"25px"} />
+              <li className="rounded-pill bg-success d-flex flex-column align-items-center justify-content-center">
+                <GiCottonFlower />
                 <button className="btn-story-suggest">De cu</button>
               </li>
             </ul>
           </div>
         </div>
       </div>
-      <div className="col-8">
-        <div className="my-4 box-shadow-under-line">
+      <div className="col-lg-8 col-sm-12">
+        <div className="box-shadow-under-line">
           <ul className="nav nav-fill">
             <li className="nav-item">
               <button
@@ -134,7 +143,7 @@ const StoryContent = () => {
                 onClick={() => handleShow({ id: 1 })}
               >
                 {" "}
-                Danh sach chuong
+                Chuong
               </button>
             </li>
             <li className="nav-item">
@@ -153,7 +162,11 @@ const StoryContent = () => {
         </div>
       </div>
 
-      {show[0].isShow ? <Description /> : <></>}
+      {show[0].isShow ? (
+        <Description description={story?.description} />
+      ) : (
+        <></>
+      )}
       {show[1].isShow ? <ChapterList /> : <></>}
       {show[2].isShow ? <Comments /> : <></>}
     </div>

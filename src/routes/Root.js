@@ -4,9 +4,9 @@ import HomePage from "../containers/Home/HomePage";
 import ErrorPage from "./ErrorPage";
 import HomeLayout from "../components/HomeLayout";
 import StoryContent from "../containers/story/StoryContent";
-import ChapterContent from "../containers/chapter/ChapterContent";
+import Chapter from "../containers/chapter/Chapter";
 import CreateStoryForm from "../containers/admin/story/CreateStoryForm";
-import Test from "../components/Test";
+import CreateChapterForm from "../containers/admin/chapter/CreateChapterForm";
 
 const Root = () => {
   const router = createBrowserRouter([
@@ -19,11 +19,6 @@ const Root = () => {
       ),
       errorElement: <ErrorPage />,
     },
-    {
-      path: "/test",
-      element: <Test />,
-      errorElement: <ErrorPage />,
-    },
     ...Auth,
     {
       path: "/story/:name",
@@ -34,12 +29,8 @@ const Root = () => {
       ),
     },
     {
-      path: "/story/:name/chapter-:number",
-      element: (
-        <HomeLayout isShowBackground={false}>
-          <ChapterContent />
-        </HomeLayout>
-      ),
+      path: "/story/:name/chapter/:index",
+      element: <Chapter />,
     },
 
     {
@@ -49,9 +40,17 @@ const Root = () => {
     {
       path: "/admin/story/create",
       element: (
-        <HomePage>
+        <HomeLayout>
           <CreateStoryForm />
-        </HomePage>
+        </HomeLayout>
+      ),
+    },
+    {
+      path: "/admin/chapter/create",
+      element: (
+        <HomeLayout>
+          <CreateChapterForm />
+        </HomeLayout>
       ),
     },
   ]);

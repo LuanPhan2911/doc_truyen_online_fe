@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
 import Story from "./Story";
+import { useFetch } from "../../hooks/useFetch";
+import { handleGetStoryService } from "../../services/StoryService";
 const Stories = () => {
-  const stories = [1, 2, 3, 4, 5, 6, 7, 8];
+  let { data: stories } = useFetch(handleGetStoryService);
   return (
     <>
       <div className="d-flex justify-content-between">
@@ -15,7 +17,7 @@ const Stories = () => {
         {stories &&
           stories.length > 0 &&
           stories.map((item, index) => {
-            return <Story key={index} />;
+            return <Story key={index} story={item} />;
           })}
       </div>
     </>

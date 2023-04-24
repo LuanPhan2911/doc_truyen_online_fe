@@ -9,25 +9,25 @@ const ChapterList = () => {
         <BsSortDownAlt size={"25px"} className="btn-story-sort" />
       </div>
       <div className="row">
-        <div className="col-4 border-bottom">
+        <div className="col-lg-4 col-sm-12">
           <Link className="override-link">
-            <div className="text-overflow-1-line py-2 mb-2">
+            <div className="text-overflow-1-line mb-2">
               Chuong 1 Ngay hom nay la ngat tan the cua the gioi
               <small>2 nam truoc</small>
             </div>
           </Link>
         </div>
-        <div className="col-4 border-bottom">
+        <div className="col-lg-4 col-sm-12">
           <Link className="override-link">
-            <div className="text-overflow-1-line py-2 mb-2">
+            <div className="text-overflow-1-line mb-2">
               Chuong 1 Ngay hom nay la ngat tan the cua the gioi
               <small>2 nam truoc</small>
             </div>
           </Link>
         </div>
-        <div className="col-4 border-bottom">
+        <div className="col-lg-4 col-sm-12">
           <Link className="override-link">
-            <div className="text-overflow-1-line py-2 mb-2">
+            <div className="text-overflow-1-line mb-2">
               Chuong 1 Ngay hom nay la ngat tan the cua the gioi
               <small>2 nam truoc</small>
             </div>

@@ -2,7 +2,40 @@ import { useEffect, useState } from "react";
 import Select from "react-select";
 import { useFetch } from "../../../hooks/useFetch";
 import { handleGetGenreService } from "../../../services/GenreService";
-
+import { handleCreateStoryService } from "../../../services/StoryService";
+import {
+  checkPropertiesIsEmpty,
+  handleErrorApiResponse,
+} from "../../../utils/Helper";
+import { toast } from "react-toastify";
+const status = [
+  {
+    state: "Moi ra",
+    id: 1,
+  },
+  {
+    state: "Dang ra",
+    id: 2,
+  },
+  {
+    state: "Da hoan thanh",
+    id: 3,
+  },
+];
+const views = [
+  {
+    view: "Nam",
+    id: 1,
+  },
+  {
+    view: "Nu",
+    id: 2,
+  },
+  {
+    view: "Khac",
+    id: 3,
+  },
+];
 const CreateStoryForm = () => {
   const [options, setOption] = useState({});
   const { data: genres } = useFetch(handleGetGenreService);
@@ -40,10 +73,11 @@ const CreateStoryForm = () => {
   const [story, setStory] = useState({
     name: "",
     description: "",
-    avatar: "",
+    avatar: null,
     status: 1,
     view: 1,
-    genresId: [],
+    genres_id: [],
+    user_id: 13,
   });
   const [genreId, setGenresId] = useState({
     category: [],
@@ -72,24 +106,31 @@ const CreateStoryForm = () => {
       });
     cpGenreId[name] = arr;
     setGenresId(cpGenreId);
+    let genres_id = [...Object.values(genreId)].flat();
+    setStory({ ...story, genres_id: genres_id });
   };
-  const handleCreateStory = () => {
-    let genresId = [];
-    for (const key in genreId) {
-      if (Object.hasOwnProperty.call(genreId, key)) {
-        const element = genreId[key];
-        element?.length > 0 &&
-          element.forEach((item) => {
-            genresId.push(item);
-          });
+  const validateStory = (story) => {
+    return checkPropertiesIsEmpty(story, ["avatar"]);
+  };
+  const handleCreateStory = async () => {
+    // validate du lieu
+    if (validateStory(story)) {
+      toast.error("Du lieu khong duoc de trong");
+    } else {
+      try {
+        let res = await handleCreateStoryService(story);
+        if (res?.success) {
+          console.log(res.data);
+        }
+      } catch (error) {
+        handleErrorApiResponse(error);
       }
     }
-    setStory({ ...story, genresId: genresId });
   };
   return (
     <div className="container">
       <div className="row">
-        <div className="col-6">
+        <div className="col-lg-6 col-sm-12">
           <label>Tên truyện</label>
           <input
             className="form-control"
@@ -119,77 +160,41 @@ const CreateStoryForm = () => {
         </div>
         <div className="col-6">
           <label>Trang thai</label>
-          <div className="form-group">
-            <input
-              type={"radio"}
-              className="form-check-input"
-              name="status"
-              id="status-new"
-              value={"1"}
-              onChange={(e) => handleSetInput(e, "status")}
-            />
-            <label htmlFor={"status-new"}>Moi</label>
-          </div>
-          <div className="form-group">
-            <input
-              type={"radio"}
-              className="form-check-input"
-              name="status"
-              id="status-releasing"
-              value={"2"}
-              onChange={(e) => handleSetInput(e, "status")}
-            />
-            <label htmlFor="status-releasing">Dang ra</label>
-          </div>
-          <div className="form-group">
-            <input
-              type={"radio"}
-              className="form-check-input"
-              name="status"
-              id="status-finished"
-              value={"3"}
-              onChange={(e) => handleSetInput(e, "status")}
-            />
-            <label htmlFor="status-finished">Da hoan thanh</label>
-          </div>
+          {status?.length > 0 &&
+            status.map((item) => {
+              return (
+                <div className="form-group" key={item.id}>
+                  <input
+                    type={"radio"}
+                    className="form-check-input"
+                    name="status"
+                    value={item.id}
+                    onChange={(e) => handleSetInput(e, "status")}
+                  />
+                  <label>{item.state}</label>
+                </div>
+              );
+            })}
         </div>
         <div className="col-6">
           <label>Goc nhin</label>
-          <div className="form-group">
-            <input
-              type={"radio"}
-              className="form-check-input"
-              name="view"
-              id="view-male"
-              value={"1"}
-              onChange={(e) => handleSetInput(e, "view")}
-            />
-            <label htmlFor="view-male">Nam</label>
-          </div>
-          <div className="form-group">
-            <input
-              type={"radio"}
-              className="form-check-input"
-              name="view"
-              id="view-female"
-              value={"1"}
-              onChange={(e) => handleSetInput(e, "view")}
-            />
-            <label htmlFor="view-female">Nu</label>
-          </div>
-          <div className="form-group">
-            <input
-              type={"radio"}
-              className="form-check-input"
-              name="view"
-              id="view-other"
-              value={"1"}
-              onChange={(e) => handleSetInput(e, "view")}
-            />
-            <label htmlFor="view-other">Khac</label>
-          </div>
+          {views?.length > 0 &&
+            views.map((item) => {
+              return (
+                <div className="form-group" key={item.id}>
+                  <input
+                    type={"radio"}
+                    className="form-check-input"
+                    name="view"
+                    value={item.id}
+                    onChange={(e) => handleSetInput(e, "view")}
+                  />
+                  <label>{item.view}</label>
+                </div>
+              );
+            })}
         </div>
-        <div className="col-3">
+        <div className="col-lg-3 col-sm-6">
           <label>The loai</label>
           <Select
             options={options?.category}
@@ -197,7 +202,7 @@ const CreateStoryForm = () => {
             onChange={(options) => handleChangeSelect(options, "category")}
           />
         </div>
-        <div className="col-3">
+        <div className="col-lg-3 col-sm-6">
           <label>Tinh cach nhan vat chinh</label>
           <Select
             options={options?.character}
@@ -205,7 +210,7 @@ const CreateStoryForm = () => {
             onChange={(options) => handleChangeSelect(options, "character")}
           />
         </div>
-        <div className="col-3">
+        <div className="col-lg-3 col-sm-6">
           <label>Boi canh the gioi</label>
           <Select
             options={options?.world}
@@ -213,7 +218,7 @@ const CreateStoryForm = () => {
             onChange={(options) => handleChangeSelect(options, "world")}
           />
         </div>
-        <div className="col-3">
+        <div className="col-lg-3 col-sm-6">
           <label>Luu phai</label>
           <Select
             options={options?.tag}
