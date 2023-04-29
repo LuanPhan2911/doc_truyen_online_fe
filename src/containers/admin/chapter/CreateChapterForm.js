@@ -28,7 +28,6 @@ const CreateChapterForm = () => {
       try {
         let res = await handleCreateChapterService(chapter);
         if (res && res?.success) {
-          console.log(res.data);
           toast.success("Tao thanh cong");
         }
       } catch (error) {

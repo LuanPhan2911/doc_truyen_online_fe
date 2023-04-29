@@ -3,20 +3,19 @@ import { createSlice } from "@reduxjs/toolkit";
 export const authSlice = createSlice({
   name: "auth",
   initialState: {
-    isAuth: false,
+    user: null,
   },
   reducers: {
-    handleLoginRedux: (state, action) => {
-      // debugger;
-      state.isAuth = true;
+    setUserRedux: (state, action) => {
+      state.user = action.payload;
     },
-    handleLogoutRedux: (state, action) => {
-      state.isAuth = false;
+    logoutRedux: (state, payload) => {
+      state.user = null;
     },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { handleLoginRedux, handleLogoutRedux } = authSlice.actions;
+export const { setUserRedux, logoutRedux } = authSlice.actions;
 
 export default authSlice.reducer;

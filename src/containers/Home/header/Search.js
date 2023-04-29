@@ -2,9 +2,7 @@ import { useState } from "react";
 import { BsSearch } from "react-icons/bs";
 const Search = () => {
   const [searchValue, setSearchValue] = useState("");
-  const handleSearch = () => {
-    console.log(searchValue);
-  };
+  const handleSearch = () => {};
   const handleOnKeyDown = (e) => {
     if (e.keyCode === 13) {
       handleSearch();

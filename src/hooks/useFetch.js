@@ -15,7 +15,7 @@ const useFetch = (handleFetchFn, dataQuery = {}) => {
       setLoading(false);
     }
   }, [handleFetchFn, dataQuery]);
-  const [data, setData] = useState({});
+  const [data, setData] = useState(null);
   const [isLoading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 

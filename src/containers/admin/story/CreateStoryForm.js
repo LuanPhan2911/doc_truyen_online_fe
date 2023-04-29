@@ -120,7 +120,6 @@ const CreateStoryForm = () => {
       try {
         let res = await handleCreateStoryService(story);
         if (res?.success) {
-          console.log(res.data);
         }
       } catch (error) {
         handleErrorApiResponse(error);
@@ -170,6 +169,7 @@ const CreateStoryForm = () => {
                     name="status"
                     value={item.id}
                     onChange={(e) => handleSetInput(e, "status")}
+                    checked={+story.status === +item.id}
                   />
                   <label>{item.state}</label>
                 </div>
@@ -188,6 +188,7 @@ const CreateStoryForm = () => {
                     name="view"
                     value={item.id}
                     onChange={(e) => handleSetInput(e, "view")}
+                    checked={+story.view === +item.id}
                   />
                   <label>{item.view}</label>
                 </div>
@@ -198,7 +199,6 @@ const CreateStoryForm = () => {
           <label>The loai</label>
           <Select
             options={options?.category}
-            isMulti
             onChange={(options) => handleChangeSelect(options, "category")}
           />
         </div>
@@ -206,7 +206,6 @@ const CreateStoryForm = () => {
           <label>Tinh cach nhan vat chinh</label>
           <Select
             options={options?.character}
-            isMulti
             onChange={(options) => handleChangeSelect(options, "character")}
           />
         </div>
@@ -214,7 +213,6 @@ const CreateStoryForm = () => {
           <label>Boi canh the gioi</label>
           <Select
             options={options?.world}
-            isMulti
             onChange={(options) => handleChangeSelect(options, "world")}
           />
         </div>
@@ -222,7 +220,6 @@ const CreateStoryForm = () => {
           <label>Luu phai</label>
           <Select
             options={options?.tag}
-            isMulti
             onChange={(options) => handleChangeSelect(options, "tag")}
           />
         </div>

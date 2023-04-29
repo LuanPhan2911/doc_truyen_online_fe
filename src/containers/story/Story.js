@@ -24,7 +24,7 @@ const Story = ({ story }) => {
         <div className="info col-9">
           <div className="name">
             <button
-              className="story-title m-2"
+              className="btn story-title m-2"
               onClick={() => handleShowStoryDetail(story)}
             >
               {story?.name}

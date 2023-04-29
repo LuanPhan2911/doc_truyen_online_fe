@@ -10,10 +10,10 @@ const handleRegisterService = (user) => {
   return axios.post("/api/register", user);
 };
 const handleGetUserService = () => {
-  return axios.get("/api/get-user");
+  return axios.get("/api/get_user");
 };
 const handleEmailNotificationService = () => {
-  return axios.post("api/email/verification-notification");
+  return axios.post("api/email/verification_notification");
 };
 const handleVerifyEmailService = ({ id, hash, ...qs }) => {
   return axios.get(`api/email/verify/${id}/${hash}`, {
@@ -23,7 +23,7 @@ const handleVerifyEmailService = ({ id, hash, ...qs }) => {
   });
 };
 const handleForgotPasswordService = (data) => {
-  return axios.post("/api/forgot-password", data);
+  return axios.post("/api/forgot_password", data);
 };
 const handleResetPasswordService = ({ email, token, ...data }) => {
   return axios.post(

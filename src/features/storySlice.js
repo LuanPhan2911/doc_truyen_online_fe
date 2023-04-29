@@ -7,7 +7,6 @@ export const storySlice = createSlice({
   },
   reducers: {
     setGenres: (state, action) => {
-      console.log(action.payload);
       state.genres = action.payload;
     },
   },

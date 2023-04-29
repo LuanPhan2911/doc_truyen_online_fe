@@ -5,7 +5,7 @@ const HoneLayout = ({ children, isShowBackground }) => {
   return (
     <>
       <Header />
-      <div className="main">
+      <div className="container-fluid">
         {isShowBackground ? (
           <img
             src={background}

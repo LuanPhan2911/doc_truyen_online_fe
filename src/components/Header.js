@@ -1,9 +1,33 @@
+import { useEffect, useState } from "react";
 import logo from "../assets/logo.svg";
 import Genre from "../containers/Home/header/Genre";
 import Ranking from "../containers/Home/header/Ranking";
 import Search from "../containers/Home/header/Search";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  handleGetUserService,
+  handleLogoutService,
+} from "../services/AuthServices";
+import { setUserRedux } from "../features/authSlice";
 const Header = () => {
+  const user = useSelector((state) => state.auth.user);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (!user) {
+      const fetch = async () => {
+        try {
+          let res = await handleGetUserService();
+
+          if (res?.success) {
+            dispatch(setUserRedux({ ...res.data }));
+          }
+        } catch (error) {}
+      };
+      fetch();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
     <div className="header">
       <nav className="navbar navbar-expand-lg">
@@ -41,8 +65,28 @@ const Header = () => {
               <li className="nav-item">
                 <Genre />
               </li>
-              <li className="nav-item"></li>
-              <li className="nav-item"></li>
+              {!user ? (
+                <>
+                  <li className="nav-item">
+                    <Link to={"/login"} className="btn">
+                      Login
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link to={"/register"} className="btn">
+                      Register
+                    </Link>
+                  </li>
+                </>
+              ) : (
+                <>
+                  <li className="nav-item">
+                    <Link to={"/logout"} className="btn">
+                      Logout
+                    </Link>
+                  </li>
+                </>
+              )}
             </ul>
           </div>
         </div>

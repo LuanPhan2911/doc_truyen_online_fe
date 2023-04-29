@@ -7,6 +7,7 @@ import StoryContent from "../containers/story/StoryContent";
 import Chapter from "../containers/chapter/Chapter";
 import CreateStoryForm from "../containers/admin/story/CreateStoryForm";
 import CreateChapterForm from "../containers/admin/chapter/CreateChapterForm";
+import RedirectIfAuth from "../hoc/RedirectIfAuth";
 
 const Root = () => {
   const router = createBrowserRouter([
@@ -41,7 +42,9 @@ const Root = () => {
       path: "/admin/story/create",
       element: (
         <HomeLayout>
-          <CreateStoryForm />
+          <RedirectIfAuth>
+            <CreateStoryForm />
+          </RedirectIfAuth>
         </HomeLayout>
       ),
     },
@@ -49,7 +52,9 @@ const Root = () => {
       path: "/admin/chapter/create",
       element: (
         <HomeLayout>
-          <CreateChapterForm />
+          <RedirectIfAuth>
+            <CreateChapterForm />
+          </RedirectIfAuth>
         </HomeLayout>
       ),
     },

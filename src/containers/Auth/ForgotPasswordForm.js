@@ -9,11 +9,8 @@ const ForgotPasswordForm = () => {
         email: email,
       });
       if (res?.success) {
-        console.log(res);
       }
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
   return (
     <div className="form-group">
