@@ -33,9 +33,9 @@ const RegisterForm = () => {
   };
   return (
     <>
-      <div className="container d-flex justify-content-center">
-        <div className="col-lg-6 col-sm-12">
-          <div className="h3 text-center">Register</div>
+      <div className="container-fluid d-flex justify-content-center row px-5">
+        <div className="col-lg-4 col-sm-12">
+          <div className="h3 text-center">Đăng ký</div>
           <div className=" form-group">
             <label>Email</label>
             <input
@@ -46,7 +46,7 @@ const RegisterForm = () => {
             />
           </div>
           <div className="form-group">
-            <label>Password</label>
+            <label>Mật khẩu</label>
             <input
               type={"password"}
               className="form-control"
@@ -55,7 +55,7 @@ const RegisterForm = () => {
             />
           </div>
           <div className="form-group">
-            <label>Nhap lai mat khau</label>
+            <label>Nhập lại mật khẩu</label>
             <input
               type={"password"}
               className="form-control"
@@ -69,7 +69,7 @@ const RegisterForm = () => {
               type="button"
               onClick={() => handleRegister(user)}
             >
-              Dang ky
+              Đăng kí
             </button>
           </div>
         </div>

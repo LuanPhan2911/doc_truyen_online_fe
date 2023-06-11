@@ -8,9 +8,7 @@ const Stories = () => {
     <>
       <div className="d-flex justify-content-between">
         <div className="h4">Biên tập viên đề cử</div>
-        <Link to={""} className="global-link">
-          Xem tất cả
-        </Link>
+        <Link to={""}>Xem tất cả</Link>
       </div>
 
       <div className="row">

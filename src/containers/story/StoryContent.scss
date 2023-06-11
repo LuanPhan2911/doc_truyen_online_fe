@@ -1,0 +1,136 @@
+.story-detail {
+  display: grid;
+  position: relative;
+  grid-template-columns: 1fr 3fr;
+  gap: 20px;
+  min-height: 340px;
+  .story-image {
+    width: 200px;
+    height: 270px;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 15px;
+    }
+  }
+  .story-title {
+    font-size: 2em;
+    color: #333;
+    font-weight: 700;
+  }
+  .story-genre {
+    list-style: none;
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    padding: 0;
+    li {
+      border-radius: 5px;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+      padding: 5px 10px;
+      display: inline-block;
+      margin-right: 5px;
+    }
+  }
+  .story-info {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    padding: 0;
+    li {
+      font-weight: 600;
+      padding: 5px 20px;
+      text-align: center;
+      font-size: 1.2em;
+      span {
+        display: block;
+        color: #999;
+        font-weight: 400;
+        font-size: 1em;
+      }
+    }
+  }
+  .story-rate {
+    display: flex;
+    justify-content: flex-start;
+    padding: 15px 0;
+    .star {
+      margin-right: 10px;
+    }
+    color: #333;
+    font-size: 1.2em;
+    font-weight: 600;
+    span {
+      font-size: 1em;
+      font-weight: 400;
+    }
+  }
+  .story-action {
+    list-style: none;
+    display: flex;
+    justify-content: start;
+    flex-wrap: wrap;
+    li {
+      margin-right: 10px;
+      cursor: pointer;
+      padding: 0 15px;
+      font-size: 1.2em;
+      font-weight: 600;
+      border-radius: 25px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-width: 150px;
+      min-height: 48px;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+      span {
+        margin-left: 5px;
+      }
+      &.story-read {
+        background: #bd953b;
+        color: #fff;
+      }
+    }
+  }
+}
+.story-tag {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  ul {
+    display: flex;
+    list-style: none;
+    position: relative;
+    padding: 0;
+    justify-content: flex-start;
+    li {
+      padding: 10px 20px;
+      font-size: 1.2em;
+      font-weight: 600;
+      cursor: pointer;
+      &.active {
+        color: #bd953b;
+      }
+      &:hover {
+        color: #bd953b;
+      }
+      .count {
+        margin-left: 10px;
+        font-size: 0.8em;
+        font-weight: 400;
+        color: #333;
+      }
+    }
+  }
+
+  .tag-content {
+    min-height: 500px;
+    gap: 20px;
+    background: #fff;
+    border-radius: 15px;
+    padding: 20px;
+    width: 100%;
+  }
+}

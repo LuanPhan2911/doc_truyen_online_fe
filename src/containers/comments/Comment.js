@@ -3,27 +3,26 @@ import { BiGlassesAlt, BiLike } from "react-icons/bi";
 import { BsReply } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import avatarDefault from "../../assets/avatar/default.png";
+import "./Comment.scss";
 const Comment = () => {
   return (
-    <div className="media d-flex">
-      <div className="user-avatar">
+    <div className="comment-data">
+      <div className="avatar">
         <img src={avatarDefault} alt="Not found" className="img" />
       </div>
-      <div className="media-body">
-        <div className="user-comment-name">
-          <Link>Nguyen Phuc</Link>
-        </div>
+      <div className="comment-body">
+        <div className="user-name">Nguyen Phuc</div>
         <div className="comment-info">
-          <span>
-            <AiOutlineFieldTime />
+          <span className="time">
+            <AiOutlineFieldTime size={"1.5em"} />
             10 ngay truoc
           </span>
-          <span>
-            <BiGlassesAlt />
+          <span className="chapter">
+            <BiGlassesAlt size={"1.5em"} />
             Chuong 1000
           </span>
         </div>
-        <div className="comment-body">
+        <div className="comment-content">
           <span>
             Đôi lời review về Truyện
             <br />
@@ -45,19 +44,19 @@ const Comment = () => {
             đánh giá cũng tầm 4.0* đi <br />
           </span>
         </div>
-        <div className="comment-report d-flex justify-content-end">
-          <button className="btn btn-submit bg-transparent">
+        <div className="comment-report">
+          <span className="like">
             <BiLike />
             Like
-          </button>
-          <button className="btn btn-submit bg-transparent">
+          </span>
+          <span className="reply">
             <BsReply />
-            Tra loi
-          </button>
-          <button className="btn btn-submit bg-transparent">
+            Trả lời
+          </span>
+          <span className="report">
             <AiFillFlag />
-            Bao cao
-          </button>
+            Báo cáo
+          </span>
         </div>
       </div>
     </div>

@@ -4,7 +4,6 @@ import DropdownBase from "../../../components/DropdownBase";
 import { handleGetGenreService } from "../../../services/GenreService";
 import { useDispatch, useSelector } from "react-redux";
 import { setGenres } from "../../../features/storySlice";
-import { Link } from "react-router-dom";
 
 const Genre = () => {
   const genres = useSelector((state) => state.story.genres);
@@ -30,32 +29,25 @@ const Genre = () => {
     } catch (error) {}
   }
   const GenreSearch = (
-    <DropdownBase>
+    <DropdownBase bodyWidth="400px">
       {{
         btn: (
-          <button
-            className="btn dropdown-toggle"
-            type="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          >
-            Thể loại
+          <button className="btn btn-dropdown">
+            <i className="bi bi-list" style={{ fontSize: "1.2em" }}></i>
+            <span className="px-2">Thể loại</span>
           </button>
         ),
         body: (
-          <div
-            className="row d-flex align-content-around justify-content-around"
-            style={{ width: "300px" }}
-          >
+          <ul className="list-unstyled row">
             {genres?.length > 0 &&
               genres.map((item) => {
                 return (
-                  <div className="col-6" key={item.id}>
-                    <li>{item.name}</li>
-                  </div>
+                  <li className="col-lg-6 col-sm-12 text-center" key={item.id}>
+                    {item.name}
+                  </li>
                 );
               })}
-          </div>
+          </ul>
         ),
       }}
     </DropdownBase>

@@ -1,37 +1,37 @@
 import { BsSortDownAlt } from "react-icons/bs";
 import { Link } from "react-router-dom";
-
+import "./ChapterList.scss";
 const ChapterList = () => {
   return (
     <div className="col-12 chapter-list">
       <div className="d-flex align-items-center justify-content-between">
-        <h4>Danh sach chuong</h4>
-        <BsSortDownAlt size={"25px"} className="btn-story-sort" />
+        <h4>Danh sách chương</h4>
+        <BsSortDownAlt className="story-sort active" />
       </div>
       <div className="row">
-        <div className="col-lg-4 col-sm-12">
-          <Link className="override-link">
-            <div className="text-overflow-1-line mb-2">
-              Chuong 1 Ngay hom nay la ngat tan the cua the gioi
-              <small>2 nam truoc</small>
-            </div>
-          </Link>
+        <div className="col-lg-4 col-md-6 col-sm-12">
+          <div className="text-overflow-1-line chapter-name">
+            Chuong 1: Mot con vit
+            <span>(2 nam truoc)</span>
+          </div>
         </div>
-        <div className="col-lg-4 col-sm-12">
-          <Link className="override-link">
-            <div className="text-overflow-1-line mb-2">
-              Chuong 1 Ngay hom nay la ngat tan the cua the gioi
-              <small>2 nam truoc</small>
-            </div>
-          </Link>
+        <div className="col-lg-4 col-md-6 col-sm-12">
+          <div className="text-overflow-1-line">
+            Chuong 1: Mot con vit
+            <span>(2 nam truoc)</span>
+          </div>
         </div>
-        <div className="col-lg-4 col-sm-12">
-          <Link className="override-link">
-            <div className="text-overflow-1-line mb-2">
-              Chuong 1 Ngay hom nay la ngat tan the cua the gioi
-              <small>2 nam truoc</small>
-            </div>
-          </Link>
+        <div className="col-lg-4 col-md-6 col-sm-12">
+          <div className="text-overflow-1-line">
+            Chuong 1: Mot con vit
+            <span>(2 nam truoc)</span>
+          </div>
+        </div>
+        <div className="col-lg-4 col-md-6 col-sm-12">
+          <div className="text-overflow-1-line">
+            Chuong 1: Mot con vit
+            <span>(2 nam truoc)</span>
+          </div>
         </div>
       </div>
     </div>

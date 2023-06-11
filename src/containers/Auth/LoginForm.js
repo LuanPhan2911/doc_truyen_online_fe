@@ -35,14 +35,14 @@ const LoginForm = ({ handleDynamicModal }) => {
 
   return (
     <>
-      <div className="container d-flex justify-content-center">
-        <div className="col-lg-6 col-sm-12">
-          <div className="h3 text-center">Login</div>
+      <div className="container-fluid d-flex justify-content-center row">
+        <div className="col-lg-4 col-sm-12">
+          <div className="h3 text-center">Đăng nhập</div>
           <div className="form-group">
             <div className="d-flex justify-content-between">
               <label>Email</label>
               <button className="btn-verify-email">
-                Gui lai email kich hoat
+                Gửi lại email kích hoạt
               </button>
             </div>
             <input
@@ -59,7 +59,7 @@ const LoginForm = ({ handleDynamicModal }) => {
                 className="btn-forgot-password"
                 onClick={() => handleDynamicModal("forgotPassword")}
               >
-                Quen mat khau?
+                Quên mật khẩu?
               </button>
             </div>
             <input
@@ -71,7 +71,7 @@ const LoginForm = ({ handleDynamicModal }) => {
           </div>
           <div className="form-check">
             <input className="form-check-input" type="checkbox" />
-            <label className="form-check-label">Ghi nho tai khoan</label>
+            <label className="form-check-label">Ghi nhớ tài khoản</label>
           </div>
           <div className="d-flex justify-content-center my-2">
             <button
@@ -79,14 +79,14 @@ const LoginForm = ({ handleDynamicModal }) => {
               type="button"
               onClick={() => handleLogin()}
             >
-              Dang nhap
+              Đăng nhập
             </button>
           </div>
           <div className="np-account">
             <p>
-              Ban chua co tai khoan?{" "}
+              Bạn chưa có tài khoản?{" "}
               <Link to={"/register"} className="btn-register">
-                Dang ky ngay
+                Đăng kí ngay
               </Link>
             </p>
           </div>

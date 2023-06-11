@@ -1,0 +1,14 @@
+.story-description {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  gap: 20px;
+  min-height: 500px;
+  .story-description-content {
+    font-size: 1.2em;
+    font-weight: 500;
+  }
+  .auth-info {
+    background: #393939;
+    border-radius: 15px;
+  }
+}

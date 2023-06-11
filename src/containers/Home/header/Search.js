@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { BsSearch } from "react-icons/bs";
+import "./Search.scss";
 const Search = () => {
   const [searchValue, setSearchValue] = useState("");
   const handleSearch = () => {};
@@ -9,7 +10,7 @@ const Search = () => {
     }
   };
   return (
-    <div className="form-group">
+    <div className="form-group search-input">
       <input
         type={"text"}
         className="form-control search-input"
@@ -19,11 +20,10 @@ const Search = () => {
         onKeyDown={(e) => handleOnKeyDown(e)}
       />
       <button
-        className="btn bg-transparent input-group-append d-inline"
+        className="btn bg-transparent btn-search"
         onClick={() => handleSearch()}
       >
-        {" "}
-        <BsSearch />
+        <BsSearch size={"1.2em"} />
       </button>
     </div>
   );

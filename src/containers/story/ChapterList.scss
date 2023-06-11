@@ -1,0 +1,31 @@
+.chapter-list {
+  h4 {
+    font-size: 1.2em;
+    font-weight: 500;
+  }
+  .story-sort {
+    font-size: 1.5em;
+    cursor: pointer;
+    &:hover {
+      color: #bd953d;
+    }
+    &.active {
+      transform: rotate(180deg);
+      transition: 0.5s;
+    }
+  }
+  .chapter-name {
+    font-size: 1.2em;
+    font-weight: 400;
+    cursor: pointer;
+    &:hover {
+      color: #bd953d;
+    }
+    span {
+      font-size: 0.8em;
+      margin-left: 5px;
+      color: #333;
+      font-weight: 300;
+    }
+  }
+}

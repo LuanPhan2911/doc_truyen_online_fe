@@ -1,0 +1,34 @@
+.footer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0 150px;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  .logo {
+    width: 100px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  ul {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    li {
+      &:hover {
+        color: #bd953b;
+        cursor: pointer;
+      }
+    }
+  }
+  @media (max-width: 576px) {
+    ul {
+      flex-direction: column;
+    }
+  }
+}

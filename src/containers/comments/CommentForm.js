@@ -1,19 +1,15 @@
 import avatarDefault from "../../assets/avatar/default.png";
 import { AiOutlineSend } from "react-icons/ai";
+import "./CommentForm.scss";
 const CommentForm = () => {
   return (
-    <div className="comment-form d-flex gap-3">
-      <div className="user-avatar">
-        <img src={avatarDefault} alt="Not found" className="img" />
+    <div className="comment-form">
+      <div className="avatar">
+        <img src={avatarDefault} alt="Not found" />
       </div>
       <div className="comment-input">
-        <textarea
-          className="form-control comment-input-area"
-          placeholder="Nhap binh luan cua ban"
-        ></textarea>
-        <button className="btn btn-submit bg-transparent text-primary btn-send-comment">
-          <AiOutlineSend />
-        </button>
+        <textarea placeholder="Nhap binh luan cua ban"></textarea>
+        <AiOutlineSend className="send-comment" />
       </div>
     </div>
   );
