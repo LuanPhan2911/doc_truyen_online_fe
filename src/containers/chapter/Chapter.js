@@ -42,66 +42,67 @@ const Chapter = () => {
   }, [location]);
 
   return (
-    <>
-      <div
-        className="container-fluid"
-        style={{
-          color: selectedColor.color,
-          backgroundColor: selectedColor.backgroundColor,
-        }}
-      >
-        <Header />
-        <div className="d-flex justify-content-between">
-          <Link>
-            Chuong truoc <AiOutlineArrowLeft />
-          </Link>
-          <Link>
-            Chuong sau <AiOutlineArrowRight />
-          </Link>
-        </div>
-        <div className="h1">{chapter?.name}</div>
-        <Link>
-          <AiOutlineBook />
-          {chapter?.story?.name}
-        </Link>
-
-        <div className="row my-3">
-          <Link className="col-lg-3 col-sm-6">
-            <BsPencilSquare />
-            Diep mac
-          </Link>
-          <span className="col-lg-3 col-sm-6">
-            <BsCursorText />
-            1333 chu
-          </span>
-          <span className="col-lg-3 col-sm-6">
-            <AiOutlineHeart />
-            28 cam xuc
-          </span>
-          <span className="col-lg-3 col-sm-6">
-            <AiOutlineFieldTime />
-            {chapter?.created_at}
-          </span>
-        </div>
-
-        <div className="container">
-          <div
-            className="card card-body"
-            style={{
-              color: "inherit",
-              backgroundColor: "inherit",
-              fontSize: fontSize,
-              fontFamily: selectedFontFamily,
-            }}
-          >
-            {chapter?.content}
+    <div
+      className="chapter-main"
+      style={{
+        color: selectedColor.color,
+        backgroundColor: selectedColor.backgroundColor,
+      }}
+    >
+      <Header
+        color={selectedColor.color}
+        backgroundColor={selectedColor.backgroundColor}
+      />
+      <div className="chapter">
+        <div className="chapter-pre-next">
+          <div className="chapter-pre">
+            <AiOutlineArrowLeft size={"1.5em"} /> <span>Chương trước</span>
+          </div>
+          <div className="chapter-next">
+            <span className="chapter-next">Chương sau</span>
+            <AiOutlineArrowRight size={"1.5em"} />{" "}
           </div>
         </div>
+        <div className="chapter-name">{chapter?.name}</div>
+        <div className="chapter-story-info">
+          <div className="story-name">
+            <AiOutlineBook size={"1.5em"} />
+            <span>{chapter?.story?.name}</span>
+          </div>
+          <div className="auth-name">
+            <BsPencilSquare size={"1.5em"} />
+            <span>Diệp Mặc</span>
+          </div>
+          <div className="chapter-word-count">
+            <BsCursorText size={"1.5em"} />
+            <span> 1333 chữ</span>
+          </div>
+          <div className="chapter-liked">
+            <AiOutlineHeart size={"1.5em"} />
+            <span> 28 cảm xúc</span>
+          </div>
+          <div className="chapter-created-at">
+            <AiOutlineFieldTime size={"1.5em"} />
+            <span> {chapter?.created_at}</span>
+          </div>
+        </div>
+
+        <div
+          className="chapter-content"
+          style={{
+            color: "inherit",
+            backgroundColor: "inherit",
+            fontSize: fontSize,
+            fontFamily: selectedFontFamily,
+          }}
+        >
+          {chapter?.content}
+        </div>
+        <div className="chapter-config">
+          <ChapterConfig />
+        </div>
       </div>
-      <div className="left-menu">
-        <ChapterConfig />
-      </div>
-    </>
+    </div>
   );
 };
 export default Chapter;

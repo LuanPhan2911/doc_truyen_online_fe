@@ -16,6 +16,8 @@ import {
 } from "react-icons/ai";
 import { IoColorPaletteOutline } from "react-icons/io5";
 import PopoverBase from "../../components/PopoverBase";
+import "./ChapterConfig.scss";
+import ChapterList from "../story/ChapterList";
 const colorData = [
   {
     id: 1,
@@ -109,79 +111,76 @@ const ChapterConfig = () => {
     let fontFamily = e.target.value;
     dispatch(changeFontFamily(fontFamily));
   };
-  const ChapterList = (
+  const ChapterListPopup = (
     <PopoverBase>
       {{
-        header: <div>Chapterlist</div>,
-        body: <div>Chapter...</div>,
+        body: <ChapterList />,
       }}
     </PopoverBase>
   );
-  const Setting = (
+  const SettingPopup = (
     <PopoverBase>
       {{
-        header: <div>Setting</div>,
+        header: <div className="title-popup">Setting</div>,
         body: (
-          <div>
-            <div className="control">
-              <div className="change-color card card-body">
-                <div className="background">
-                  <IoColorPaletteOutline className="icon" />
-                  Màu nền
-                </div>
-                <div className="colors">
-                  {colors?.length > 0 &&
-                    colors.map((item, index) => {
+          <div className="control-popup">
+            <div className="change-color">
+              <div className="background">
+                <IoColorPaletteOutline size={"1.5em"} />
+                Màu nền
+              </div>
+              <div className="colors">
+                {colors?.length > 0 &&
+                  colors.map((item, index) => {
+                    return (
+                      <button
+                        key={index}
+                        className="color-item"
+                        style={{
+                          backgroundColor: item.backgroundColor,
+                        }}
+                        onClick={() => handleChangeColor(item)}
+                      ></button>
+                    );
+                  })}
+              </div>
+            </div>
+            <div className="change-font-family">
+              <div className="font-family-title">
+                <AiOutlineFontColors size={"1.5em"} />
+                Phong chữ
+              </div>
+              <div className="font-family">
+                <select
+                  className="form-control"
+                  onChange={(e) => handleChangeFontFamily(e)}
+                >
+                  {fontFamily?.length > 0 &&
+                    fontFamily.map((item, index) => {
                       return (
-                        <button
-                          key={index}
-                          className="color-item"
-                          style={{
-                            backgroundColor: item.backgroundColor,
-                          }}
-                          onClick={() => handleChangeColor(item)}
-                        ></button>
+                        <option value={item} key={index}>
+                          {item}
+                        </option>
                       );
                     })}
-                </div>
+                </select>
               </div>
-              <div className="change-font-family card card-body">
-                <div className="font-family-title">
-                  <AiOutlineFontColors className="icon" />
-                  Phong chữ
-                </div>
-                <div className="font-family">
-                  <select
-                    className="form-control"
-                    onChange={(e) => handleChangeFontFamily(e)}
-                  >
-                    {fontFamily?.length > 0 &&
-                      fontFamily.map((item, index) => {
-                        return (
-                          <option value={item} key={index}>
-                            {item}
-                          </option>
-                        );
-                      })}
-                  </select>
-                </div>
+            </div>
+            <div className="change-font-size">
+              <div className="font-size-title">
+                <AiOutlineFontSize size={"1.5em"} />
+                Cở chữ
               </div>
-              <div className="change-font-size card card-body">
-                <div className="font-size-title">
-                  <AiOutlineFontSize className="icon" />
-                  Cở chữ
-                </div>
-                <div className="font-size">
-                  <AiOutlineMinus
-                    className="icon"
-                    onClick={() => handleChangeFontSize("minus")}
-                  />
-                  {fontSize}
-                  <AiOutlinePlus
-                    className="icon"
-                    onClick={() => handleChangeFontSize("plus")}
-                  />
-                </div>
+              <div className="font-size">
+                <AiOutlineMinus
+                  size={"1.5em"}
+                  onClick={() => handleChangeFontSize("minus")}
+                />
+                {fontSize}
+                <AiOutlinePlus
+                  size={"1.5em"}
+                  onClick={() => handleChangeFontSize("plus")}
+                />
               </div>
             </div>
           </div>
@@ -191,15 +190,19 @@ const ChapterConfig = () => {
   );
   return (
     <>
-      <OverlayTrigger trigger="click" placement="left" overlay={ChapterList}>
-        <button className="chapter-list">
-          <AiOutlineMenu />
-        </button>
+      <OverlayTrigger
+        trigger="click"
+        placement="left"
+        overlay={ChapterListPopup}
+      >
+        <div className="chapter-list-popup">
+          <AiOutlineMenu size={"2em"} />
+        </div>
       </OverlayTrigger>
-      <OverlayTrigger trigger="click" placement="left" overlay={Setting}>
-        <button className="setting">
-          <AiOutlineSetting />
-        </button>
+      <OverlayTrigger trigger="click" placement="left" overlay={SettingPopup}>
+        <div className="chapter-setting-popup">
+          <AiOutlineSetting size={"2em"} />
+        </div>
       </OverlayTrigger>
     </>
   );

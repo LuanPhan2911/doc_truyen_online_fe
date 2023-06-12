@@ -77,18 +77,18 @@ const StoryContent = () => {
   return (
     <div className="container content">
       <div className="story-detail">
-        <div className="story-image">
+        <div className="story-detail-image">
           <img src={avatar} alt="Not found" />
         </div>
         <div className="story-detail-info">
-          <div className="story-title">{story?.name}</div>
-          <ul className="story-genre">
+          <div className="story-detail-title">{story?.name}</div>
+          <ul className="story-detail-genre">
             <li>Dị thế đại lục</li>
             <li>Huyền huyễn</li>
             <li>Trọng sinh</li>
             <li>Cung vi trạch đấu</li>
           </ul>
-          <ul className="story-info">
+          <ul className="story-detail-full">
             <li>
               1372
               <span>Chương</span>
@@ -106,7 +106,7 @@ const StoryContent = () => {
               <span>Cất trữ</span>
             </li>
           </ul>
-          <div className="story-rate">
+          <div className="story-detail-rate">
             <div className="star">
               <AiFillStar color="yellow" />
               <AiFillStar color="yellow" />
@@ -117,23 +117,26 @@ const StoryContent = () => {
             4.62/5
             <span>(24 lượt đánh giá)</span>
           </div>
-          <ul className="story-action">
-            <li className="story-read" onClick={() => handleShowChapter(story)}>
+          <ul className="story-detail-action">
+            <li
+              className="story-detail-read"
+              onClick={() => handleShowChapter(story)}
+            >
               <FaGlasses color="white" size={"1.2em"} />
               <span>Đọc truyện</span>
             </li>
-            <li className="story-mark">
+            <li className="story-detail-mark">
               <BsBookmark color="#333" size={"1.2em"} />
               <span>Đánh dấu</span>
             </li>
-            <li className="story-suggest">
+            <li className="story-detail-suggest">
               <GiCottonFlower />
               <span>Đề cử</span>
             </li>
           </ul>
         </div>
       </div>
-      <div className="story-tag">
+      <div className="story-detail-tag">
         <ul>
           {storyTag?.length > 0 &&
             storyTag.map((item) => {

@@ -7,8 +7,8 @@ const PopoverBase = React.forwardRef(
     }, [children, popper]);
     return (
       <Popover ref={ref} body {...props}>
-        <Popover.Header>{children?.header}</Popover.Header>
-        <Popover.Body>{children?.body}</Popover.Body>
+        {children?.header}
+        {children?.body}
       </Popover>
     );
   }

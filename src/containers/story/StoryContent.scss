@@ -4,22 +4,20 @@
   grid-template-columns: 1fr 3fr;
   gap: 20px;
   min-height: 340px;
-  .story-image {
-    width: 200px;
-    height: 270px;
+  .story-detail-image {
     img {
-      width: 100%;
-      height: 100%;
+      width: 200px;
+      height: 270px;
       object-fit: cover;
       border-radius: 15px;
     }
   }
-  .story-title {
+  .story-detail-title {
     font-size: 2em;
     color: #333;
     font-weight: 700;
   }
-  .story-genre {
+  .story-detail-genre {
     list-style: none;
     display: flex;
     justify-content: flex-start;
@@ -29,11 +27,13 @@
       border-radius: 5px;
       box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
       padding: 5px 10px;
-      display: inline-block;
       margin-right: 5px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
   }
-  .story-info {
+  .story-detail-full {
     list-style: none;
     display: flex;
     flex-wrap: wrap;
@@ -52,10 +52,10 @@
       }
     }
   }
-  .story-rate {
+  .story-detail-rate {
+    padding: 15px 0;
     display: flex;
     justify-content: flex-start;
-    padding: 15px 0;
     .star {
       margin-right: 10px;
     }
@@ -67,7 +67,7 @@
       font-weight: 400;
     }
   }
-  .story-action {
+  .story-detail-action {
     list-style: none;
     display: flex;
     justify-content: start;
@@ -88,14 +88,17 @@
       span {
         margin-left: 5px;
       }
-      &.story-read {
+      &.story-detail-read {
         background: #bd953b;
-        color: #fff;
+        span {
+          color: #fff;
+          font-weight: 600;
+        }
       }
     }
   }
 }
-.story-tag {
+.story-detail-tag {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -132,5 +135,20 @@
     border-radius: 15px;
     padding: 20px;
     width: 100%;
+  }
+}
+@media (max-width: 576px) {
+  .story-detail {
+    grid-template-columns: 1fr;
+    .story-detail-image {
+      display: flex;
+      justify-content: center;
+    }
+    .story-detail-info {
+      .story-detail-title {
+        font-size: 1.2em;
+        text-align: center;
+      }
+    }
   }
 }
