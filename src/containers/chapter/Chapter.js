@@ -97,7 +97,17 @@ const Chapter = () => {
           }}
         >
           {chapter?.content}
+          <div className="chapter-pre-next">
+            <div className="chapter-pre">
+              <AiOutlineArrowLeft size={"1.5em"} /> <span>Chương trước</span>
+            </div>
+            <div className="chapter-next">
+              <span className="chapter-next">Chương sau</span>
+              <AiOutlineArrowRight size={"1.5em"} />{" "}
+            </div>
+          </div>
         </div>
+
         <div className="chapter-config">
           <ChapterConfig />
         </div>

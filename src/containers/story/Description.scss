@@ -12,3 +12,8 @@
     border-radius: 15px;
   }
 }
+@media (max-width: 576px) {
+  .story-description-tag {
+    grid-template-columns: 1fr;
+  }
+}

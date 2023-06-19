@@ -4,11 +4,14 @@ import LoginForm from "./LoginForm";
 
 const Login = () => {
   return (
-    <div className="main">
+    <>
       <Header />
-      <LoginForm />
+      <div className="main">
+        <LoginForm />
+      </div>
+
       <Footer />
-    </div>
+    </>
   );
 };
 export default Login;

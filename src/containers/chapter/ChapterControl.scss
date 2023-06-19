@@ -1,0 +1,63 @@
+.control-chapter-popup {
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  .change-color {
+    padding: 10px;
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    .background {
+      font-weight: 600;
+    }
+    .colors {
+      display: flex;
+      justify-content: flex-start;
+      flex-wrap: wrap;
+      padding: 10px;
+      .color-item {
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        margin: 5px;
+
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        outline: none;
+      }
+    }
+  }
+  .change-font-family {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    padding: 10px 0;
+    .font-family-title {
+      width: 30%;
+      font-weight: 600;
+    }
+    .font-family {
+      width: 70%;
+      select {
+        cursor: pointer;
+      }
+    }
+  }
+  .change-font-size {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    padding: 10px 0;
+    .font-size-title {
+      width: 30%;
+      font-weight: 600;
+    }
+    .font-size {
+      width: 70%;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      svg {
+        cursor: pointer;
+      }
+    }
+  }
+}

@@ -1,0 +1,30 @@
+.register-form {
+  padding: 20px;
+  width: 400px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  border-radius: 20px;
+  .register {
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    button {
+      padding: 10px 20px;
+      border-radius: 10px;
+      background: #bd953b;
+      color: #fff;
+      font-weight: 600;
+      font-size: 1em;
+      outline: none;
+      border: none;
+    }
+  }
+  .no-account {
+    padding: 20px;
+    a {
+      text-decoration: none;
+      color: #bd953b;
+      font-size: 1em;
+      font-weight: 600;
+    }
+  }
+}

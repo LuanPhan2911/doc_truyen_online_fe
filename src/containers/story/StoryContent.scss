@@ -16,6 +16,7 @@
     font-size: 2em;
     color: #333;
     font-weight: 700;
+    margin: 10px 0;
   }
   .story-detail-genre {
     list-style: none;
@@ -27,7 +28,7 @@
       border-radius: 5px;
       box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
       padding: 5px 10px;
-      margin-right: 5px;
+      margin: 5px;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -73,18 +74,17 @@
     justify-content: start;
     flex-wrap: wrap;
     li {
-      margin-right: 10px;
+      margin: 5px;
       cursor: pointer;
-      padding: 0 15px;
+      padding: 10px 15px;
       font-size: 1.2em;
       font-weight: 600;
       border-radius: 25px;
       display: flex;
       justify-content: center;
       align-items: center;
-      min-width: 150px;
-      min-height: 48px;
       box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+      min-width: 140px;
       span {
         margin-left: 5px;
       }
@@ -112,13 +112,27 @@
       padding: 10px 20px;
       font-size: 1.2em;
       font-weight: 600;
+      position: relative;
       cursor: pointer;
+
       &.active {
         color: #bd953b;
+        &::after {
+          content: "";
+          position: absolute;
+          display: flex;
+          justify-content: center;
+          left: 0;
+          bottom: 0;
+          width: 100%;
+          height: 5px;
+          background: #bd953b;
+        }
       }
       &:hover {
         color: #bd953b;
       }
+
       .count {
         margin-left: 10px;
         font-size: 0.8em;
@@ -149,6 +163,20 @@
         font-size: 1.2em;
         text-align: center;
       }
+      .story-detail-genre {
+        justify-content: center;
+      }
+      .story-detail-full {
+        justify-content: center;
+      }
+      .story-detail-action {
+        flex-direction: column;
+      }
+    }
+  }
+  .story-detail-tag {
+    ul {
+      overflow-x: scroll;
     }
   }
 }

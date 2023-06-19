@@ -1,11 +1,11 @@
 .chapter-list {
-  h4 {
-    font-size: 1.2em;
-    font-weight: 500;
-  }
+  position: relative;
   .story-sort {
     font-size: 1.5em;
     cursor: pointer;
+    position: absolute;
+    top: 0;
+    right: 0;
     &:hover {
       color: #bd953d;
     }

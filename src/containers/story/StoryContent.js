@@ -24,6 +24,7 @@ const StoryContent = () => {
         name: "Giới thiệu",
         active: true,
         component: <Description description={story.description} />,
+        plug: "description",
       },
       {
         id: 2,
@@ -31,13 +32,15 @@ const StoryContent = () => {
         active: false,
         component: null,
         count: 15,
+        plug: "judge",
       },
       {
         id: 3,
-        name: "DS.Chương",
+        name: "DS. Chương",
         active: false,
         component: <ChapterList />,
         count: 120,
+        plug: "chapter-list",
       },
       {
         id: 4,
@@ -45,12 +48,14 @@ const StoryContent = () => {
         active: false,
         component: <Comments />,
         count: 1200,
+        plug: "comment",
       },
       {
         id: 5,
         name: "Hâm mộ",
         active: false,
         component: null,
+        plug: "favorite",
       },
     ];
     setStoryTag([...cpStoryTag]);

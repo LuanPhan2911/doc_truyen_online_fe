@@ -2,6 +2,7 @@ import { useState } from "react";
 import { handleRegisterService } from "../../services/AuthServices";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import "./RegisterForm.scss";
 const RegisterForm = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState({
@@ -33,45 +34,37 @@ const RegisterForm = () => {
   };
   return (
     <>
-      <div className="container-fluid d-flex justify-content-center row px-5">
-        <div className="col-lg-4 col-sm-12">
-          <div className="h3 text-center">Đăng ký</div>
-          <div className=" form-group">
-            <label>Email</label>
-            <input
-              type={"email"}
-              className="form-control"
-              value={user.email}
-              onChange={(e) => handleChangeInputForm(e, "email")}
-            />
-          </div>
-          <div className="form-group">
-            <label>Mật khẩu</label>
-            <input
-              type={"password"}
-              className="form-control"
-              value={user.password}
-              onChange={(e) => handleChangeInputForm(e, "password")}
-            />
-          </div>
-          <div className="form-group">
-            <label>Nhập lại mật khẩu</label>
-            <input
-              type={"password"}
-              className="form-control"
-              value={user.confirmPassword}
-              onChange={(e) => handleChangeInputForm(e, "confirmPassword")}
-            />
-          </div>
-          <div className="d-flex justify-content-center my-2">
-            <button
-              className="btn btn-primary"
-              type="button"
-              onClick={() => handleRegister(user)}
-            >
-              Đăng kí
-            </button>
-          </div>
+      <div className="register-form">
+        <div className="h3 text-center">Đăng ký</div>
+        <div className="form-group py-2">
+          <label>Email</label>
+          <input
+            type={"email"}
+            className="form-control"
+            value={user.email}
+            onChange={(e) => handleChangeInputForm(e, "email")}
+          />
+        </div>
+        <div className="form-group py-2">
+          <label>Mật khẩu</label>
+          <input
+            type={"password"}
+            className="form-control"
+            value={user.password}
+            onChange={(e) => handleChangeInputForm(e, "password")}
+          />
+        </div>
+        <div className="form-group py-2">
+          <label>Nhập lại mật khẩu</label>
+          <input
+            type={"password"}
+            className="form-control"
+            value={user.confirmPassword}
+            onChange={(e) => handleChangeInputForm(e, "confirmPassword")}
+          />
+        </div>
+        <div className="register">
+          <button onClick={() => handleRegister(user)}>Đăng kí</button>
         </div>
       </div>
     </>

@@ -4,11 +4,14 @@ import RegisterForm from "./RegisterForm";
 
 const Register = () => {
   return (
-    <div className="main">
+    <>
       <Header />
-      <RegisterForm />
+      <div className="main">
+        <RegisterForm />
+      </div>
+
       <Footer />
-    </div>
+    </>
   );
 };
 export default Register;

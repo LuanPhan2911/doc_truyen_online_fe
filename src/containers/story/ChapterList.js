@@ -4,10 +4,8 @@ import "./ChapterList.scss";
 const ChapterList = () => {
   return (
     <div className="chapter-list">
-      <div className="d-flex align-items-center justify-content-between">
-        <h4>Danh sách chương</h4>
-        <BsSortDownAlt className="story-sort active" />
-      </div>
+      <BsSortDownAlt className="story-sort active" />
+
       <div className="row">
         <div className="col-lg-4 col-md-6 col-sm-12">
           <div className="text-overflow-1-line chapter-name">

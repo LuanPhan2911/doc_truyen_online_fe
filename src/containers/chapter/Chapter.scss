@@ -7,11 +7,11 @@
   flex-direction: column;
   .chapter {
     position: relative;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-    padding: 20px;
-    border-radius: 15px;
     min-height: 100vh;
-    width: 1000px;
+    width: 100%;
+    padding: 20px 200px;
+    text-align: justify;
+    overflow: hidden;
     .chapter-pre-next {
       display: flex;
       justify-content: space-between;
@@ -19,14 +19,16 @@
       cursor: pointer;
       position: relative;
       font-weight: 600;
-      &:hover {
-        color: #bd953d;
-      }
+      padding: 20px;
+
       .chapter-pre,
       .chapter-next {
-        display: inline-block;
         span {
           margin: 0 5px;
+          font-size: 1em;
+          &:hover {
+            color: #bd953d;
+          }
         }
       }
     }
@@ -34,12 +36,14 @@
       margin: 10px 0;
       font-size: 2em;
       font-weight: 600;
+      padding: 20px;
     }
     .chapter-story-info {
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
+      padding: 20px;
       span {
         margin-left: 10px;
       }
@@ -50,14 +54,40 @@
     }
     .chapter-config {
       position: fixed;
-      right: 0;
-      top: 100px;
-      width: 100px;
-      height: 100px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: transparent;
+    }
+  }
+}
+@media (max-width: 576px) {
+  .chapter-main {
+    .chapter {
+      padding: 20px;
+      .chapter-pre-next {
+        padding: 0;
+        margin-top: 20px;
+        margin-bottom: 50px;
+        .chapter-pre,
+        .chapter-next {
+          span {
+            font-size: 0.7em;
+          }
+        }
+      }
+      .chapter-name {
+        font-size: 1.5em;
+        padding: 10px;
+      }
+      .chapter-story-info {
+        padding: 10px;
+      }
+      .chapter-content {
+        margin-top: 10px;
+        padding: 10px;
+      }
     }
   }
 }
