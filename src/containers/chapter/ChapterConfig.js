@@ -9,7 +9,6 @@ import { useEffect } from "react";
 import ChapterControl from "./ChapterControl";
 
 const ChapterConfig = () => {
-  const [showDialog, setShowDialog] = useState(false);
   const [menu, setMenu] = useState([
     {
       id: 1,
@@ -50,7 +49,6 @@ const ChapterConfig = () => {
         }
       });
 
-    setShowDialog(true);
     setMenu([...cpMenu]);
   };
 
@@ -70,16 +68,7 @@ const ChapterConfig = () => {
             );
           })}
       </ul>
-      {item ? (
-        <Dialog
-          show={showDialog}
-          setShow={setShowDialog}
-          title={item.name}
-          body={item.component}
-        />
-      ) : (
-        <></>
-      )}
+      {item ? <Dialog item={item} setItem={setItem} /> : <></>}
     </>
   );
 };

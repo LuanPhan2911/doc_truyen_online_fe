@@ -1,5 +1,6 @@
-.chapter-list {
+#chapter-list-main {
   position: relative;
+
   .story-sort {
     font-size: 1.5em;
     cursor: pointer;
@@ -14,18 +15,24 @@
       transition: 0.5s;
     }
   }
-  .chapter-name {
-    font-size: 1.2em;
-    font-weight: 400;
-    cursor: pointer;
-    &:hover {
-      color: #bd953d;
-    }
-    span {
-      font-size: 0.8em;
-      margin-left: 5px;
-      color: #333;
-      font-weight: 300;
+  .chapter-list-content {
+    display: flex;
+    flex-wrap: wrap;
+    .chapter-list-name {
+      width: 500px;
+      font-weight: 400;
+      font-size: 1.2em;
+      padding: 5px;
+      cursor: pointer;
+      &:hover {
+        color: #bd953d;
+      }
+      span {
+        font-size: 0.8em;
+        margin-left: 5px;
+        color: #333;
+        font-weight: 300;
+      }
     }
   }
 }

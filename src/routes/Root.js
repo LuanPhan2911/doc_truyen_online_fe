@@ -2,7 +2,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Auth from "./Auth";
 import HomePage from "../containers/Home/HomePage";
 import ErrorPage from "./ErrorPage";
-import HomeLayout from "../components/HomeLayout";
+import HomeLayout from "../containers/Home/HomeLayout";
 import StoryContent from "../containers/story/StoryContent";
 import Chapter from "../containers/chapter/Chapter";
 import CreateStoryForm from "../containers/admin/story/CreateStoryForm";

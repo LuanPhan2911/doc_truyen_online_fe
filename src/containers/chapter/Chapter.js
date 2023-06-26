@@ -14,8 +14,9 @@ import { useSelector } from "react-redux";
 
 import { useEffect, useState } from "react";
 import { handleGetChapterService } from "../../services/ChapterService";
-import Header from "../../components/Header";
+
 import ChapterConfig from "./ChapterConfig";
+import Header from "../Home/Header";
 
 const Chapter = () => {
   const location = useLocation();
@@ -49,10 +50,7 @@ const Chapter = () => {
         backgroundColor: selectedColor.backgroundColor,
       }}
     >
-      <Header
-        color={selectedColor.color}
-        backgroundColor={selectedColor.backgroundColor}
-      />
+      <Header />
       <div className="chapter">
         <div className="chapter-pre-next">
           <div className="chapter-pre">

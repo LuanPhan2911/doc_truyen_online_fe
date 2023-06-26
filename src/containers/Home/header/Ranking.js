@@ -1,6 +1,6 @@
 import { useState } from "react";
 import DropdownBase from "../../../components/DropdownBase";
-const Ranking = () => {
+const Ranking = ({ btn }) => {
   const [rankItem, setRankItem] = useState([
     {
       id: "1",
@@ -24,22 +24,14 @@ const Ranking = () => {
     },
   ]);
   return (
-    <DropdownBase bodyWidth="150px">
+    <DropdownBase minWidth="200px">
       {{
-        btn: (
-          <button className="btn btn-dropdown">
-            <span className="px-2">Bảng xếp hạng</span>
-          </button>
-        ),
+        btn: <span className="btn-dropdown">{btn}</span>,
         body: (
-          <ul className="list-unstyled row">
+          <ul>
             {rankItem?.length > 0 &&
               rankItem.map((item) => {
-                return (
-                  <li key={item.id} className="text-center">
-                    {item.name}
-                  </li>
-                );
+                return <li key={item.id}>{item.name}</li>;
               })}
           </ul>
         ),

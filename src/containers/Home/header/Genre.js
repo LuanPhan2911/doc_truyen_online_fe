@@ -4,8 +4,8 @@ import DropdownBase from "../../../components/DropdownBase";
 import { handleGetGenreService } from "../../../services/GenreService";
 import { useDispatch, useSelector } from "react-redux";
 import { setGenres } from "../../../features/storySlice";
-
-const Genre = () => {
+import "./Genre.scss";
+const Genre = ({ btn }) => {
   const genres = useSelector((state) => state.story.genres);
   const dispatch = useDispatch();
   useEffect(() => {
@@ -29,23 +29,14 @@ const Genre = () => {
     } catch (error) {}
   }
   const GenreSearch = (
-    <DropdownBase bodyWidth="400px">
+    <DropdownBase>
       {{
-        btn: (
-          <button className="btn btn-dropdown">
-            <i className="bi bi-list" style={{ fontSize: "1.2em" }}></i>
-            <span className="px-2">Thể loại</span>
-          </button>
-        ),
+        btn: <span className="btn-dropdown">{btn}</span>,
         body: (
-          <ul className="list-unstyled row">
+          <ul className="genre-list">
             {genres?.length > 0 &&
               genres.map((item) => {
-                return (
-                  <li className="col-lg-6 col-sm-12 text-center" key={item.id}>
-                    {item.name}
-                  </li>
-                );
+                return <li key={item.id}>{item.name}</li>;
               })}
           </ul>
         ),

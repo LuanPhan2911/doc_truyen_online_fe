@@ -25,13 +25,10 @@
       border: none;
     }
   }
-  .no-account {
-    padding: 20px;
-    a {
-      text-decoration: none;
-      color: #bd953b;
-      font-size: 1em;
-      font-weight: 600;
-    }
+}
+@media (max-width: 576px) {
+  .login-form {
+    padding: 5px;
+    width: 300px;
   }
 }

@@ -65,15 +65,6 @@ const LoginForm = ({ handleDynamicModal }) => {
         <div className="login">
           <button onClick={() => handleLogin()}>Đăng nhập</button>
         </div>
-
-        <div className="no-account">
-          <p>
-            Bạn chưa có tài khoản?{" "}
-            <Link to={"/register"} className="register">
-              Đăng kí ngay
-            </Link>
-          </p>
-        </div>
       </div>
     </>
   );

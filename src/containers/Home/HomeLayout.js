@@ -1,5 +1,6 @@
 import Header from "./Header";
 import Footer from "./Footer";
+import "./HomeLayout.scss";
 const HoneLayout = ({ children }) => {
   return (
     <>
