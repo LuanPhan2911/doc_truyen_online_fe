@@ -43,6 +43,7 @@ const RegisterForm = () => {
             className="form-control"
             value={user.email}
             onChange={(e) => handleChangeInputForm(e, "email")}
+            placeholder="Nhập email"
           />
         </div>
         <div className="form-group py-2">
@@ -52,6 +53,7 @@ const RegisterForm = () => {
             className="form-control"
             value={user.password}
             onChange={(e) => handleChangeInputForm(e, "password")}
+            placeholder="Nhập mật khẩu"
           />
         </div>
         <div className="form-group py-2">
@@ -61,6 +63,7 @@ const RegisterForm = () => {
             className="form-control"
             value={user.confirmPassword}
             onChange={(e) => handleChangeInputForm(e, "confirmPassword")}
+            placeholder="Nhập lại mật khẩu"
           />
         </div>
         <div className="register">

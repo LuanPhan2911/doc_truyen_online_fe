@@ -25,37 +25,37 @@
       border-radius: 15px;
       min-width: 300px;
       max-width: 500px;
-      min-height: 400px;
+      min-height: 200px;
       box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.2);
       transition: 0.5s;
       position: relative;
       overflow: hidden;
       transform: scale(0);
       visibility: hidden;
+      .close {
+        position: absolute;
+        width: 30px;
+        height: 30px;
+        right: 5px;
+        top: 5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        color: #fff;
+        border-radius: 50%;
+        background: #f00;
+        font-size: 1.5em;
+        &:hover {
+          background: #379523;
+          color: #fff;
+        }
+      }
       .popup-title {
         min-height: 30px;
         h2 {
           font-size: 1.5em;
           font-weight: 600;
-        }
-        .close {
-          position: absolute;
-          width: 30px;
-          height: 30px;
-          right: 5px;
-          top: 5px;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          cursor: pointer;
-          color: #fff;
-          border-radius: 50%;
-          background: #f00;
-          font-size: 1.5em;
-          &:hover {
-            background: #379523;
-            color: #fff;
-          }
         }
       }
       .popup-body {

@@ -14,6 +14,7 @@ const ForgotPasswordForm = () => {
   };
   return (
     <div className="form-group">
+      <label>Nhập email</label>
       <input
         className="form-control"
         placeholder="Email"

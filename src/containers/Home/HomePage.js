@@ -1,4 +1,5 @@
 import Stories from "../story/Stories";
+import StoryHome from "../story/StoryHome";
 import UserRead from "../story/UserRead";
 import "./HomePage.scss";
 const HomePage = () => {
@@ -9,7 +10,7 @@ const HomePage = () => {
           <UserRead />
         </div>
         <div className="col-lg-8 col-sm-12">
-          <Stories />
+          <StoryHome />
         </div>
       </div>
     </div>

@@ -27,8 +27,12 @@
       gap: 30px;
       list-style: none;
       margin-right: 20px;
+
       li {
         display: flex;
+        i {
+          font-size: 1.5rem;
+        }
         span {
           font-size: 1em;
           letter-spacing: 0.1em;
@@ -103,7 +107,7 @@
   }
   .search-box {
     position: absolute;
-    width: 100%;
+    width: 60%;
     height: 100%;
 
     right: -100%;
@@ -167,6 +171,7 @@
     }
     .search-box {
       padding: 0 10px;
+      width: 100%;
     }
   }
 }

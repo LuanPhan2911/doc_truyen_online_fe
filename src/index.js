@@ -19,7 +19,7 @@ root.render(
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
       <App />
-      <ToastContainer
+      {/* <ToastContainer
         position="top-right"
         autoClose={5000}
         hideProgressBar={false}
@@ -30,7 +30,7 @@ root.render(
         draggable
         pauseOnHover
         theme="light"
-      />
+      /> */}
     </PersistGate>
   </Provider>
   /* </React.StrictMode> */

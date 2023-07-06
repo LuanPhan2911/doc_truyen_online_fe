@@ -1,10 +1,11 @@
-.all-story-title {
-  font-size: 1.5em;
-  font-weight: 600;
+.stories-main {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  padding: 10px;
 }
-.all-story {
-  color: #bd953b;
-  font-weight: 500;
-  font-size: 1em;
-  cursor: pointer;
+@media (max-width: 576px) {
+  .stories-main {
+    grid-template-columns: 1fr;
+  }
 }

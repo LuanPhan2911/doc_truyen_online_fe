@@ -10,31 +10,26 @@ const Story = ({ story }) => {
     });
   };
   return (
-    <div className="col-lg-6 col-sm-12">
-      <div className="story">
+    <div className="story">
+      <div className="story-image" onClick={() => handleShowStoryDetail(story)}>
+        <img src={image} alt="Not found" />
+      </div>
+      <div className="story-info">
         <div
-          className="story-image"
+          className="name text-overflow-1-line"
           onClick={() => handleShowStoryDetail(story)}
         >
-          <img src={image} alt="Not found" />
+          {story?.name}
         </div>
-        <div className="story-info">
-          <div
-            className="name text-overflow-1-line"
-            onClick={() => handleShowStoryDetail(story)}
-          >
-            {story?.name}
+        <div className="story-description text-overflow-2-line ">
+          {story?.description}
+        </div>
+        <div className="auth-genre">
+          <div className="auth text-overflow-1-line">
+            <BsVectorPen size={"1.5em"} />
+            <span> Cửu Hanh</span>
           </div>
-          <div className="story-description text-overflow-2-line ">
-            {story?.description}
-          </div>
-          <div className="auth-genre">
-            <div className="auth text-overflow-1-line">
-              <BsVectorPen size={"1.5em"} />
-              <span> Cửu Hanh</span>
-            </div>
-            <div className="genre">Huyền huyễn</div>
-          </div>
+          <div className="genre">Huyền huyễn</div>
         </div>
       </div>
     </div>

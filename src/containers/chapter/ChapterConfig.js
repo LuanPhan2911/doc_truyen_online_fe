@@ -7,54 +7,28 @@ import Dialog from "../../components/Dialog";
 import { useEffect } from "react";
 
 import ChapterControl from "./ChapterControl";
-
+import { useDialog } from "../../hooks/useDialog";
 const ChapterConfig = () => {
-  const [menu, setMenu] = useState([
-    {
-      id: 1,
-      name: "DS. Chương",
-      showContent: false,
-      font: <AiOutlineMenu size={"2em"} />,
-      component: <ChapterList />,
-    },
-    {
-      id: 2,
-      name: "Cài đặt",
-      showContent: false,
-      font: <AiOutlineSetting size={"2em"} />,
-      component: <ChapterControl />,
-    },
-  ]);
-  const [item, setItem] = useState({});
-
-  useEffect(() => {
-    handleGetItemShow();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [menu]);
-
-  function handleGetItemShow() {
-    let cpMenu = menu;
-    let obj =
-      cpMenu?.length > 0 && cpMenu.find((item) => item.showContent === true);
-    setItem({ ...obj });
-  }
-  const handleShowDialog = (itemId) => {
-    let cpMenu = menu;
-    cpMenu?.length > 0 &&
-      cpMenu.forEach((item) => {
-        if (item.id === itemId) {
-          item.showContent = true;
-        } else {
-          item.showContent = false;
-        }
-      });
-
-    setMenu([...cpMenu]);
-  };
+  // const { menu, item, setItem, handleShowDialog } = useDialog([
+  //   {
+  //     id: 1,
+  //     name: "DS. Chương",
+  //     show: false,
+  //     font: <AiOutlineMenu size={"2em"} />,
+  //     component: <ChapterList />,
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "Cài đặt",
+  //     show: false,
+  //     font: <AiOutlineSetting size={"2em"} />,
+  //     component: <ChapterControl />,
+  //   },
+  // ]);
 
   return (
     <>
-      <ul className="chapter-config-menu">
+      {/* <ul className="chapter-config-menu">
         {menu?.length > 0 &&
           menu.map((item) => {
             return (
@@ -68,7 +42,7 @@ const ChapterConfig = () => {
             );
           })}
       </ul>
-      {item ? <Dialog item={item} setItem={setItem} /> : <></>}
+      {item ? <Dialog item={item} setItem={setItem} /> : <></>} */}
     </>
   );
 };

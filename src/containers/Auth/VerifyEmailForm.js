@@ -28,22 +28,25 @@ const VerifyEmailForm = ({ handleCloseModal }) => {
     } catch (error) {}
   };
   return (
-    <div className="form-group">
-      <input
-        className="form-control"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <div className="d-grid gap-2">
+    <>
+      <div className="form-group py-2">
+        <label>Nhập email của bạn</label>
+        <input
+          className="form-control"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+      </div>
+      <div className="d-flex justify-content-center">
         <button
           className="btn btn-primary"
           onClick={() => handleVerifyEmailNotification()}
         >
-          Gui lai email
+          Gửi lại email
         </button>
       </div>
-    </div>
+    </>
   );
 };
 export default VerifyEmailForm;

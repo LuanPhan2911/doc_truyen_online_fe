@@ -4,12 +4,13 @@ import { handleLoginService } from "../../services/AuthServices";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "./LoginForm.scss";
-const LoginForm = ({ handleDynamicModal }) => {
+const LoginForm = ({ handleShowDialog }) => {
   const navigate = useNavigate();
   const [user, setUser] = useState({
     email: "",
     password: "",
   });
+
   const handleChangeInputForm = (event, key) => {
     let useCopy = { ...user };
     useCopy[key] = event.target.value;
@@ -41,29 +42,45 @@ const LoginForm = ({ handleDynamicModal }) => {
         <div className="form-group py-2">
           <div className="d-flex justify-content-between">
             <label>Email</label>
-            <div className="verify-email">Gửi lại email kích hoạt</div>
+            <div
+              className="verify-email"
+              onClick={() => handleShowDialog("verify-email")}
+            >
+              Gửi lại email kích hoạt
+            </div>
           </div>
           <input
             type={"email"}
             className="form-control"
             value={user.email}
             onChange={(e) => handleChangeInputForm(e, "email")}
+            placeholder="Nhập email"
           />
         </div>
         <div className="form-group py-2">
           <div className="d-flex justify-content-between">
             <label>Password</label>
-            <div className="forgot-password">Quên mật khẩu?</div>
+            <div
+              className="forgot-password"
+              onClick={() => handleShowDialog("forgot-password")}
+            >
+              Quên mật khẩu?
+            </div>
           </div>
           <input
             type={"password"}
             className="form-control"
             value={user.password}
             onChange={(e) => handleChangeInputForm(e, "password")}
+            placeholder="Nhập mật khẩu"
           />
         </div>
         <div className="login">
           <button onClick={() => handleLogin()}>Đăng nhập</button>
+        </div>
+        <div className="no-account">
+          Bạn chưa có tài khoản?{" "}
+          <span onClick={() => handleShowDialog("register")}>Đăng ký ngay</span>
         </div>
       </div>
     </>

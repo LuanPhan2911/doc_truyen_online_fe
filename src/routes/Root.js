@@ -8,6 +8,7 @@ import Chapter from "../containers/chapter/Chapter";
 import CreateStoryForm from "../containers/admin/story/CreateStoryForm";
 import CreateChapterForm from "../containers/admin/chapter/CreateChapterForm";
 import RedirectIfAuth from "../hoc/RedirectIfAuth";
+import StoryFilter from "../containers/story/StoryFilter";
 
 const Root = () => {
   const router = createBrowserRouter([
@@ -26,6 +27,14 @@ const Root = () => {
       element: (
         <HomeLayout>
           <StoryContent />
+        </HomeLayout>
+      ),
+    },
+    {
+      path: "/story",
+      element: (
+        <HomeLayout>
+          <StoryFilter />
         </HomeLayout>
       ),
     },

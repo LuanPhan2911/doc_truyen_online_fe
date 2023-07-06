@@ -25,6 +25,15 @@
       border: none;
     }
   }
+  .no-account {
+    font-size: 1em;
+    font-weight: 500;
+    span {
+      font-family: 700;
+      color: #bd953b;
+      cursor: pointer;
+    }
+  }
 }
 @media (max-width: 576px) {
   .login-form {

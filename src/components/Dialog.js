@@ -1,21 +1,16 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import "./Dialog.scss";
-const Dialog = ({ item, setItem }) => {
-  const ref = useRef();
-  let { name: title, component: body, showContent: show } = item;
-
-  // useEffect(() => {
-  //   document.addEventListener("click", handleClose);
-  //   return () => {
-  //     document.removeEventListener("click", handleClose);
-  //   };
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [item]);
-  // function handleClose(_event) {
-  //   if (show && !ref?.current.contains(_event.target)) {
-  //     setItem({ ...item, showContent: false });
-  //   }
-  // }
+const Title = ({ children }) => {
+  return (
+    <div className="popup-title">
+      <h2>{children}</h2>
+    </div>
+  );
+};
+const Body = ({ children }) => {
+  return <div className="popup-body">{children}</div>;
+};
+const Dialog = ({ show, onClose, children }) => {
   useEffect(() => {
     if (show === true) {
       document.body.style.overflow = "hidden";
@@ -29,20 +24,16 @@ const Dialog = ({ item, setItem }) => {
   return (
     <div className={show ? "popup show" : "popup"} id="popup">
       <div className="overplay">
-        <div className="popup-content" ref={ref}>
-          <div className="popup-title">
-            <h2>{title}</h2>
-            <div
-              className="close"
-              onClick={() => setItem({ ...item, showContent: false })}
-            >
-              <i className="bi bi-x-circle"></i>
-            </div>
+        <div className="popup-content">
+          <div className="close" onClick={() => onClose()}>
+            <i className="bi bi-x-circle"></i>
           </div>
-          <div className="popup-body">{body}</div>
+          {children}
         </div>
       </div>
     </div>
   );
 };
+Dialog.Title = Title;
+Dialog.Body = Body;
 export default Dialog;
