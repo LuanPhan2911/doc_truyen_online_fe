@@ -10,7 +10,7 @@ import {
   handleGetUserService,
   handleLogoutService,
 } from "../../services/AuthServices";
-import { setUserRedux } from "../../features/authSlice";
+import { setUserRedux } from "../../features/userSlice";
 import LoginForm from "../auth/LoginForm";
 import Dialog from "../../components/Dialog";
 import RegisterForm from "../auth/RegisterForm";
@@ -19,10 +19,11 @@ import VerifyEmailForm from "../auth/VerifyEmailForm";
 import ResetPasswordForm from "../auth/ResetPasswordForm";
 
 import ForgotPasswordForm from "../auth/ForgotPasswordForm";
-
+import avatarDefault from "../../assets/avatar/default.png";
+import User from "./header/User";
 const Header = () => {
-  const user = useSelector((state) => state.auth.user) || false;
-  const dispatch = useDispatch();
+  const isAuth = useSelector((state) => state.user.isAuth);
+
   const [searchBtn, setSearchBtn] = useState(false);
   const [toggleMenu, setToggleMenu] = useState(false);
   const [menuDialog] = useState([
@@ -58,24 +59,12 @@ const Header = () => {
     setItemDialog({ ...obj });
   }
 
-  // useEffect(() => {
-  //   initialMenu();
-  // }, []);
-  // useEffect(() => {
-  //   if (!user) {
-  //     const fetch = async () => {
-  //       try {
-  //         let res = await handleGetUserService();
-
-  //         if (res?.success) {
-  //           dispatch(setUserRedux({ ...res.data }));
-  //         }
-  //       } catch (error) {}
-  //     };
-  //     fetch();
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
+  useEffect(() => {
+    if (isAuth) {
+      setShowDialog(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuth]);
   useEffect(() => {
     if (toggleMenu) {
       document.body.style.overflow = "hidden";
@@ -93,6 +82,14 @@ const Header = () => {
         </Link>
         <div className="group">
           <ul className="navigation">
+            {isAuth ? (
+              <li className="user-login">
+                <img src={avatarDefault} alt="not found"></img>
+                <User btn={"YokKok"} />
+              </li>
+            ) : (
+              <></>
+            )}
             <li>
               <i className="bi bi-border-all"></i>
               <Genre btn="Thể loại" />
@@ -101,14 +98,24 @@ const Header = () => {
               <i className="bi bi-bar-chart"></i>
               <Ranking btn={"Bảng xếp hạng"} />
             </li>
-            <li>
-              <i className="bi bi-person-circle"></i>
-              <span onClick={() => handleShowDialog("login")}>Đăng nhập</span>
-            </li>
-            <li>
-              <i className="bi bi-person-add"></i>
-              <span onClick={() => handleShowDialog("register")}>Đăng ký</span>
-            </li>
+            {!isAuth ? (
+              <>
+                <li>
+                  <i className="bi bi-person-circle"></i>
+                  <span onClick={() => handleShowDialog("login")}>
+                    Đăng nhập
+                  </span>
+                </li>
+                <li>
+                  <i className="bi bi-person-add"></i>
+                  <span onClick={() => handleShowDialog("register")}>
+                    Đăng ký
+                  </span>
+                </li>
+              </>
+            ) : (
+              <></>
+            )}
           </ul>
           <div className="search">
             <div className="icon">

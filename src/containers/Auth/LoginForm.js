@@ -4,8 +4,10 @@ import { handleLoginService } from "../../services/AuthServices";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "./LoginForm.scss";
+import { userLogin } from "../../features/userSlice";
 const LoginForm = ({ handleShowDialog }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [user, setUser] = useState({
     email: "",
     password: "",
@@ -28,8 +30,8 @@ const LoginForm = ({ handleShowDialog }) => {
       try {
         let res = await handleLoginService(user);
         if (res?.success) {
-          toast.success("Login sucesss");
-          navigate("/");
+          toast.success("Đăng nhập thành công");
+          dispatch(userLogin());
         }
       } catch (error) {}
     }

@@ -3,8 +3,12 @@ import { handleRegisterService } from "../../services/AuthServices";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import "./RegisterForm.scss";
+import { useDispatch } from "react-redux";
+import { userLogin } from "../../features/userSlice";
+
 const RegisterForm = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [user, setUser] = useState({
     email: "",
     password: "",
@@ -27,8 +31,8 @@ const RegisterForm = () => {
     if (handleValidateForm(user)) {
       let res = await handleRegisterService(user);
       if (res?.success) {
-        toast.success("Register sucesss");
-        navigate("/");
+        toast.success("Đăng ký thành công");
+        dispatch(userLogin());
       }
     }
   };

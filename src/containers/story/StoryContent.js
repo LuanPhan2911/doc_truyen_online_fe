@@ -9,13 +9,16 @@ import Description from "./Description";
 import Comments from "../comments/Comments";
 import { useEffect, useState } from "react";
 import "./StoryContent.scss";
+import { asset } from "../../utils/Helper";
 const StoryContent = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [story, setStory] = useState({});
   const [storyTag, setStoryTag] = useState([]);
+  const [genres, setGenres] = useState([]);
   useEffect(() => {
     setStory({ ...location.state, chapterIndex: 1 });
+    setGenres([...location.state.genres]);
   }, [location]);
   useEffect(() => {
     let cpStoryTag = [
@@ -83,15 +86,15 @@ const StoryContent = () => {
     <div className="container content">
       <div className="story-detail">
         <div className="story-detail-image">
-          <img src={avatar} alt="Not found" />
+          <img src={asset(story?.avatar)} alt="Not found" />
         </div>
         <div className="story-detail-info">
           <div className="story-detail-title">{story?.name}</div>
           <ul className="story-detail-genre">
-            <li>Dị thế đại lục</li>
-            <li>Huyền huyễn</li>
-            <li>Trọng sinh</li>
-            <li>Cung vi trạch đấu</li>
+            {genres?.length > 0 &&
+              genres.map((item) => {
+                return <li>{item.name}</li>;
+              })}
           </ul>
           <ul className="story-detail-full">
             <li>

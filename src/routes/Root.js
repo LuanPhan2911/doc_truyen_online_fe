@@ -15,7 +15,7 @@ const Root = () => {
     {
       path: "/",
       element: (
-        <HomeLayout isShowBackground>
+        <HomeLayout>
           <HomePage />
         </HomeLayout>
       ),
@@ -51,9 +51,7 @@ const Root = () => {
       path: "/admin/story/create",
       element: (
         <HomeLayout>
-          <RedirectIfAuth>
-            <CreateStoryForm />
-          </RedirectIfAuth>
+          <CreateStoryForm />
         </HomeLayout>
       ),
     },
@@ -61,9 +59,7 @@ const Root = () => {
       path: "/admin/chapter/create",
       element: (
         <HomeLayout>
-          <RedirectIfAuth>
-            <CreateChapterForm />
-          </RedirectIfAuth>
+          <CreateChapterForm />
         </HomeLayout>
       ),
     },

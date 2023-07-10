@@ -2,21 +2,32 @@ import { useEffect, useState } from "react";
 import Stories from "./Stories";
 import "./StoryFilter.scss";
 import { handleGetGenreService } from "../../services/GenreService";
+import { useDispatch, useSelector } from "react-redux";
+import { setTags } from "../../features/storySlice";
 
 const StoryFilter = () => {
+  const dispatch = useDispatch();
+  const tags = useSelector((state) => state.story.tags);
   const [storyTag, setStoryTag] = useState({});
   const [selectedStoryTag, setSelectedStoryTag] = useState([]);
   const [toggleMenuTag, setToggleMenuTag] = useState(false);
   useEffect(() => {
     async function fetch() {
-      let res = await handleGetGenreService();
-      if (res?.success) {
-        let data = computeData(res.data);
-        setStoryTag({ ...data });
+      if (tags?.length === 0) {
+        let res = await handleGetGenreService();
+        if (res?.success) {
+          dispatch(setTags(res.data));
+        }
       }
     }
     fetch();
   }, []);
+  useEffect(() => {
+    if (tags.length > 0) {
+      let data = computeData(tags);
+      setStoryTag({ ...data });
+    }
+  }, [tags]);
   const computeData = (data) => {
     let obj = {};
     obj["CATEGORY"] = [];
@@ -60,7 +71,6 @@ const StoryFilter = () => {
       });
     }
     cpStoryTag[tag.key] = arr;
-    console.log(cpStoryTag);
     setStoryTag({ ...cpStoryTag });
   };
 

@@ -69,9 +69,13 @@ const handleErrorApiResponse = (error) => {
     }
   }
 };
+const asset = (path) => {
+  return `${process.env.REACT_APP_BACKEND_URL}storage/${path}`;
+};
 export {
   isFunctionalComponent,
   isClassComponent,
   checkPropertiesIsEmpty,
   handleErrorApiResponse,
+  asset,
 };

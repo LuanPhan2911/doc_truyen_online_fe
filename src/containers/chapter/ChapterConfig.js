@@ -7,7 +7,7 @@ import Dialog from "../../components/Dialog";
 import { useEffect } from "react";
 
 import ChapterControl from "./ChapterControl";
-import { useDialog } from "../../hooks/useDialog";
+
 const ChapterConfig = () => {
   // const { menu, item, setItem, handleShowDialog } = useDialog([
   //   {

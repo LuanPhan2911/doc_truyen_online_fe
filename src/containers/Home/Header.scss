@@ -19,7 +19,7 @@
   }
   .group {
     display: flex;
-    align-items: center;
+    align-items: baseline;
 
     .navigation {
       display: flex;
@@ -30,6 +30,13 @@
 
       li {
         display: flex;
+        &.user-login {
+          img {
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+          }
+        }
         i {
           font-size: 1.5rem;
         }
@@ -83,7 +90,6 @@
         .search-close {
           opacity: 0;
           visibility: hidden;
-
           transition: 0.5s;
           width: 0;
 
@@ -91,6 +97,7 @@
             opacity: 1;
             visibility: visible;
             width: fit-content;
+            color: #f00;
           }
         }
       }
@@ -165,7 +172,7 @@
         .navigation {
           opacity: 1;
           visibility: visible;
-          left: 0;
+          left: 30%;
         }
       }
     }

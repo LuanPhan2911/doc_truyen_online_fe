@@ -8,17 +8,19 @@ import {
   handleErrorApiResponse,
 } from "../../../utils/Helper";
 import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { setTags } from "../../../features/storySlice";
 const status = [
   {
-    state: "Moi ra",
+    state: "Mới ra",
     id: 1,
   },
   {
-    state: "Dang ra",
+    state: "Đang ra",
     id: 2,
   },
   {
-    state: "Da hoan thanh",
+    state: "Đã hoàn thành",
     id: 3,
   },
 ];
@@ -28,48 +30,66 @@ const views = [
     id: 1,
   },
   {
-    view: "Nu",
+    view: "Nữ",
     id: 2,
   },
   {
-    view: "Khac",
+    view: "Khác",
     id: 3,
   },
 ];
 const CreateStoryForm = () => {
-  const [options, setOption] = useState({});
-  const { data: genres } = useFetch(handleGetGenreService);
+  const dispatch = useDispatch();
+  const tags = useSelector((state) => state.story.tags);
+  const [storyTag, setSToryTag] = useState({});
+  const [selectedTagId, setSelectedTagId] = useState({});
   useEffect(() => {
-    buildOption();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [genres]);
-  function buildOption() {
-    let objData = {
-      category: [],
-      character: [],
-      world: [],
-      tag: [],
-    };
-    genres?.length > 0 &&
-      genres.map((item) => {
-        let obj = {};
-        let { id, name, type } = item;
-        obj.value = id;
-        obj.label = name;
-        if (type === 1) {
-          objData.category.push(obj);
-        } else if (type === 2) {
-          objData.character.push(obj);
-        } else if (type === 3) {
-          objData.world.push(obj);
-        } else if (type === 4) {
-          objData.tag.push(obj);
+    async function fetch() {
+      if (tags?.length === 0) {
+        let res = await handleGetGenreService();
+        if (res?.success) {
+          dispatch(setTags(res.data));
         }
-
-        return item;
+      }
+    }
+    fetch();
+  }, []);
+  useEffect(() => {
+    if (tags.length > 0) {
+      let data = computeData(tags);
+      setSToryTag({ ...data });
+    }
+  }, [tags]);
+  const computeData = (data) => {
+    let obj = {};
+    obj["CATEGORY"] = [];
+    obj["CHARACTER"] = [];
+    obj["WORLD"] = [];
+    obj["TAG"] = [];
+    data?.length > 0 &&
+      data.forEach((item) => {
+        item.value = item.id;
+        item.label = item.name;
+        switch (item.type) {
+          case 1:
+            obj["CATEGORY"].push(item);
+            break;
+          case 2:
+            obj["CHARACTER"].push(item);
+            break;
+          case 3:
+            obj["WORLD"].push(item);
+            break;
+          case 4:
+            obj["TAG"].push(item);
+            break;
+          default:
+            break;
+        }
       });
-    setOption(objData);
-  }
+    return obj;
+  };
+
   const [story, setStory] = useState({
     name: "",
     description: "",
@@ -79,13 +99,6 @@ const CreateStoryForm = () => {
     genres_id: [],
     user_id: 13,
   });
-  const [genreId, setGenresId] = useState({
-    category: [],
-    character: [],
-    world: [],
-    tag: [],
-  });
-
   const handleSetInput = (e, name) => {
     let cpStory = { ...story };
     if (name === "avatar") {
@@ -97,25 +110,20 @@ const CreateStoryForm = () => {
     setStory(cpStory);
   };
   const handleChangeSelect = (options, name) => {
-    let cpGenreId = { ...genreId };
-    let arr = [];
-    options?.length > 0 &&
-      options.map((item) => {
-        arr.push(item.value);
-        return item;
-      });
-    cpGenreId[name] = arr;
-    setGenresId(cpGenreId);
-    let genres_id = [...Object.values(genreId)].flat();
+    let cpTagId = selectedTagId;
+    cpTagId[name] = options.id;
+    setSelectedTagId(cpTagId);
+    let genres_id = Object.values(cpTagId);
+
     setStory({ ...story, genres_id: genres_id });
   };
   const validateStory = (story) => {
     return checkPropertiesIsEmpty(story, ["avatar"]);
   };
+
   const handleCreateStory = async () => {
-    // validate du lieu
     if (validateStory(story)) {
-      toast.error("Du lieu khong duoc de trong");
+      toast.error("Không được để trống!");
     } else {
       try {
         let res = await handleCreateStoryService(story);
@@ -139,7 +147,7 @@ const CreateStoryForm = () => {
           />
         </div>
         <div className="col-6">
-          <label>Anh dai dien</label>
+          <label>Ảnh đại diện</label>
           <input
             className="form-control"
             type="file"
@@ -149,7 +157,7 @@ const CreateStoryForm = () => {
           />
         </div>
         <div className="col-12">
-          <label>Mo ta truyen</label>
+          <label>Mô tả truyện</label>
           <textarea
             className="form-control"
             rows={10}
@@ -158,7 +166,7 @@ const CreateStoryForm = () => {
           ></textarea>
         </div>
         <div className="col-6">
-          <label>Trang thai</label>
+          <label>Trạng thái</label>
           {status?.length > 0 &&
             status.map((item) => {
               return (
@@ -177,7 +185,7 @@ const CreateStoryForm = () => {
             })}
         </div>
         <div className="col-6">
-          <label>Goc nhin</label>
+          <label>Góc nhìn</label>
           {views?.length > 0 &&
             views.map((item) => {
               return (
@@ -196,31 +204,31 @@ const CreateStoryForm = () => {
             })}
         </div>
         <div className="col-lg-3 col-sm-6">
-          <label>The loai</label>
+          <label>Thể loại</label>
           <Select
-            options={options?.category}
-            onChange={(options) => handleChangeSelect(options, "category")}
+            options={storyTag["CATEGORY"]}
+            onChange={(options) => handleChangeSelect(options, "CATEGORY")}
           />
         </div>
         <div className="col-lg-3 col-sm-6">
-          <label>Tinh cach nhan vat chinh</label>
+          <label>Tính cách nhân vật</label>
           <Select
-            options={options?.character}
-            onChange={(options) => handleChangeSelect(options, "character")}
+            options={storyTag["CHARACTER"]}
+            onChange={(options) => handleChangeSelect(options, "CHARACTER")}
           />
         </div>
         <div className="col-lg-3 col-sm-6">
-          <label>Boi canh the gioi</label>
+          <label>Bối cảnh thể giới</label>
           <Select
-            options={options?.world}
-            onChange={(options) => handleChangeSelect(options, "world")}
+            options={storyTag["WORLD"]}
+            onChange={(options) => handleChangeSelect(options, "WORLD")}
           />
         </div>
         <div className="col-lg-3 col-sm-6">
-          <label>Luu phai</label>
+          <label>Lưu phái</label>
           <Select
-            options={options?.tag}
-            onChange={(options) => handleChangeSelect(options, "tag")}
+            options={storyTag["TAG"]}
+            onChange={(options) => handleChangeSelect(options, "TAG")}
           />
         </div>
         <div className="col-12">
@@ -229,7 +237,7 @@ const CreateStoryForm = () => {
             onClick={() => handleCreateStory()}
           >
             {" "}
-            Tao
+            Tạo
           </button>
         </div>
       </div>

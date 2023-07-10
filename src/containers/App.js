@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import Root from "../routes/Root";
 import "./App.scss";
 

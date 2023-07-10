@@ -2,6 +2,7 @@ import { BsVectorPen } from "react-icons/bs";
 import { Link, useNavigate } from "react-router-dom";
 import image from "../../assets/stories/150.jpg";
 import "./Story.scss";
+import { asset } from "../../utils/Helper";
 const Story = ({ story }) => {
   const navigate = useNavigate();
   const handleShowStoryDetail = (storyDetail) => {
@@ -12,7 +13,7 @@ const Story = ({ story }) => {
   return (
     <div className="story">
       <div className="story-image" onClick={() => handleShowStoryDetail(story)}>
-        <img src={image} alt="Not found" />
+        <img src={asset(story?.avatar)} alt="Not found" />
       </div>
       <div className="story-info">
         <div
