@@ -8,6 +8,7 @@ import Profile from "../containers/user/Profile";
 import HomeLayout from "../containers/Home/HomeLayout";
 import Setting from "../containers/user/Setting";
 import StoryRead from "../containers/user/StoryRead";
+import UserSetting from "../containers/user/UserSetting";
 
 const Auth = [
   // {
@@ -15,26 +16,10 @@ const Auth = [
   //   element: <VerifyEmail />,
   // },
   {
-    path: "/profile",
+    path: "/user",
     element: (
       <HomeLayout>
-        <Profile />
-      </HomeLayout>
-    ),
-  },
-  {
-    path: "/user/setting",
-    element: (
-      <HomeLayout>
-        <Setting />
-      </HomeLayout>
-    ),
-  },
-  {
-    path: "/user/story-reading",
-    element: (
-      <HomeLayout>
-        <StoryRead />
+        <UserSetting />
       </HomeLayout>
     ),
   },

@@ -6,13 +6,20 @@ export const userSlice = createSlice({
     isAuth: false,
     name: "",
     avatar: "",
+    id: "",
   },
   reducers: {
-    userLogin: (state, action) => {
+    userLogin: (state, { payload, type }) => {
       state.isAuth = true;
+      state.id = payload.id;
+      state.name = payload.name;
+      state.avatar = payload.avatar;
     },
     userLogout: (state, payload) => {
       state.isAuth = false;
+      state.name = "";
+      state.id = "";
+      state.avatar = "";
     },
   },
 });

@@ -25,7 +25,7 @@ const User = ({ btn }) => {
         body: (
           <ul>
             <li>
-              <Link to={"/profile"}>Profile</Link>
+              <Link to={"/user"}>Profile</Link>
             </li>
             <li>
               <Link to={"/user/story-reading"}>Tủ truyện</Link>

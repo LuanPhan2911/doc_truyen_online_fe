@@ -31,7 +31,12 @@ const LoginForm = ({ handleShowDialog }) => {
         let res = await handleLoginService(user);
         if (res?.success) {
           toast.success("Đăng nhập thành công");
-          dispatch(userLogin());
+          let user = res.data;
+          dispatch(userLogin(user));
+          setUser({
+            email: "",
+            password: "",
+          });
         }
       } catch (error) {}
     }
