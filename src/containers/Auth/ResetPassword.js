@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import Modals from "../../components/Modals";
-import { useQueryString } from "../../hooks/useQueryString";
+import { useQueryString } from "../../hooks";
 import { handleResetPasswordService } from "../../services/AuthServices";
 import ResetPasswordForm from "./ResetPasswordForm";
 const ResetPassword = ({ show }) => {

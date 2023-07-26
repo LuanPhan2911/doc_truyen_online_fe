@@ -1,5 +1,5 @@
 import Story from "./Story";
-import { useFetch } from "../../hooks/useFetch";
+import { useFetch } from "../../hooks";
 import { handleGetStoryService } from "../../services/StoryService";
 import "./Stories.scss";
 const Stories = () => {

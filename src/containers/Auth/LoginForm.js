@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { handleLoginService } from "../../services/AuthServices";
-import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "./LoginForm.scss";
 import { userLogin } from "../../features/userSlice";
-const LoginForm = ({ handleShowDialog }) => {
-  const navigate = useNavigate();
+import useDialog from "../../hooks/useDialog";
+const LoginForm = () => {
   const dispatch = useDispatch();
+  const [handleShowDialog, handleCloseDialog] = useDialog();
   const [user, setUser] = useState({
     email: "",
     password: "",
@@ -33,6 +33,7 @@ const LoginForm = ({ handleShowDialog }) => {
           toast.success("Đăng nhập thành công");
           let user = res.data;
           dispatch(userLogin(user));
+          handleCloseDialog();
           setUser({
             email: "",
             password: "",

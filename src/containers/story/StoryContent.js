@@ -93,7 +93,7 @@ const StoryContent = () => {
           <ul className="story-detail-genre">
             {genres?.length > 0 &&
               genres.map((item) => {
-                return <li>{item.name}</li>;
+                return <li key={item.name}>{item.name}</li>;
               })}
           </ul>
           <ul className="story-detail-full">
@@ -155,11 +155,7 @@ const StoryContent = () => {
                   onClick={() => handleChangeStoryTag(item.id)}
                 >
                   {item.name}
-                  {item?.count ? (
-                    <span className="count">{item.count}</span>
-                  ) : (
-                    <></>
-                  )}
+                  {item?.count && <span className="count">{item.count}</span>}
                 </li>
               );
             })}

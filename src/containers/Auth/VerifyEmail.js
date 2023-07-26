@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { Triangle } from "react-loader-spinner";
 import { useNavigate, useParams } from "react-router-dom";
 import { useFetch } from "../../hooks/useFetch";
-import { useQueryString } from "../../hooks/useQueryString";
+import { useQueryString } from "../../hooks";
 import { handleVerifyEmailService } from "../../services/AuthServices";
 
 const VerifyEmail = () => {

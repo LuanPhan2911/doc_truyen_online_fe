@@ -1,10 +1,16 @@
 import "./Profile.scss";
 import avatarDefault from "../../assets/avatar/default.png";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { handleGetUser, handleUpdateUser } from "../../services/UserServices";
 import { asset } from "../../utils/Helper";
+import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { userUpdate } from "../../features/userSlice";
 
 const Profile = () => {
+  const imgRef = useRef();
+  const userId = useSelector((state) => state.user.id);
+  const dispatch = useDispatch();
   const [user, setUser] = useState({
     avatarUrl: "",
     avatarFile: "",
@@ -31,7 +37,7 @@ const Profile = () => {
   useEffect(() => {
     async function getUser() {
       try {
-        let res = await handleGetUser(18);
+        let res = await handleGetUser(userId);
         if (res?.success) {
           let data = res.data;
           setUser(computed(data));
@@ -40,6 +46,17 @@ const Profile = () => {
     }
     getUser();
   }, []);
+  useEffect(() => {
+    if (!user.avatarFile) {
+      return;
+    }
+    const avatarUrl = URL.createObjectURL(user.avatarFile);
+    let { current: img } = imgRef;
+    img.src = avatarUrl;
+    return () => {
+      URL.revokeObjectURL(avatarUrl);
+    };
+  }, [user.avatarFile]);
   function computed(data) {
     for (const key in data) {
       if (data[key] === null) {
@@ -51,26 +68,23 @@ const Profile = () => {
       email,
       birth_date: birthday,
       gender,
-      avatar: avatarUrl,
       description,
+      avatar: avatarUrl,
     } = data;
+
     return {
       name,
       email,
       birthday,
       gender,
-      avatarUrl,
       description,
       avatarFile: "",
+      avatarUrl,
     };
   }
   const handleChangeInput = (event, name) => {
     let cpUser = user;
-    if (name === "avatarFile") {
-      cpUser[name] = event.target.files[0];
-    } else {
-      cpUser[name] = event.target.value;
-    }
+    cpUser[name] = event.target.value;
     setUser({ ...cpUser });
   };
   const OnUpdateUser = async () => {
@@ -82,7 +96,7 @@ const Profile = () => {
       description,
     } = user;
     try {
-      let res = await handleUpdateUser(18, {
+      let res = await handleUpdateUser(userId, {
         name,
         birth_date,
         gender,
@@ -91,11 +105,23 @@ const Profile = () => {
       });
       if (res?.success) {
         let data = res.data;
+        dispatch(
+          userUpdate({
+            name: data.name,
+            avatar: data.avatar,
+          })
+        );
         setUser(computed(data));
+        toast.success("Cập nhật thành công!");
       }
     } catch (error) {}
   };
-  console.log(user);
+  const handleChangeAvatar = (e) => {
+    let avatarFile = e.target.files[0];
+    let cpUser = user;
+    cpUser["avatarFile"] = avatarFile;
+    setUser({ ...cpUser });
+  };
   return (
     <div className="profile">
       <div className="avatar">
@@ -103,6 +129,7 @@ const Profile = () => {
           <img
             src={user.avatarUrl ? asset(user.avatarUrl) : avatarDefault}
             alt="Not found"
+            ref={imgRef}
           ></img>
           <span className="note">
             Ấn vào ảnh đại diện để cập nhật ảnh đại diện
@@ -115,7 +142,7 @@ const Profile = () => {
           name="avatar"
           hidden
           accept="image/*"
-          onChange={(e) => handleChangeInput(e, "avatarFile")}
+          onChange={(e) => handleChangeAvatar(e)}
         />
       </div>
       <div className="user-name">
@@ -136,15 +163,14 @@ const Profile = () => {
       </div>
       <div className="user-gender">
         <label>Giới tính</label>
-        <select onChange={(event) => handleChangeInput(event, "gender")}>
+        <select
+          onChange={(event) => handleChangeInput(event, "gender")}
+          value={user.gender}
+        >
           {gender?.length > 0 &&
             gender.map((item) => {
               return (
-                <option
-                  value={item.value}
-                  key={item.value}
-                  selected={item.value === user.gender}
-                >
+                <option value={item.value} key={item.value}>
                   {item.name}
                 </option>
               );

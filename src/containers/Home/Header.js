@@ -2,69 +2,19 @@ import { useEffect, useState } from "react";
 
 import Genre from "./header/Genre";
 import Ranking from "./header/Ranking";
-import Search from "./header/Search";
 import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import "./Header.scss";
-import {
-  handleGetUserService,
-  handleLogoutService,
-} from "../../services/AuthServices";
-import { setUserRedux } from "../../features/userSlice";
-import LoginForm from "../auth/LoginForm";
-import Dialog from "../../components/Dialog";
-import RegisterForm from "../auth/RegisterForm";
-
-import VerifyEmailForm from "../auth/VerifyEmailForm";
-import ResetPasswordForm from "../auth/ResetPasswordForm";
-
-import ForgotPasswordForm from "../auth/ForgotPasswordForm";
 import avatarDefault from "../../assets/avatar/default.png";
 import User from "./header/User";
+import { asset } from "../../utils/Helper";
+import { useDialog } from "../../hooks";
 const Header = () => {
   const isAuth = useSelector((state) => state.user.isAuth);
-
+  const user = useSelector((state) => state.user);
   const [searchBtn, setSearchBtn] = useState(false);
   const [toggleMenu, setToggleMenu] = useState(false);
-  const [menuDialog] = useState([
-    {
-      id: "login",
-      name: "",
-      component: <LoginForm handleShowDialog={handleShowDialog} />,
-    },
-    {
-      id: "register",
-      name: "",
-      component: <RegisterForm />,
-    },
-    {
-      id: "verify-email",
-      name: "",
-      component: <VerifyEmailForm />,
-    },
-    {
-      id: "forgot-password",
-      name: "",
-      component: <ForgotPasswordForm />,
-    },
-  ]);
-  const [itemDialog, setItemDialog] = useState({});
-  const [showDialog, setShowDialog] = useState(false);
-  function handleShowDialog(itemId) {
-    let obj = {};
-    if (menuDialog?.length > 0) {
-      obj = menuDialog.find((item) => item.id === itemId);
-    }
-    setShowDialog(true);
-    setItemDialog({ ...obj });
-  }
-
-  useEffect(() => {
-    if (isAuth) {
-      setShowDialog(false);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isAuth]);
+  const [handleShowDialog, handleCloseDialog] = useDialog();
   useEffect(() => {
     if (toggleMenu) {
       document.body.style.overflow = "hidden";
@@ -78,14 +28,17 @@ const Header = () => {
     <>
       <div className={toggleMenu ? "header open" : "header"}>
         <Link className="logo" to={"/"}>
-          Me truyen
+          Stop truyen
         </Link>
         <div className="group">
           <ul className="navigation">
             {isAuth ? (
               <li className="user-login">
-                <img src={avatarDefault} alt="not found"></img>
-                <User btn={"YokKok"} />
+                <img
+                  src={user.avatar ? asset(user.avatar) : avatarDefault}
+                  alt="not found"
+                ></img>
+                <User btn={user.name} />
               </li>
             ) : (
               <></>
@@ -146,10 +99,10 @@ const Header = () => {
           <input type="text" placeholder="Tìm kiếm" />
         </div>
       </div>
-      <Dialog show={showDialog} onClose={() => setShowDialog(false)}>
+      {/* <Dialog show={showDialog} onClose={() => setShowDialog(false)}>
         <Dialog.Title key={"title"}>{itemDialog.name}</Dialog.Title>
         <Dialog.Body key={"body"}>{itemDialog.component}</Dialog.Body>
-      </Dialog>
+      </Dialog> */}
     </>
   );
 };

@@ -7,7 +7,6 @@ import { useDispatch } from "react-redux";
 import { userLogin } from "../../features/userSlice";
 
 const RegisterForm = () => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [user, setUser] = useState({
     email: "",

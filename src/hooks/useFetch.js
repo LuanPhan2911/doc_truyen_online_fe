@@ -25,4 +25,4 @@ const useFetch = (handleFetchFn, dataQuery = {}) => {
   }, []);
   return { data, isLoading, error };
 };
-export { useFetch };
+export default useFetch;
