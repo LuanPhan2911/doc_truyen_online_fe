@@ -5,9 +5,11 @@ import { handleGetGenreService } from "../../../services/GenreService";
 import { useDispatch, useSelector } from "react-redux";
 import { setGenres } from "../../../features/storySlice";
 import "./Genre.scss";
+import { useNavigate } from "react-router-dom";
 const Genre = ({ btn }) => {
   const genres = useSelector((state) => state.story.genres);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   useEffect(() => {
     if (genres?.length === 0) {
       getGenre({ type: 1 });
@@ -20,7 +22,7 @@ const Genre = ({ btn }) => {
       if (res && res?.success) {
         let data = res.data;
         let obj = {
-          id: 0,
+          id: "",
           name: "Tất cả",
         };
         data.unshift(obj);
@@ -28,6 +30,12 @@ const Genre = ({ btn }) => {
       }
     } catch (error) {}
   }
+  const handleFilterStoryGenre = (genreId) => {
+    navigate({
+      pathname: "/story",
+      search: `?genre=${genreId}`,
+    });
+  };
   const GenreSearch = (
     <DropdownBase>
       {{
@@ -36,7 +44,14 @@ const Genre = ({ btn }) => {
           <ul className="genre-list">
             {genres?.length > 0 &&
               genres.map((item) => {
-                return <li key={item.id}>{item.name}</li>;
+                return (
+                  <li
+                    key={item.id}
+                    onClick={() => handleFilterStoryGenre(item.id)}
+                  >
+                    {item.name}
+                  </li>
+                );
               })}
           </ul>
         ),

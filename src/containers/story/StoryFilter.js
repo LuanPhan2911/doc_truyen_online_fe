@@ -4,15 +4,24 @@ import "./StoryFilter.scss";
 import { handleGetGenreService } from "../../services/GenreService";
 import { useDispatch, useSelector } from "react-redux";
 import { setTags } from "../../features/storySlice";
-
+import { handleGetStoryService } from "../../services/StoryService";
+import { Link } from "react-router-dom";
+import { getQueryParams } from "../../utils/Helper";
+import { useQueryString } from "../../hooks";
+import StoryFilterGenre from "./StoryFilterGenre";
 const StoryFilter = () => {
   const dispatch = useDispatch();
   const tags = useSelector((state) => state.story.tags);
-  const [storyTag, setStoryTag] = useState({});
   const [selectedStoryTag, setSelectedStoryTag] = useState([]);
   const [toggleMenuTag, setToggleMenuTag] = useState(false);
+  const [stories, setStories] = useState([]);
+  const [links, setLinks] = useState([]);
+  const [currentPage, setCurrentPage] = useState("");
+  const [storiesPaginated, setStoriesPaginated] = useState("");
+  const [searchValue, setSearchValue] = useState("");
+  const params = useQueryString();
   useEffect(() => {
-    async function fetch() {
+    async function fetchGenre() {
       if (tags?.length === 0) {
         let res = await handleGetGenreService();
         if (res?.success) {
@@ -20,100 +29,56 @@ const StoryFilter = () => {
         }
       }
     }
-    fetch();
+    fetchGenre();
   }, []);
+
   useEffect(() => {
-    if (tags.length > 0) {
-      let data = computeData(tags);
-      setStoryTag({ ...data });
+    if (storiesPaginated) {
+      let { data, links } = storiesPaginated;
+      setStories([...data]);
+      computedLink(links);
+      setLinks([...links]);
     }
-  }, [tags]);
-  const computeData = (data) => {
-    let obj = {};
-    obj["CATEGORY"] = [];
-    obj["CHARACTER"] = [];
-    obj["WORLD"] = [];
-    obj["TAG"] = [];
-    data?.length > 0 &&
-      data.forEach((item) => {
-        item.selected = false;
-        switch (item.type) {
-          case 1:
-            item.key = "CATEGORY";
-            obj["CATEGORY"].push(item);
-            break;
-          case 2:
-            item.key = "CHARACTER";
-            obj["CHARACTER"].push(item);
-            break;
-          case 3:
-            item.key = "WORLD";
-            obj["WORLD"].push(item);
-            break;
-          case 4:
-            item.key = "TAG";
-            obj["TAG"].push(item);
-            break;
-          default:
-            break;
-        }
-      });
-    return obj;
-  };
-  let handleSetSelectedTag = (tag) => {
-    let cpStoryTag = storyTag;
-    let arr = cpStoryTag[tag.key];
-    if (arr?.length > 0) {
-      arr.forEach((item) => {
-        if (item.id === tag.id) {
-          item.selected = true;
-        }
-      });
+  }, [storiesPaginated]);
+  useEffect(() => {
+    let genres_id = selectedStoryTag.map((item) => {
+      return item.id;
+    });
+    let q = params.q || "";
+
+    setSearchValue(q);
+    fetchStories({
+      page: currentPage || 1,
+      filter: true,
+      genres_id,
+      name: q,
+    });
+  }, [selectedStoryTag, currentPage, params.q]);
+  async function fetchStories(qs) {
+    let res = await handleGetStoryService({
+      ...qs,
+    });
+    if (res?.success) {
+      setStoriesPaginated({ ...res.data });
     }
-    cpStoryTag[tag.key] = arr;
-    setStoryTag({ ...cpStoryTag });
+  }
+  const computedLink = (links) => {
+    links.forEach((item) => {
+      if (item.url) {
+        let params = getQueryParams(item.url);
+        item.page = params.page;
+      } else {
+        item.page = null;
+      }
+    });
+    links[0].label = "Trước";
+    links[links.length - 1].label = "Sau";
+    return links;
   };
 
-  const handleSelectGenre = (tag) => {
-    handleSetSelectedTag(tag);
-    let arr = [...selectedStoryTag, tag];
-    if (arr?.length > 0) {
-      arr = arr.filter((item, index) => {
-        return (
-          index ===
-          arr.findIndex((e) => {
-            return e.id === item.id;
-          })
-        );
-      });
-    }
-    setSelectedStoryTag([...arr]);
+  const handleChangePage = (page) => {
+    setCurrentPage(page);
   };
-  let handleRemoveSelectedTag = (tag) => {
-    let cpStoryTag = storyTag;
-    let arr = cpStoryTag[tag.key];
-    if (arr?.length > 0) {
-      arr.forEach((item) => {
-        if (item.id === tag.id) {
-          item.selected = false;
-        }
-      });
-    }
-    cpStoryTag[tag.key] = arr;
-
-    setStoryTag({ ...cpStoryTag });
-  };
-  const handleRemoveGenre = (tag) => {
-    handleRemoveSelectedTag(tag);
-    let arr = [...selectedStoryTag];
-    if (arr?.length > 0) {
-      arr = arr.filter((item) => {
-        return item.id !== tag.id;
-      });
-    }
-    setSelectedStoryTag([...arr]);
-  };
-
   return (
     <div className="story-filter-main">
       <div
@@ -124,97 +89,18 @@ const StoryFilter = () => {
         <div className="close-filter-story-tag">
           <h3 className="title">Bộ lọc</h3>
           <i
-            class="bi bi-x-circle-fill"
+            className="bi bi-x-circle-fill"
             onClick={() => setToggleMenuTag(false)}
           ></i>
         </div>
-        <div className="selected-genre">
-          <div className="tag-title">Đã chọn</div>
-          <div className="tag-wrapper">
-            {selectedStoryTag?.length > 0 &&
-              selectedStoryTag.map((item) => {
-                return (
-                  <span
-                    key={item.id}
-                    className="selected-tag"
-                    onClick={() => handleRemoveGenre(item)}
-                  >
-                    {item.name}
-                    <i className="bi bi-x-lg"></i>
-                  </span>
-                );
-              })}
-          </div>
-        </div>
-        <div className="story-category">
-          <div className="tag-title">Thể loại</div>
-          <div className="tag-wrapper">
-            {storyTag["CATEGORY"]?.length > 0 &&
-              storyTag["CATEGORY"].map((item) => {
-                return (
-                  <span
-                    key={item.id}
-                    onClick={() => handleSelectGenre(item)}
-                    className={item.selected ? "selected-tag" : ""}
-                  >
-                    {item.name}
-                  </span>
-                );
-              })}
-          </div>
-        </div>
-        <div className="story-character">
-          <div className="tag-title">Tính cách nhân vật</div>
-          <div className="tag-wrapper">
-            {storyTag["CHARACTER"]?.length > 0 &&
-              storyTag["CHARACTER"].map((item) => {
-                return (
-                  <span
-                    key={item.id}
-                    onClick={() => handleSelectGenre(item)}
-                    className={item.selected ? "selected-tag" : ""}
-                  >
-                    {item.name}
-                  </span>
-                );
-              })}
-          </div>
-        </div>
-        <div className="story-world">
-          <div className="tag-title">Bối cảnh thế giới</div>
-          <div className="tag-wrapper">
-            {storyTag["WORLD"]?.length > 0 &&
-              storyTag["WORLD"].map((item) => {
-                return (
-                  <span
-                    key={item.id}
-                    onClick={() => handleSelectGenre(item)}
-                    className={item.selected ? "selected-tag" : ""}
-                  >
-                    {item.name}
-                  </span>
-                );
-              })}
-          </div>
-        </div>
-        <div className="story-tag">
-          <div className="tag-title">Lưu phái</div>
-          <div className="tag-wrapper">
-            {storyTag["TAG"]?.length > 0 &&
-              storyTag["TAG"].map((item) => {
-                return (
-                  <span
-                    key={item.id}
-                    onClick={() => handleSelectGenre(item)}
-                    className={item.selected ? "selected-tag" : ""}
-                  >
-                    {item.name}
-                  </span>
-                );
-              })}
-          </div>
-        </div>
+        <StoryFilterGenre
+          tags={tags}
+          searchValue={searchValue}
+          selectedStoryTag={selectedStoryTag}
+          setSelectedStoryTag={setSelectedStoryTag}
+        />
       </div>
+
       <div className="story-content-main">
         <div className="story-filter-nav">
           <div className="toggle-tag" onClick={() => setToggleMenuTag(true)}>
@@ -231,7 +117,31 @@ const StoryFilter = () => {
             <li>Số chương</li>
           </ul>
         </div>
-        <Stories />
+        {searchValue && (
+          <div className="story-search">
+            Kết quả cho tìm: <span>{searchValue}</span>
+          </div>
+        )}
+        <Stories stories={stories} />
+        <ul className="pagination justify-content-center">
+          {stories?.length > 0 &&
+            links?.length > 0 &&
+            links.map((item) => {
+              return (
+                <li
+                  className={item.url ? "page-item" : "page-item disabled"}
+                  key={item.label}
+                >
+                  <Link
+                    className={item.active ? "page-link active" : "page-link"}
+                    onClick={() => handleChangePage(item.page)}
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              );
+            })}
+        </ul>
       </div>
     </div>
   );

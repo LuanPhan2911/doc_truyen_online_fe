@@ -72,10 +72,20 @@ const handleErrorApiResponse = (error) => {
 const asset = (path) => {
   return `${process.env.REACT_APP_BACKEND_URL}storage/${path}`;
 };
+function getQueryParams(url) {
+  const paramArr = url.slice(url.indexOf("?") + 1).split("&");
+  const params = {};
+  paramArr.forEach((param) => {
+    const [key, val] = param.split("=");
+    params[key] = decodeURIComponent(val);
+  });
+  return params;
+}
 export {
   isFunctionalComponent,
   isClassComponent,
   checkPropertiesIsEmpty,
   handleErrorApiResponse,
   asset,
+  getQueryParams,
 };

@@ -2,8 +2,7 @@ import Story from "./Story";
 import { useFetch } from "../../hooks";
 import { handleGetStoryService } from "../../services/StoryService";
 import "./Stories.scss";
-const Stories = () => {
-  let { data: stories } = useFetch(handleGetStoryService);
+const Stories = ({ stories }) => {
   return (
     <div className="stories-main">
       {stories &&

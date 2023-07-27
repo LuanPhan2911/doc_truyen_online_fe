@@ -1,9 +1,9 @@
-import image from "../../assets/stories/150.jpg";
+import avatar from "../../assets/stories/default.jpg";
 const StoryReading = () => {
   return (
     <div className="row">
       <div className="col-2">
-        <img src={image} alt="?" width={"32px"} />
+        <img src={avatar} alt="?" width={"32px"} />
       </div>
       <div className="col-10">
         <div className="name">Thong thien ta de</div>

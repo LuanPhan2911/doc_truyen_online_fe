@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import Genre from "./header/Genre";
 import Ranking from "./header/Ranking";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import "./Header.scss";
 import avatarDefault from "../../assets/avatar/default.png";
@@ -15,6 +15,8 @@ const Header = () => {
   const [searchBtn, setSearchBtn] = useState(false);
   const [toggleMenu, setToggleMenu] = useState(false);
   const [handleShowDialog, handleCloseDialog] = useDialog();
+  const [search, setSearch] = useState("");
+  const navigate = useNavigate();
   useEffect(() => {
     if (toggleMenu) {
       document.body.style.overflow = "hidden";
@@ -23,7 +25,35 @@ const Header = () => {
       document.body.style.overflow = "initial";
     };
   }, [toggleMenu]);
-
+  const handleEnterToSearch = (e) => {
+    if (e.keyCode === 13) {
+      handleSearch();
+    }
+  };
+  const handleSearch = () => {
+    setSearchBtn(true);
+    if (search) {
+      navigate({
+        pathname: "/story",
+        search: `?q=${search}`,
+      });
+    }
+  };
+  const handleCloseSearch = () => {
+    setSearchBtn(false);
+    navigate({
+      search: "",
+    });
+  };
+  const handleOnChangeInputSearch = (e) => {
+    let q = e.target.value;
+    setSearch(q);
+    if (!q) {
+      navigate({
+        pathname: "/story",
+      });
+    }
+  };
   return (
     <>
       <div className={toggleMenu ? "header open" : "header"}>
@@ -73,17 +103,14 @@ const Header = () => {
           <div className="search">
             <div className="icon">
               <div className="search-icon">
-                <i
-                  className="bi bi-search"
-                  onClick={() => setSearchBtn(true)}
-                ></i>
+                <i className="bi bi-search" onClick={() => handleSearch()}></i>
               </div>
               <div
                 className={searchBtn ? "search-close active" : "search-close"}
               >
                 <i
                   className="bi bi-x-lg"
-                  onClick={() => setSearchBtn(false)}
+                  onClick={() => handleCloseSearch()}
                 ></i>
               </div>
             </div>
@@ -96,13 +123,15 @@ const Header = () => {
           </div>
         </div>
         <div className={searchBtn ? "search-box active" : "search-box"}>
-          <input type="text" placeholder="Tìm kiếm" />
+          <input
+            type="text"
+            placeholder="Tìm kiếm"
+            value={search}
+            onChange={(e) => handleOnChangeInputSearch(e)}
+            onKeyDown={(e) => handleEnterToSearch(e)}
+          />
         </div>
       </div>
-      {/* <Dialog show={showDialog} onClose={() => setShowDialog(false)}>
-        <Dialog.Title key={"title"}>{itemDialog.name}</Dialog.Title>
-        <Dialog.Body key={"body"}>{itemDialog.component}</Dialog.Body>
-      </Dialog> */}
     </>
   );
 };

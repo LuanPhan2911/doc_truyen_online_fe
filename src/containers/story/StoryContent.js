@@ -1,4 +1,3 @@
-import avatar from "../../assets/stories/150.jpg";
 import { AiFillStar } from "react-icons/ai";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaGlasses } from "react-icons/fa";

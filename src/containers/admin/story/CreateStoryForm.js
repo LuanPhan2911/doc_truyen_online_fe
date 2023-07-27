@@ -1,15 +1,17 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Select from "react-select";
-import { useFetch } from "../../../hooks/useFetch";
 import { handleGetGenreService } from "../../../services/GenreService";
 import { handleCreateStoryService } from "../../../services/StoryService";
 import {
+  asset,
   checkPropertiesIsEmpty,
   handleErrorApiResponse,
 } from "../../../utils/Helper";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { setTags } from "../../../features/storySlice";
+import "./CreateStoryForm.scss";
+import storyDefaultImage from "../../../assets/stories/default.jpg";
 const status = [
   {
     state: "Mới ra",
@@ -41,8 +43,19 @@ const views = [
 const CreateStoryForm = () => {
   const dispatch = useDispatch();
   const tags = useSelector((state) => state.story.tags);
-  const [storyTag, setSToryTag] = useState({});
+  const user = useSelector((state) => state.user);
+  const [storyTag, setStoryTag] = useState({});
   const [selectedTagId, setSelectedTagId] = useState({});
+  const imgRef = useRef();
+  const [story, setStory] = useState({
+    name: "",
+    description: "",
+    avatar: "",
+    status: 1,
+    view: 1,
+    genres_id: [],
+    user_id: user.id,
+  });
   useEffect(() => {
     async function fetch() {
       if (tags?.length === 0) {
@@ -57,7 +70,7 @@ const CreateStoryForm = () => {
   useEffect(() => {
     if (tags.length > 0) {
       let data = computeData(tags);
-      setSToryTag({ ...data });
+      setStoryTag({ ...data });
     }
   }, [tags]);
   const computeData = (data) => {
@@ -89,16 +102,18 @@ const CreateStoryForm = () => {
       });
     return obj;
   };
+  useEffect(() => {
+    if (!story.avatar) {
+      return;
+    }
+    let url = URL.createObjectURL(story.avatar);
+    let { current: img } = imgRef;
+    img.src = url;
+    return () => {
+      URL.revokeObjectURL(url);
+    };
+  }, [story.avatar]);
 
-  const [story, setStory] = useState({
-    name: "",
-    description: "",
-    avatar: null,
-    status: 1,
-    view: 1,
-    genres_id: [],
-    user_id: 13,
-  });
   const handleSetInput = (e, name) => {
     let cpStory = { ...story };
     if (name === "avatar") {
@@ -118,7 +133,7 @@ const CreateStoryForm = () => {
     setStory({ ...story, genres_id: genres_id });
   };
   const validateStory = (story) => {
-    return checkPropertiesIsEmpty(story, ["avatar"]);
+    return checkPropertiesIsEmpty(story);
   };
 
   const handleCreateStory = async () => {
@@ -128,6 +143,16 @@ const CreateStoryForm = () => {
       try {
         let res = await handleCreateStoryService(story);
         if (res?.success) {
+          toast.success("Tạo truyện thành công!");
+          setStory({
+            name: "",
+            description: "",
+            avatar: "",
+            status: 1,
+            view: 1,
+            genres_id: [],
+            user_id: user.id,
+          });
         }
       } catch (error) {
         handleErrorApiResponse(error);
@@ -135,9 +160,9 @@ const CreateStoryForm = () => {
     }
   };
   return (
-    <div className="container">
+    <div className="container content">
       <div className="row">
-        <div className="col-lg-6 col-sm-12">
+        <div className="col-12">
           <label>Tên truyện</label>
           <input
             className="form-control"
@@ -146,17 +171,26 @@ const CreateStoryForm = () => {
             onChange={(e) => handleSetInput(e, "name")}
           />
         </div>
-        <div className="col-6">
-          <label>Ảnh đại diện</label>
-          <input
-            className="form-control"
-            type="file"
-            accept="image/*"
-            //   value={story.avatar}
-            onChange={(e) => handleSetInput(e, "avatar")}
-          />
+        <div className="col-3">
+          <label htmlFor="avatar" className="avatar-box">
+            <img
+              alt="Not Found"
+              className="avatar"
+              src={story.avatar ? asset(story.avatar) : storyDefaultImage}
+              ref={imgRef}
+            />
+            Ảnh đại diện
+            <input
+              className="form-control"
+              type="file"
+              accept="image/*"
+              onChange={(e) => handleSetInput(e, "avatar")}
+              id="avatar"
+              hidden
+            />
+          </label>
         </div>
-        <div className="col-12">
+        <div className="col-9">
           <label>Mô tả truyện</label>
           <textarea
             className="form-control"

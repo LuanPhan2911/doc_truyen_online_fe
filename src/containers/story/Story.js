@@ -1,10 +1,18 @@
 import { BsVectorPen } from "react-icons/bs";
 import { Link, useNavigate } from "react-router-dom";
-import image from "../../assets/stories/150.jpg";
 import "./Story.scss";
 import { asset } from "../../utils/Helper";
+import { useEffect, useState } from "react";
 const Story = ({ story }) => {
   const navigate = useNavigate();
+  const [genreName, setGenreName] = useState("");
+  useEffect(() => {
+    const { genres } = story;
+    if (genres?.length > 0) {
+      let genre = genres.find((item) => item.type === 1);
+      setGenreName(genre.name);
+    }
+  }, [story]);
   const handleShowStoryDetail = (storyDetail) => {
     navigate(`/story/${storyDetail?.slug}`, {
       state: storyDetail,
@@ -30,7 +38,7 @@ const Story = ({ story }) => {
             <BsVectorPen size={"1.5em"} />
             <span> Cửu Hanh</span>
           </div>
-          <div className="genre">Huyền huyễn</div>
+          <div className="genre">{genreName}</div>
         </div>
       </div>
     </div>

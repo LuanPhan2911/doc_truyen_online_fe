@@ -46,6 +46,11 @@
             margin-left: 5px;
           }
         }
+        &.search-value {
+          color: #fff;
+          border: none;
+          background: #ff1212;
+        }
       }
     }
   }
@@ -75,6 +80,14 @@
           font-size: 1em;
           font-weight: 500;
         }
+      }
+    }
+    .story-search {
+      font-weight: 500;
+      font-size: 1em;
+      span {
+        font-weight: 600;
+        font-size: 1.2em;
       }
     }
   }
