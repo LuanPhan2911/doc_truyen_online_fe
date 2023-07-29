@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import "./Story.scss";
 import { asset } from "../../utils/Helper";
 import { useEffect, useState } from "react";
-const Story = ({ story }) => {
+const Story = ({ story, isAdmin }) => {
   const navigate = useNavigate();
   const [genreName, setGenreName] = useState("");
   useEffect(() => {
@@ -14,9 +14,13 @@ const Story = ({ story }) => {
     }
   }, [story]);
   const handleShowStoryDetail = (storyDetail) => {
-    navigate(`/story/${storyDetail?.slug}`, {
-      state: storyDetail,
-    });
+    if (isAdmin) {
+      navigate(`/admin/story/${storyDetail?.id}`, {});
+    } else {
+      navigate(`/story/${storyDetail?.slug}`, {
+        state: storyDetail,
+      });
+    }
   };
   return (
     <div className="story">
@@ -36,7 +40,7 @@ const Story = ({ story }) => {
         <div className="auth-genre">
           <div className="auth text-overflow-1-line">
             <BsVectorPen size={"1.5em"} />
-            <span> Cửu Hanh</span>
+            <span>{story.author_name}</span>
           </div>
           <div className="genre">{genreName}</div>
         </div>

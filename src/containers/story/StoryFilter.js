@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import Stories from "./Stories";
+
 import "./StoryFilter.scss";
 import { handleGetGenreService } from "../../services/GenreService";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,6 +9,9 @@ import { Link } from "react-router-dom";
 import { getQueryParams } from "../../utils/Helper";
 import { useQueryString } from "../../hooks";
 import StoryFilterGenre from "./StoryFilterGenre";
+import DropdownBase from "../../components/DropdownBase";
+import Story from "./Story";
+
 const StoryFilter = () => {
   const dispatch = useDispatch();
   const tags = useSelector((state) => state.story.tags);
@@ -19,6 +22,8 @@ const StoryFilter = () => {
   const [currentPage, setCurrentPage] = useState("");
   const [storiesPaginated, setStoriesPaginated] = useState("");
   const [searchValue, setSearchValue] = useState("");
+  const [orderByMenu, setOrderByMenu] = useState([]);
+  const [orderBy, setOrderBy] = useState("desc");
   const params = useQueryString();
   useEffect(() => {
     async function fetchGenre() {
@@ -30,6 +35,24 @@ const StoryFilter = () => {
       }
     }
     fetchGenre();
+    function initOrderByMenu() {
+      const menu = [
+        {
+          id: 1,
+          name: "Mới nhất",
+          value: "desc",
+          active: true,
+        },
+        {
+          id: 2,
+          name: "Củ nhất",
+          value: "asc",
+          active: false,
+        },
+      ];
+      setOrderByMenu([...menu]);
+    }
+    initOrderByMenu();
   }, []);
 
   useEffect(() => {
@@ -41,6 +64,20 @@ const StoryFilter = () => {
     }
   }, [storiesPaginated]);
   useEffect(() => {
+    let q = params.q || "";
+    let genres_id = selectedStoryTag.map((item) => {
+      return item.id;
+    });
+    setSearchValue(q);
+    fetchStories({
+      page: currentPage || 1,
+      filter: true,
+      name: q,
+      genres_id,
+      orderBy,
+    });
+  }, [currentPage]);
+  useEffect(() => {
     let genres_id = selectedStoryTag.map((item) => {
       return item.id;
     });
@@ -48,12 +85,13 @@ const StoryFilter = () => {
 
     setSearchValue(q);
     fetchStories({
-      page: currentPage || 1,
+      page: 1,
       filter: true,
       genres_id,
       name: q,
+      orderBy,
     });
-  }, [selectedStoryTag, currentPage, params.q]);
+  }, [selectedStoryTag, params.q, orderBy]);
   async function fetchStories(qs) {
     let res = await handleGetStoryService({
       ...qs,
@@ -75,7 +113,18 @@ const StoryFilter = () => {
     links[links.length - 1].label = "Sau";
     return links;
   };
-
+  const handleSetOrderByStory = (id) => {
+    let cpOrderByMenu = [...orderByMenu];
+    cpOrderByMenu?.length > 0 &&
+      cpOrderByMenu.forEach((item) => {
+        if (item.id === id) {
+          item.active = true;
+          setOrderBy(item.value);
+        } else {
+          item.active = false;
+        }
+      });
+  };
   const handleChangePage = (page) => {
     setCurrentPage(page);
   };
@@ -107,7 +156,31 @@ const StoryFilter = () => {
             <i className="bi bi-list-ul"></i>
           </div>
           <ul className="story-filter-atr">
-            <li>Mới cập nhật</li>
+            <li>
+              <DropdownBase minWidth="150px">
+                {{
+                  btn: <span className="btn-dropdown">Sắp xếp</span>,
+                  body:
+                    orderByMenu?.length > 0 &&
+                    orderByMenu.map((item) => {
+                      return (
+                        <li className="w-100" key={item.id}>
+                          <Link
+                            className={
+                              item.active
+                                ? "dropdown-item active"
+                                : "dropdown-item"
+                            }
+                            onClick={() => handleSetOrderByStory(item.id)}
+                          >
+                            {item.name}
+                          </Link>
+                        </li>
+                      );
+                    }),
+                }}
+              </DropdownBase>
+            </li>
             <li>Lượt đọc</li>
             <li>Điểm đánh giá</li>
             <li>Cất giữ</li>
@@ -122,7 +195,13 @@ const StoryFilter = () => {
             Kết quả cho tìm: <span>{searchValue}</span>
           </div>
         )}
-        <Stories stories={stories} />
+        <div className="stories-main">
+          {stories &&
+            stories.length > 0 &&
+            stories.map((item, index) => {
+              return <Story key={index} story={item} />;
+            })}
+        </div>
         <ul className="pagination justify-content-center">
           {stories?.length > 0 &&
             links?.length > 0 &&

@@ -1,7 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import Select from "react-select";
 import { handleGetGenreService } from "../../../services/GenreService";
-import { handleCreateStoryService } from "../../../services/StoryService";
+import {
+  handleCreateStoryService,
+  handleUpdateStoryService,
+} from "../../../services/AdminServices";
 import {
   asset,
   checkPropertiesIsEmpty,
@@ -10,8 +13,13 @@ import {
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { setTags } from "../../../features/storySlice";
-import "./CreateStoryForm.scss";
+import "./UpsertStoryForm.scss";
 import storyDefaultImage from "../../../assets/stories/default.jpg";
+import { useLocation, useParams } from "react-router-dom";
+import {
+  handleGetStoryService,
+  handleShowStoryService,
+} from "../../../services/StoryService";
 const status = [
   {
     state: "Mới ra",
@@ -40,14 +48,16 @@ const views = [
     id: 3,
   },
 ];
-const CreateStoryForm = () => {
+const UpsertStoryForm = ({ isUpdate }) => {
   const dispatch = useDispatch();
+  const params = useParams();
   const tags = useSelector((state) => state.story.tags);
   const user = useSelector((state) => state.user);
   const [storyTag, setStoryTag] = useState({});
-  const [selectedTagId, setSelectedTagId] = useState({});
+  const [selectedTag, setSelectedTag] = useState({});
   const imgRef = useRef();
   const [story, setStory] = useState({
+    id: "",
     name: "",
     description: "",
     avatar: "",
@@ -55,25 +65,43 @@ const CreateStoryForm = () => {
     view: 1,
     genres_id: [],
     user_id: user.id,
+    author_name: "",
   });
   useEffect(() => {
-    async function fetch() {
-      if (tags?.length === 0) {
+    if (tags?.length === 0) {
+      async function fetch() {
         let res = await handleGetGenreService();
         if (res?.success) {
           dispatch(setTags(res.data));
         }
       }
+      fetch();
     }
-    fetch();
+    if (isUpdate) {
+      async function fetchStory() {
+        try {
+          let { id } = params;
+
+          let res = await handleShowStoryService(id);
+          if (res?.success) {
+            let cpStory = { ...res.data };
+            let data = computedStory(cpStory);
+            setStory({ ...data });
+            let genres = computeGenre(cpStory.genres);
+            setSelectedTag({ ...genres });
+          }
+        } catch (error) {}
+      }
+      fetchStory();
+    }
   }, []);
   useEffect(() => {
     if (tags.length > 0) {
-      let data = computeData(tags);
+      let data = computeGenre(tags);
       setStoryTag({ ...data });
     }
   }, [tags]);
-  const computeData = (data) => {
+  const computeGenre = (data) => {
     let obj = {};
     obj["CATEGORY"] = [];
     obj["CHARACTER"] = [];
@@ -100,10 +128,40 @@ const CreateStoryForm = () => {
             break;
         }
       });
+    for (const key in obj) {
+      if (obj[key].length === 1) {
+        obj[key] = obj[key][0];
+      }
+    }
     return obj;
   };
+  const computedStory = (data) => {
+    let {
+      name,
+      author_name,
+      avatar,
+      description,
+      status,
+      user_id,
+      view,
+      genres,
+      id,
+    } = data;
+    let genres_id = (genres?.length > 0 && genres.map((item) => item.id)) || [];
+    return {
+      name,
+      author_name,
+      avatar,
+      description,
+      status,
+      user_id,
+      view,
+      genres_id,
+      id,
+    };
+  };
   useEffect(() => {
-    if (!story.avatar) {
+    if (!(story.avatar instanceof File)) {
       return;
     }
     let url = URL.createObjectURL(story.avatar);
@@ -125,40 +183,67 @@ const CreateStoryForm = () => {
     setStory(cpStory);
   };
   const handleChangeSelect = (options, name) => {
-    let cpTagId = selectedTagId;
-    cpTagId[name] = options.id;
-    setSelectedTagId(cpTagId);
-    let genres_id = Object.values(cpTagId);
+    let cpTag = { ...selectedTag };
+    cpTag[name] = options;
+    setSelectedTag({ ...cpTag });
+    let genres_id = [];
+    for (let key in cpTag) {
+      genres_id.push(cpTag[key].id);
+    }
 
     setStory({ ...story, genres_id: genres_id });
   };
-  const validateStory = (story) => {
-    return checkPropertiesIsEmpty(story);
-  };
 
-  const handleCreateStory = async () => {
-    if (validateStory(story)) {
-      toast.error("Không được để trống!");
-    } else {
-      try {
-        let res = await handleCreateStoryService(story);
-        if (res?.success) {
-          toast.success("Tạo truyện thành công!");
-          setStory({
-            name: "",
-            description: "",
-            avatar: "",
-            status: 1,
-            view: 1,
-            genres_id: [],
-            user_id: user.id,
-          });
+  const handleUpsertStory = async () => {
+    if (isUpdate) {
+      if (checkPropertiesIsEmpty(story, ["avatar"])) {
+        toast.error("Không được để trống!");
+      } else {
+        try {
+          let cpStory = { ...story };
+          if (!(cpStory.avatar instanceof File)) {
+            cpStory["avatar"] = null;
+          }
+          let res = await handleUpdateStoryService(cpStory);
+          if (res?.success) {
+            toast.success("Cập nhật thành công!");
+            let data = res.data;
+
+            setStory({ ...computedStory(data) });
+            let genres = computeGenre(data.genres);
+            setSelectedTag({ ...genres });
+          }
+        } catch (error) {
+          handleErrorApiResponse(error);
         }
-      } catch (error) {
-        handleErrorApiResponse(error);
+      }
+    } else {
+      if (checkPropertiesIsEmpty(story)) {
+        toast.error("Không được để trống!");
+      } else {
+        try {
+          let res = await handleCreateStoryService(story);
+          if (res?.success) {
+            toast.success("Tạo truyện thành công!");
+            setStory({
+              name: "",
+              description: "",
+              avatar: "",
+              status: 1,
+              view: 1,
+              genres_id: [],
+              user_id: user.id,
+              author_name: "",
+            });
+            setSelectedTag({});
+          }
+        } catch (error) {
+          handleErrorApiResponse(error);
+        }
       }
     }
   };
+
   return (
     <div className="container content">
       <div className="row">
@@ -199,7 +284,16 @@ const CreateStoryForm = () => {
             onChange={(e) => handleSetInput(e, "description")}
           ></textarea>
         </div>
-        <div className="col-6">
+        <div className="col-12">
+          <label>Tên tác giả</label>
+          <input
+            className="form-control"
+            type={"text"}
+            value={story.author_name}
+            onChange={(e) => handleSetInput(e, "author_name")}
+          />
+        </div>
+        <div className="col-5">
           <label>Trạng thái</label>
           {status?.length > 0 &&
             status.map((item) => {
@@ -218,7 +312,7 @@ const CreateStoryForm = () => {
               );
             })}
         </div>
-        <div className="col-6">
+        <div className="col-5">
           <label>Góc nhìn</label>
           {views?.length > 0 &&
             views.map((item) => {
@@ -237,11 +331,13 @@ const CreateStoryForm = () => {
               );
             })}
         </div>
+
         <div className="col-lg-3 col-sm-6">
           <label>Thể loại</label>
           <Select
             options={storyTag["CATEGORY"]}
             onChange={(options) => handleChangeSelect(options, "CATEGORY")}
+            value={selectedTag?.CATEGORY || null}
           />
         </div>
         <div className="col-lg-3 col-sm-6">
@@ -249,6 +345,7 @@ const CreateStoryForm = () => {
           <Select
             options={storyTag["CHARACTER"]}
             onChange={(options) => handleChangeSelect(options, "CHARACTER")}
+            value={selectedTag?.CHARACTER || null}
           />
         </div>
         <div className="col-lg-3 col-sm-6">
@@ -256,6 +353,7 @@ const CreateStoryForm = () => {
           <Select
             options={storyTag["WORLD"]}
             onChange={(options) => handleChangeSelect(options, "WORLD")}
+            value={selectedTag?.WORLD || null}
           />
         </div>
         <div className="col-lg-3 col-sm-6">
@@ -263,12 +361,13 @@ const CreateStoryForm = () => {
           <Select
             options={storyTag["TAG"]}
             onChange={(options) => handleChangeSelect(options, "TAG")}
+            value={selectedTag?.TAG || null}
           />
         </div>
         <div className="col-12">
           <button
             className="btn btn-success"
-            onClick={() => handleCreateStory()}
+            onClick={() => handleUpsertStory()}
           >
             {" "}
             Tạo
@@ -278,4 +377,4 @@ const CreateStoryForm = () => {
     </div>
   );
 };
-export default CreateStoryForm;
+export default UpsertStoryForm;

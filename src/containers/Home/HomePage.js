@@ -1,4 +1,3 @@
-import Stories from "../story/Stories";
 import StoryHome from "../story/StoryHome";
 import UserRead from "../story/UserRead";
 import "./HomePage.scss";

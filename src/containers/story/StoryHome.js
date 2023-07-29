@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
-import Stories from "./Stories";
+
 import "./StoryHome.scss";
 import { handleGetStoryService } from "../../services/StoryService";
 import { useFetch } from "../../hooks";
+import Story from "./Story";
 const StoryHome = () => {
   let { data: stories } = useFetch(handleGetStoryService);
   return (
@@ -13,7 +14,13 @@ const StoryHome = () => {
           Xem tất cả
         </Link>
       </div>
-      <Stories stories={stories} />
+      <div className="stories-main">
+        {stories &&
+          stories.length > 0 &&
+          stories.map((item, index) => {
+            return <Story key={index} story={item} />;
+          })}
+      </div>
     </>
   );
 };
