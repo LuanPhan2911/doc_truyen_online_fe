@@ -7,10 +7,11 @@ import { userLogin } from "../../features/userSlice";
 import useDialog from "../../hooks/useDialog";
 const LoginForm = () => {
   const dispatch = useDispatch();
-  const [handleShowDialog, handleCloseDialog] = useDialog();
+  const { handleShowDialog, handleCloseDialog } = useDialog();
   const [user, setUser] = useState({
     email: "",
     password: "",
+    rememberMe: false,
   });
 
   const handleChangeInputForm = (event, key) => {
@@ -25,7 +26,13 @@ const LoginForm = () => {
     }
     return true;
   };
+  const handleRememberMe = () => {
+    let cpUser = { ...user };
+    cpUser.rememberMe = !cpUser.rememberMe;
+    setUser({ ...cpUser });
+  };
   const handleLogin = async () => {
+    console.log(user);
     if (handleValidateForm(user)) {
       try {
         let res = await handleLoginService(user);
@@ -37,6 +44,7 @@ const LoginForm = () => {
           setUser({
             email: "",
             password: "",
+            rememberMe: false,
           });
         }
       } catch (error) {}
@@ -82,6 +90,16 @@ const LoginForm = () => {
             onChange={(e) => handleChangeInputForm(e, "password")}
             placeholder="Nhập mật khẩu"
           />
+        </div>
+        <div className="form-check">
+          <input
+            type="checkbox"
+            className="form-check-input"
+            onChange={() => handleRememberMe()}
+            value={user.rememberMe}
+            checked={user.rememberMe}
+          />
+          <label>Ghi nhớ tôi</label>
         </div>
         <div className="login">
           <button onClick={() => handleLogin()}>Đăng nhập</button>

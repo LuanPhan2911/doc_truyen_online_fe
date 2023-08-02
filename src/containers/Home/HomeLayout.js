@@ -6,7 +6,7 @@ const HoneLayout = ({ children }) => {
   return (
     <>
       <Header />
-      <div className="main container">{children}</div>
+      <div className="main">{children}</div>
       <Footer />
     </>
   );

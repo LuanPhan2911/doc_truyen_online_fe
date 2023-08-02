@@ -1,15 +1,16 @@
 import { useSelector } from "react-redux";
 import "./StoryHome.scss";
-import useFetch from "../../../hooks/useFetch";
+
 import { handleGetStoryService } from "../../../services/AdminServices";
-import { useEffect } from "react";
+import { useEffect, useLayoutEffect } from "react";
 import { useState } from "react";
 import Story from "../../story/Story";
+import { Link } from "react-router-dom";
 
 const StoryHome = () => {
   const userId = useSelector((state) => state.user.id);
   const [stories, setStories] = useState([]);
-  useEffect(() => {
+  useLayoutEffect(() => {
     async function fetchStory() {
       try {
         let res = await handleGetStoryService({ user_id: userId });
@@ -22,8 +23,12 @@ const StoryHome = () => {
   }, []);
 
   return (
-    <div className="admin-story-home">
-      <div className="admin-menu"></div>
+    <div className="admin-story-home content">
+      <div className="admin-menu">
+        <Link to={"create"} className="btn btn-success">
+          Thêm truyện mới
+        </Link>
+      </div>
       <div className="stories-main">
         {stories &&
           stories.length > 0 &&

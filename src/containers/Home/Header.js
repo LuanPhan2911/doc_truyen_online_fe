@@ -14,7 +14,7 @@ const Header = () => {
   const user = useSelector((state) => state.user);
   const [searchBtn, setSearchBtn] = useState(false);
   const [toggleMenu, setToggleMenu] = useState(false);
-  const [handleShowDialog, handleCloseDialog] = useDialog();
+  const { handleShowDialog } = useDialog();
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
   useEffect(() => {

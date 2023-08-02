@@ -4,6 +4,7 @@ import LoginForm from "../containers/auth/LoginForm";
 import RegisterForm from "../containers/auth/RegisterForm";
 import VerifyEmailForm from "../containers/auth/VerifyEmailForm";
 import ForgotPasswordForm from "../containers/auth/ForgotPasswordForm";
+
 const DialogContext = createContext();
 const menuDialog = [
   {
@@ -47,7 +48,14 @@ const DialogProvider = ({ children }) => {
   }
   return (
     <DialogContext.Provider
-      value={{ handleShowDialog, handleCloseDialog, showDialog }}
+      value={{
+        handleShowDialog,
+        handleCloseDialog,
+        showDialog,
+        setItemDialog,
+        setShowDialog,
+        itemDialog,
+      }}
     >
       {children}
       <Dialog show={showDialog} onClose={handleCloseDialog}>

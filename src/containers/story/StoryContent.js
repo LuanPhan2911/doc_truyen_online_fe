@@ -1,14 +1,15 @@
 import { AiFillStar } from "react-icons/ai";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { FaGlasses } from "react-icons/fa";
 import { BsBookmark } from "react-icons/bs";
 import { GiCottonFlower } from "react-icons/gi";
-import ChapterList from "./ChapterList";
+
 import Description from "./Description";
 import Comments from "../comments/Comments";
 import { useEffect, useState } from "react";
 import "./StoryContent.scss";
 import { asset } from "../../utils/Helper";
+import ChapterList from "../chapter/ChapterList";
 const StoryContent = () => {
   const location = useLocation();
   const navigate = useNavigate();

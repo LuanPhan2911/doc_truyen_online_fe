@@ -15,11 +15,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { setTags } from "../../../features/storySlice";
 import "./UpsertStoryForm.scss";
 import storyDefaultImage from "../../../assets/stories/default.jpg";
-import { useLocation, useParams } from "react-router-dom";
-import {
-  handleGetStoryService,
-  handleShowStoryService,
-} from "../../../services/StoryService";
+import { useParams } from "react-router-dom";
+import { handleShowStoryService } from "../../../services/StoryService";
+import TextEditor from "../../../components/TextEditor";
+
+import ChapterList from "../../chapter/ChapterList";
+import Modal from "react-bootstrap/Modal";
+import { handleGetChapterListService } from "../../../services/ChapterService";
+import moment from "moment/moment";
+import "moment/locale/vi";
 const status = [
   {
     state: "Mới ra",
@@ -59,7 +63,6 @@ const UpsertStoryForm = ({ isUpdate }) => {
   const [story, setStory] = useState({
     id: "",
     name: "",
-    description: "",
     avatar: "",
     status: 1,
     view: 1,
@@ -67,34 +70,54 @@ const UpsertStoryForm = ({ isUpdate }) => {
     user_id: user.id,
     author_name: "",
   });
+  const [chapters, setChapters] = useState([]);
+  const [showChapterList, setShowChapterList] = useState(false);
+  const [storyDescription, setStoryDescription] = useState("");
   useEffect(() => {
     if (tags?.length === 0) {
-      async function fetch() {
+      async function fetchGenre() {
         let res = await handleGetGenreService();
         if (res?.success) {
           dispatch(setTags(res.data));
         }
       }
-      fetch();
+      fetchGenre();
     }
     if (isUpdate) {
+      let { id: storyId } = params;
       async function fetchStory() {
         try {
-          let { id } = params;
-
-          let res = await handleShowStoryService(id);
+          let res = await handleShowStoryService(storyId);
           if (res?.success) {
             let cpStory = { ...res.data };
             let data = computedStory(cpStory);
             setStory({ ...data });
+            setStoryDescription(cpStory.description);
             let genres = computeGenre(cpStory.genres);
             setSelectedTag({ ...genres });
           }
         } catch (error) {}
       }
+      async function fetchChapterList() {
+        try {
+          let res = await handleGetChapterListService(storyId);
+          if (res?.success) {
+            let cpChapter = res.data;
+            cpChapter?.length > 0 &&
+              cpChapter.forEach((item) => {
+                item.created_at = moment(item.created_at)
+                  .locale("vi")
+                  .fromNow();
+              });
+            setChapters([...cpChapter]);
+          }
+        } catch (error) {}
+      }
+      fetchChapterList();
       fetchStory();
     }
   }, []);
+
   useEffect(() => {
     if (tags.length > 0) {
       let data = computeGenre(tags);
@@ -136,23 +159,12 @@ const UpsertStoryForm = ({ isUpdate }) => {
     return obj;
   };
   const computedStory = (data) => {
-    let {
-      name,
-      author_name,
-      avatar,
-      description,
-      status,
-      user_id,
-      view,
-      genres,
-      id,
-    } = data;
+    let { name, author_name, avatar, status, user_id, view, genres, id } = data;
     let genres_id = (genres?.length > 0 && genres.map((item) => item.id)) || [];
     return {
       name,
       author_name,
       avatar,
-      description,
       status,
       user_id,
       view,
@@ -201,6 +213,7 @@ const UpsertStoryForm = ({ isUpdate }) => {
       } else {
         try {
           let cpStory = { ...story };
+          cpStory["description"] = storyDescription;
           if (!(cpStory.avatar instanceof File)) {
             cpStory["avatar"] = null;
           }
@@ -208,8 +221,9 @@ const UpsertStoryForm = ({ isUpdate }) => {
           if (res?.success) {
             toast.success("Cập nhật thành công!");
             let data = res.data;
-
-            setStory({ ...computedStory(data) });
+            let computedData = computedStory(data);
+            setStory({ ...computedData });
+            setStoryDescription(data.description);
             let genres = computeGenre(data.genres);
             setSelectedTag({ ...genres });
           }
@@ -227,7 +241,7 @@ const UpsertStoryForm = ({ isUpdate }) => {
             toast.success("Tạo truyện thành công!");
             setStory({
               name: "",
-              description: "",
+
               avatar: "",
               status: 1,
               view: 1,
@@ -235,6 +249,7 @@ const UpsertStoryForm = ({ isUpdate }) => {
               user_id: user.id,
               author_name: "",
             });
+            setStoryDescription("");
             setSelectedTag({});
           }
         } catch (error) {
@@ -243,138 +258,159 @@ const UpsertStoryForm = ({ isUpdate }) => {
       }
     }
   };
-
+  const handleShowChapterList = () => {
+    setShowChapterList(true);
+  };
   return (
-    <div className="container content">
-      <div className="row">
-        <div className="col-12">
-          <label>Tên truyện</label>
-          <input
-            className="form-control"
-            type={"text"}
-            value={story.name}
-            onChange={(e) => handleSetInput(e, "name")}
-          />
-        </div>
-        <div className="col-3">
-          <label htmlFor="avatar" className="avatar-box">
-            <img
-              alt="Not Found"
-              className="avatar"
-              src={story.avatar ? asset(story.avatar) : storyDefaultImage}
-              ref={imgRef}
-            />
-            Ảnh đại diện
+    <>
+      <div className="container content">
+        <div className="row">
+          <div className="col-12">
+            <label>Tên truyện</label>
             <input
               className="form-control"
-              type="file"
-              accept="image/*"
-              onChange={(e) => handleSetInput(e, "avatar")}
-              id="avatar"
-              hidden
+              type={"text"}
+              value={story.name}
+              onChange={(e) => handleSetInput(e, "name")}
             />
-          </label>
-        </div>
-        <div className="col-9">
-          <label>Mô tả truyện</label>
-          <textarea
-            className="form-control"
-            rows={10}
-            value={story.description}
-            onChange={(e) => handleSetInput(e, "description")}
-          ></textarea>
-        </div>
-        <div className="col-12">
-          <label>Tên tác giả</label>
-          <input
-            className="form-control"
-            type={"text"}
-            value={story.author_name}
-            onChange={(e) => handleSetInput(e, "author_name")}
-          />
-        </div>
-        <div className="col-5">
-          <label>Trạng thái</label>
-          {status?.length > 0 &&
-            status.map((item) => {
-              return (
-                <div className="form-group" key={item.id}>
-                  <input
-                    type={"radio"}
-                    className="form-check-input"
-                    name="status"
-                    value={item.id}
-                    onChange={(e) => handleSetInput(e, "status")}
-                    checked={+story.status === +item.id}
-                  />
-                  <label>{item.state}</label>
-                </div>
-              );
-            })}
-        </div>
-        <div className="col-5">
-          <label>Góc nhìn</label>
-          {views?.length > 0 &&
-            views.map((item) => {
-              return (
-                <div className="form-group" key={item.id}>
-                  <input
-                    type={"radio"}
-                    className="form-check-input"
-                    name="view"
-                    value={item.id}
-                    onChange={(e) => handleSetInput(e, "view")}
-                    checked={+story.view === +item.id}
-                  />
-                  <label>{item.view}</label>
-                </div>
-              );
-            })}
-        </div>
+          </div>
+          <div className="col-3">
+            <label htmlFor="avatar" className="avatar-box">
+              <img
+                alt="Not Found"
+                className="avatar"
+                src={story.avatar ? asset(story.avatar) : storyDefaultImage}
+                ref={imgRef}
+              />
+              Ảnh đại diện
+              <input
+                className="form-control"
+                type="file"
+                accept="image/*"
+                onChange={(e) => handleSetInput(e, "avatar")}
+                id="avatar"
+                hidden
+              />
+            </label>
+          </div>
+          <div className="col-3">
+            <label>Trạng thái</label>
+            {status?.length > 0 &&
+              status.map((item) => {
+                return (
+                  <div className="form-group" key={item.id}>
+                    <input
+                      type={"radio"}
+                      className="form-check-input"
+                      name="status"
+                      value={item.id}
+                      onChange={(e) => handleSetInput(e, "status")}
+                      checked={+story.status === +item.id}
+                    />
+                    <label>{item.state}</label>
+                  </div>
+                );
+              })}
+          </div>
+          <div className="col-3">
+            <label>Góc nhìn</label>
+            {views?.length > 0 &&
+              views.map((item) => {
+                return (
+                  <div className="form-group" key={item.id}>
+                    <input
+                      type={"radio"}
+                      className="form-check-input"
+                      name="view"
+                      value={item.id}
+                      onChange={(e) => handleSetInput(e, "view")}
+                      checked={+story.view === +item.id}
+                    />
+                    <label>{item.view}</label>
+                  </div>
+                );
+              })}
+          </div>
+          {isUpdate && (
+            <div className="col-3">
+              <button
+                className="btn btn-primary"
+                onClick={() => handleShowChapterList()}
+              >
+                Danh sách chương
+              </button>
+            </div>
+          )}
+          <div className="col-12 description-box">
+            <label>Mô tả truyện</label>
+            <TextEditor
+              value={storyDescription}
+              setValue={setStoryDescription}
+              className={"story-description-editor"}
+            />
+          </div>
+          <div className="col-12">
+            <label>Tên tác giả</label>
+            <input
+              className="form-control"
+              type={"text"}
+              value={story.author_name}
+              onChange={(e) => handleSetInput(e, "author_name")}
+            />
+          </div>
 
-        <div className="col-lg-3 col-sm-6">
-          <label>Thể loại</label>
-          <Select
-            options={storyTag["CATEGORY"]}
-            onChange={(options) => handleChangeSelect(options, "CATEGORY")}
-            value={selectedTag?.CATEGORY || null}
-          />
-        </div>
-        <div className="col-lg-3 col-sm-6">
-          <label>Tính cách nhân vật</label>
-          <Select
-            options={storyTag["CHARACTER"]}
-            onChange={(options) => handleChangeSelect(options, "CHARACTER")}
-            value={selectedTag?.CHARACTER || null}
-          />
-        </div>
-        <div className="col-lg-3 col-sm-6">
-          <label>Bối cảnh thể giới</label>
-          <Select
-            options={storyTag["WORLD"]}
-            onChange={(options) => handleChangeSelect(options, "WORLD")}
-            value={selectedTag?.WORLD || null}
-          />
-        </div>
-        <div className="col-lg-3 col-sm-6">
-          <label>Lưu phái</label>
-          <Select
-            options={storyTag["TAG"]}
-            onChange={(options) => handleChangeSelect(options, "TAG")}
-            value={selectedTag?.TAG || null}
-          />
-        </div>
-        <div className="col-12">
-          <button
-            className="btn btn-success"
-            onClick={() => handleUpsertStory()}
-          >
-            {" "}
-            Tạo
-          </button>
+          <div className="col-lg-3 col-sm-6">
+            <label>Thể loại</label>
+            <Select
+              options={storyTag["CATEGORY"]}
+              onChange={(options) => handleChangeSelect(options, "CATEGORY")}
+              value={selectedTag?.CATEGORY || null}
+            />
+          </div>
+          <div className="col-lg-3 col-sm-6">
+            <label>Tính cách nhân vật</label>
+            <Select
+              options={storyTag["CHARACTER"]}
+              onChange={(options) => handleChangeSelect(options, "CHARACTER")}
+              value={selectedTag?.CHARACTER || null}
+            />
+          </div>
+          <div className="col-lg-3 col-sm-6">
+            <label>Bối cảnh thể giới</label>
+            <Select
+              options={storyTag["WORLD"]}
+              onChange={(options) => handleChangeSelect(options, "WORLD")}
+              value={selectedTag?.WORLD || null}
+            />
+          </div>
+          <div className="col-lg-3 col-sm-6">
+            <label>Lưu phái</label>
+            <Select
+              options={storyTag["TAG"]}
+              onChange={(options) => handleChangeSelect(options, "TAG")}
+              value={selectedTag?.TAG || null}
+            />
+          </div>
+          <div className="col-12">
+            <button
+              className="btn btn-success"
+              onClick={() => handleUpsertStory()}
+            >
+              {" "}
+              {isUpdate ? "Cập nhât" : "Tạo"}
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+      <Modal show={showChapterList} onHide={() => setShowChapterList(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>DS. Chương</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <ChapterList isAdmin={true} chapters={chapters} />
+        </Modal.Body>
+      </Modal>
+    </>
   );
 };
 export default UpsertStoryForm;

@@ -8,7 +8,7 @@ const AuthProvider = ({ children }) => {
   const isAuth = useSelector((state) => state.user.isAuth);
   const { showDialog } = useContext(DialogContext);
   const navigate = useNavigate();
-  const [handleShowDialog] = useDialog();
+  const { handleShowDialog } = useDialog();
   useEffect(() => {
     if (!isAuth) {
       handleShowDialog("login");

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { AiOutlineMenu, AiOutlineSetting } from "react-icons/ai";
 
 import "./ChapterConfig.scss";
-import ChapterList from "../story/ChapterList";
+import ChapterList from "../chapter/ChapterList";
 import Dialog from "../../components/Dialog";
 import { useEffect } from "react";
 

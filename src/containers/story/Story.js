@@ -34,9 +34,10 @@ const Story = ({ story, isAdmin }) => {
         >
           {story?.name}
         </div>
-        <div className="story-description text-overflow-2-line ">
-          {story?.description}
-        </div>
+        <div
+          className="story-description text-overflow-2-line "
+          dangerouslySetInnerHTML={{ __html: story?.description }}
+        ></div>
         <div className="auth-genre">
           <div className="auth text-overflow-1-line">
             <BsVectorPen size={"1.5em"} />
