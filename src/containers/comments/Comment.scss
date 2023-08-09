@@ -25,18 +25,20 @@
         color: #bd953d;
       }
     }
-    .comment-info {
-      .time,
-      .chapter {
-        font-size: 1em;
-        font-weight: 400;
-        color: #999;
-        margin-right: 15px;
-      }
-    }
+
     .comment-content {
       font-size: 1em;
       font-weight: 500;
+    }
+    .comment-replies {
+      span {
+        font-weight: 600;
+        font-size: 1em;
+        cursor: pointer;
+        &:hover {
+          color: #bd953d;
+        }
+      }
     }
     .comment-report {
       display: flex;

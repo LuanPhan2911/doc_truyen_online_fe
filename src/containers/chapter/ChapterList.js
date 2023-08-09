@@ -1,13 +1,27 @@
 import { BsSortDownAlt } from "react-icons/bs";
 
 import "./ChapterList.scss";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { handleGetChapterListService } from "../../services/ChapterService";
+import { diffTime } from "../../utils/Helper";
 
-const ChapterList = ({ chapters, isAdmin }) => {
-  const navigate = useNavigate();
-  const handleShowChapter = () => {};
+const ChapterList = ({ storyId, isAdmin }) => {
+  const [chapters, setChapters] = useState([]);
+  const { name } = useParams();
+  useEffect(() => {
+    async function fetchChapterList() {
+      try {
+        let res = await handleGetChapterListService(storyId);
+        if (res?.success) {
+          let cpChapter = res.data;
+          setChapters([...cpChapter]);
+        }
+      } catch (error) {}
+    }
+    fetchChapterList();
+  }, []);
 
   return (
     <div id="chapter-list-main">
@@ -23,9 +37,16 @@ const ChapterList = ({ chapters, isAdmin }) => {
         <div className="chapter-list-name">
           {chapters?.length > 0 &&
             chapters.map((item) => {
-              return (
-                <Link to={`chapter/${item.index}`}>
+              return isAdmin ? (
+                <Link to={`chapter/${item.index}`} key={item.index}>
                   {item.name} <span>({item.created_at})</span>
+                </Link>
+              ) : (
+                <Link
+                  to={`/story/${name}/chapter/${item.index}`}
+                  key={item.index}
+                >
+                  {item.name} <span>({diffTime(item.created_at)})</span>
                 </Link>
               );
             })}

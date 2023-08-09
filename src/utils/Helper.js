@@ -1,5 +1,6 @@
 import { toast } from "react-toastify";
-
+import moment from "moment";
+import "moment/locale/vi.js";
 const isEmptyObject = (obj) => {
   return Object?.keys.length === 0;
 };
@@ -81,6 +82,9 @@ function getQueryParams(url) {
   });
   return params;
 }
+const diffTime = (time) => {
+  return moment(time).locale("vi").fromNow();
+};
 export {
   isFunctionalComponent,
   isClassComponent,
@@ -88,4 +92,5 @@ export {
   handleErrorApiResponse,
   asset,
   getQueryParams,
+  diffTime,
 };

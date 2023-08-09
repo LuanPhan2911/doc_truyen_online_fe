@@ -10,23 +10,22 @@ import { useEffect, useState } from "react";
 import "./StoryContent.scss";
 import { asset } from "../../utils/Helper";
 import ChapterList from "../chapter/ChapterList";
+
 const StoryContent = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [story, setStory] = useState({});
   const [storyTag, setStoryTag] = useState([]);
   const [genres, setGenres] = useState([]);
+
   useEffect(() => {
-    setStory({ ...location.state, chapterIndex: 1 });
-    setGenres([...location.state.genres]);
-  }, [location]);
-  useEffect(() => {
+    let storyState = location.state;
     let cpStoryTag = [
       {
         id: 1,
         name: "Giới thiệu",
         active: true,
-        component: <Description description={story.description} />,
+        component: <Description description={storyState.description} />,
         plug: "description",
       },
       {
@@ -41,15 +40,15 @@ const StoryContent = () => {
         id: 3,
         name: "DS. Chương",
         active: false,
-        component: <ChapterList />,
-        count: 120,
+        component: <ChapterList storyId={storyState.id} />,
+        count: storyState.chapters_count,
         plug: "chapter-list",
       },
       {
         id: 4,
         name: "Bình luận",
         active: false,
-        component: <Comments />,
+        component: <Comments storyId={storyState.id} />,
         count: 1200,
         plug: "comment",
       },
@@ -62,12 +61,12 @@ const StoryContent = () => {
       },
     ];
     setStoryTag([...cpStoryTag]);
-  }, [story]);
+    setStory({ ...storyState, chapterIndex: 1 });
+    setGenres([...storyState.genres]);
+  }, []);
 
-  const handleShowChapter = ({ id: storyId, chapterIndex }) => {
-    navigate(`chapter/${chapterIndex}`, {
-      state: { storyId, chapterIndex },
-    });
+  const handleShowChapter = ({ chapterIndex }) => {
+    navigate(`chapter/${chapterIndex}`, {});
   };
   const handleChangeStoryTag = (tagId) => {
     let cpStoryTag = storyTag;
@@ -86,7 +85,7 @@ const StoryContent = () => {
     <div className="container content">
       <div className="story-detail">
         <div className="story-detail-image">
-          <img src={asset(story?.avatar)} alt="Not found" />
+          <img src={story?.avatar && asset(story?.avatar)} alt="Not found" />
         </div>
         <div className="story-detail-info">
           <div className="story-detail-title">{story?.name}</div>
@@ -98,7 +97,7 @@ const StoryContent = () => {
           </ul>
           <ul className="story-detail-full">
             <li>
-              1372
+              {story?.chapters_count}
               <span>Chương</span>
             </li>
             <li>

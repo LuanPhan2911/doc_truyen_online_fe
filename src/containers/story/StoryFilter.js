@@ -1,40 +1,28 @@
 import { useEffect, useState } from "react";
 
 import "./StoryFilter.scss";
-import { handleGetGenreService } from "../../services/GenreService";
-import { useDispatch, useSelector } from "react-redux";
-import { setTags } from "../../features/storySlice";
+
 import { handleGetStoryService } from "../../services/StoryService";
 import { Link } from "react-router-dom";
 import { getQueryParams } from "../../utils/Helper";
-import { useQueryString } from "../../hooks";
+import { usePaginate, useQueryString } from "../../hooks";
 import StoryFilterGenre from "./StoryFilterGenre";
 import DropdownBase from "../../components/DropdownBase";
 import Story from "./Story";
 
 const StoryFilter = () => {
-  const dispatch = useDispatch();
-  const tags = useSelector((state) => state.story.tags);
   const [selectedStoryTag, setSelectedStoryTag] = useState([]);
   const [toggleMenuTag, setToggleMenuTag] = useState(false);
   const [stories, setStories] = useState([]);
   const [links, setLinks] = useState([]);
   const [currentPage, setCurrentPage] = useState("");
   const [storiesPaginated, setStoriesPaginated] = useState("");
-  const [searchValue, setSearchValue] = useState("");
+
   const [orderByMenu, setOrderByMenu] = useState([]);
   const [orderBy, setOrderBy] = useState("desc");
-  const params = useQueryString();
+  const { q } = useQueryString();
+
   useEffect(() => {
-    async function fetchGenre() {
-      if (tags?.length === 0) {
-        let res = await handleGetGenreService();
-        if (res?.success) {
-          dispatch(setTags(res.data));
-        }
-      }
-    }
-    fetchGenre();
     function initOrderByMenu() {
       const menu = [
         {
@@ -64,11 +52,10 @@ const StoryFilter = () => {
     }
   }, [storiesPaginated]);
   useEffect(() => {
-    let q = params.q || "";
     let genres_id = selectedStoryTag.map((item) => {
       return item.id;
     });
-    setSearchValue(q);
+
     fetchStories({
       page: currentPage || 1,
       filter: true,
@@ -81,17 +68,14 @@ const StoryFilter = () => {
     let genres_id = selectedStoryTag.map((item) => {
       return item.id;
     });
-    let q = params.q || "";
-
-    setSearchValue(q);
     fetchStories({
-      page: 1,
       filter: true,
-      genres_id,
       name: q,
+      genres_id,
       orderBy,
     });
-  }, [selectedStoryTag, params.q, orderBy]);
+  }, [selectedStoryTag, q, orderBy]);
+
   async function fetchStories(qs) {
     let res = await handleGetStoryService({
       ...qs,
@@ -143,8 +127,6 @@ const StoryFilter = () => {
           ></i>
         </div>
         <StoryFilterGenre
-          tags={tags}
-          searchValue={searchValue}
           selectedStoryTag={selectedStoryTag}
           setSelectedStoryTag={setSelectedStoryTag}
         />
@@ -190,9 +172,9 @@ const StoryFilter = () => {
             <li>Số chương</li>
           </ul>
         </div>
-        {searchValue && (
+        {q && (
           <div className="story-search">
-            Kết quả cho tìm: <span>{searchValue}</span>
+            Kết quả cho tìm: <span>{q}</span>
           </div>
         )}
         <div className="stories-main">

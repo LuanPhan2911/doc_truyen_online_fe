@@ -4,22 +4,42 @@ import {
   handleErrorApiResponse,
 } from "../../../utils/Helper";
 import { toast } from "react-toastify";
-import { handleCreateChapterService } from "../../../services/ChapterService";
+import { handleCreateChapterService } from "../../../services/AdminServices";
 import { useParams } from "react-router-dom";
-
+import {
+  handleShowChapterService,
+  handleUpdateChapterService,
+} from "../../../services/AdminServices";
 const UpsertChapterForm = ({ isUpdate }) => {
-  const params = useParams();
+  const { storyId, index: chapterIndex } = useParams();
+
   const [chapter, setChapter] = useState({
+    id: "",
     name: "",
-    story_id: "",
     index: "",
     content: "",
+    story_id: "",
   });
   useEffect(() => {
-    let { storyId, index: chapterIndex } = params;
-    setChapter({ ...chapter, story_id: storyId });
+    if (isUpdate) {
+      async function fetchChapter() {
+        try {
+          let res = await handleShowChapterService(storyId, chapterIndex);
+          if (res?.success) {
+            let data = res.data;
+            let computedData = computedChapter(data);
+            setChapter({ ...computedData });
+          }
+        } catch (error) {}
+      }
+      fetchChapter();
+    }
   }, []);
 
+  const computedChapter = (data) => {
+    let { content, name, story_id, index, id } = data;
+    return { content, name, story_id, index, id };
+  };
   const handleSetInput = (e, name) => {
     let cpChapter = { ...chapter };
     cpChapter[name] = e.target.value;
@@ -33,11 +53,27 @@ const UpsertChapterForm = ({ isUpdate }) => {
       toast.error("Thiếu dữ liệu");
     } else {
       if (isUpdate) {
+        let cpChapter = { ...chapter };
+        let res = await handleUpdateChapterService(cpChapter, cpChapter.id);
+        if (res?.success) {
+          toast.success("Cập nhật thành công!");
+          let data = res.data;
+          let computedData = computedChapter(data);
+          setChapter({ ...computedData });
+        }
       } else {
         try {
-          let res = await handleCreateChapterService(chapter);
+          let cpChapter = { ...chapter };
+          cpChapter["story_id"] = storyId;
+          let res = await handleCreateChapterService(cpChapter, storyId);
           if (res && res?.success) {
             toast.success("Thêm thành công");
+            setChapter({
+              name: "",
+              index: "",
+              content: "",
+              id: "",
+            });
           }
         } catch (error) {
           handleErrorApiResponse(error);
@@ -45,49 +81,41 @@ const UpsertChapterForm = ({ isUpdate }) => {
       }
     }
   };
+
   return (
-    <div className="container">
-      <div className="row">
-        <div className="col-lg-6 col-sm-12">
-          <div className="form-group">
-            <label>Tên chương</label>
-            <input
-              className="form-control"
-              type="text"
-              value={chapter?.name}
-              name="name"
-              onChange={(e) => handleSetInput(e, "name")}
-            />
-          </div>
-        </div>
-        {isUpdate && (
+    <>
+      <div className="container">
+        <div className="row">
           <div className="col-lg-6 col-sm-12">
             <div className="form-group">
-              <label>Chương thứ</label>
+              <label>Tên chương</label>
               <input
                 className="form-control"
-                type="number"
-                value={chapter?.index}
-                onChange={(e) => handleSetInput(e, "index")}
+                type="text"
+                value={chapter?.name}
+                name="name"
+                onChange={(e) => handleSetInput(e, "name")}
               />
             </div>
           </div>
-        )}
-
-        <div className="col-12">
-          <label>Nội dung</label>
-          <textarea
-            className="form-control"
-            rows={20}
-            value={chapter?.content}
-            onChange={(e) => handleSetInput(e, "content")}
-          ></textarea>
+          <div className="col-12">
+            <label>Nội dung</label>
+            <textarea
+              className="form-control"
+              rows={20}
+              value={chapter?.content}
+              onChange={(e) => handleSetInput(e, "content")}
+            ></textarea>
+          </div>
         </div>
+        <button
+          className="btn btn-success"
+          onClick={() => handleUpsertChapter()}
+        >
+          {isUpdate ? "Cập nhật" : "Thêm"}
+        </button>
       </div>
-      <button className="btn btn-success" onClick={() => handleUpsertChapter()}>
-        {isUpdate ? "Cập nhật" : "Thêm"}
-      </button>
-    </div>
+    </>
   );
 };
 export default UpsertChapterForm;

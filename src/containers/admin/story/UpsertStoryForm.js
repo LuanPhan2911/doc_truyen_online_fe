@@ -12,7 +12,7 @@ import {
 } from "../../../utils/Helper";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
-import { setTags } from "../../../features/storySlice";
+import { setTagsFilter } from "../../../features/storySlice";
 import "./UpsertStoryForm.scss";
 import storyDefaultImage from "../../../assets/stories/default.jpg";
 import { useParams } from "react-router-dom";
@@ -21,9 +21,6 @@ import TextEditor from "../../../components/TextEditor";
 
 import ChapterList from "../../chapter/ChapterList";
 import Modal from "react-bootstrap/Modal";
-import { handleGetChapterListService } from "../../../services/ChapterService";
-import moment from "moment/moment";
-import "moment/locale/vi";
 const status = [
   {
     state: "Mới ra",
@@ -54,8 +51,8 @@ const views = [
 ];
 const UpsertStoryForm = ({ isUpdate }) => {
   const dispatch = useDispatch();
-  const params = useParams();
-  const tags = useSelector((state) => state.story.tags);
+  const { id: storyId } = useParams();
+  const tagsFilter = useSelector((state) => state.story.tagsFilter);
   const user = useSelector((state) => state.user);
   const [storyTag, setStoryTag] = useState({});
   const [selectedTag, setSelectedTag] = useState({});
@@ -70,21 +67,20 @@ const UpsertStoryForm = ({ isUpdate }) => {
     user_id: user.id,
     author_name: "",
   });
-  const [chapters, setChapters] = useState([]);
+
   const [showChapterList, setShowChapterList] = useState(false);
   const [storyDescription, setStoryDescription] = useState("");
   useEffect(() => {
-    if (tags?.length === 0) {
+    if (tagsFilter?.length === 0) {
       async function fetchGenre() {
         let res = await handleGetGenreService();
         if (res?.success) {
-          dispatch(setTags(res.data));
+          dispatch(setTagsFilter(res.data));
         }
       }
       fetchGenre();
     }
     if (isUpdate) {
-      let { id: storyId } = params;
       async function fetchStory() {
         try {
           let res = await handleShowStoryService(storyId);
@@ -98,32 +94,17 @@ const UpsertStoryForm = ({ isUpdate }) => {
           }
         } catch (error) {}
       }
-      async function fetchChapterList() {
-        try {
-          let res = await handleGetChapterListService(storyId);
-          if (res?.success) {
-            let cpChapter = res.data;
-            cpChapter?.length > 0 &&
-              cpChapter.forEach((item) => {
-                item.created_at = moment(item.created_at)
-                  .locale("vi")
-                  .fromNow();
-              });
-            setChapters([...cpChapter]);
-          }
-        } catch (error) {}
-      }
-      fetchChapterList();
+
       fetchStory();
     }
   }, []);
 
   useEffect(() => {
-    if (tags.length > 0) {
-      let data = computeGenre(tags);
+    if (tagsFilter.length > 0) {
+      let data = computeGenre(tagsFilter);
       setStoryTag({ ...data });
     }
-  }, [tags]);
+  }, [tagsFilter]);
   const computeGenre = (data) => {
     let obj = {};
     obj["CATEGORY"] = [];
@@ -407,7 +388,7 @@ const UpsertStoryForm = ({ isUpdate }) => {
           <Modal.Title>DS. Chương</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <ChapterList isAdmin={true} chapters={chapters} />
+          <ChapterList isAdmin={true} storyId={storyId} />
         </Modal.Body>
       </Modal>
     </>

@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import {
   AiOutlineArrowLeft,
@@ -19,8 +19,10 @@ import ChapterConfig from "./ChapterConfig";
 import Header from "../Home/Header";
 
 const Chapter = () => {
-  const location = useLocation();
+  const { name, index: chapterIndex } = useParams();
   const selectedFontFamily = useSelector((state) => state.app.fontFamily);
+  const [storyId, setStoryId] = useState("");
+  const navigate = useNavigate();
   const selectedColor = useSelector((state) => {
     return {
       color: state.app.color,
@@ -28,20 +30,44 @@ const Chapter = () => {
     };
   });
   const fontSize = useSelector((state) => state.app.fontSize);
-  const [chapter, setChapter] = useState({});
+  const [chapter, setChapter] = useState("");
+  const [countChapter, setCountChapter] = useState("");
 
   useEffect(() => {
-    async function fetch() {
-      try {
-        let res = await handleGetChapterService({ ...location.state });
-        if (res?.success) {
-          setChapter({ ...res?.data });
-        }
-      } catch (error) {}
-    }
-    fetch();
-  }, [location]);
+    window.scrollTo(0, 0);
+    fetchChapter();
+  }, [chapterIndex]);
 
+  async function fetchChapter() {
+    try {
+      let res = await handleGetChapterService(name, chapterIndex);
+
+      if (res?.success) {
+        let { chapter, count, storyId } = res.data;
+        setChapter({ ...chapter });
+        setCountChapter(count);
+        setStoryId(storyId);
+      }
+    } catch (error) {}
+  }
+
+  const handlePreChapter = () => {
+    const index = Number(chapterIndex);
+
+    if (index > 1) {
+      navigate({
+        pathname: `/story/${name}/chapter/${index - 1}`,
+      });
+    }
+  };
+  const handleNextChapter = () => {
+    const index = Number(chapterIndex);
+    if (index < Number(countChapter)) {
+      navigate({
+        pathname: `/story/${name}/chapter/${index + 1}`,
+      });
+    }
+  };
   return (
     <div
       className="chapter-main"
@@ -52,15 +78,6 @@ const Chapter = () => {
     >
       <Header />
       <div className="chapter">
-        <div className="chapter-pre-next">
-          <div className="chapter-pre">
-            <AiOutlineArrowLeft size={"1.5em"} /> <span>Chương trước</span>
-          </div>
-          <div className="chapter-next">
-            <span className="chapter-next">Chương sau</span>
-            <AiOutlineArrowRight size={"1.5em"} />{" "}
-          </div>
-        </div>
         <div className="chapter-name">{chapter?.name}</div>
         <div className="chapter-story-info">
           <div className="story-name">
@@ -69,7 +86,7 @@ const Chapter = () => {
           </div>
           <div className="auth-name">
             <BsPencilSquare size={"1.5em"} />
-            <span>Diệp Mặc</span>
+            <span>{chapter?.story?.author_name}</span>
           </div>
           <div className="chapter-word-count">
             <BsCursorText size={"1.5em"} />
@@ -96,10 +113,10 @@ const Chapter = () => {
         >
           {chapter?.content}
           <div className="chapter-pre-next">
-            <div className="chapter-pre">
+            <div className="chapter-pre" onClick={() => handlePreChapter()}>
               <AiOutlineArrowLeft size={"1.5em"} /> <span>Chương trước</span>
             </div>
-            <div className="chapter-next">
+            <div className="chapter-next" onClick={() => handleNextChapter()}>
               <span className="chapter-next">Chương sau</span>
               <AiOutlineArrowRight size={"1.5em"} />{" "}
             </div>
@@ -107,7 +124,7 @@ const Chapter = () => {
         </div>
 
         <div className="chapter-config">
-          <ChapterConfig />
+          <ChapterConfig storyId={storyId} />
         </div>
       </div>
     </div>

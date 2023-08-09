@@ -1,53 +1,68 @@
 import { useEffect, useState } from "react";
 import "./StoryFilterGenre.scss";
 import { useQueryString } from "../../hooks";
-const StoryFilterGenre = ({
-  searchValue,
-  selectedStoryTag,
-  setSelectedStoryTag,
-  tags,
-}) => {
+import { useDispatch, useSelector } from "react-redux";
+import { handleGetGenreService } from "../../services/GenreService";
+import { setTagsFilter } from "../../features/storySlice";
+const StoryFilterGenre = ({ selectedStoryTag, setSelectedStoryTag }) => {
+  const dispatch = useDispatch();
+  const tagsFilter = useSelector((state) => state.story.tagsFilter);
   const [storyTag, setStoryTag] = useState({});
-  const params = useQueryString();
+  const { genre, q } = useQueryString();
   useEffect(() => {
-    if (tags.length > 0) {
-      let data = computeData(tags);
-      setStoryTag({ ...data });
+    if (tagsFilter?.length === 0) {
+      async function fetchGenre() {
+        let res = await handleGetGenreService();
+        if (res?.success) {
+          let data = res.data;
+          dispatch(setTagsFilter(data));
+
+          setStoryTag(computeData(data));
+        }
+      }
+      fetchGenre();
+    } else {
+      let data = computeData(tagsFilter);
+      setStoryTag(data);
     }
   }, []);
   useEffect(() => {
-    handleSetGenreFromUrl(params.genre);
-  }, [params.genre]);
+    if (genre) {
+      handleSetGenreFromUrl(genre);
+    }
+  }, [genre]);
+
   const computeData = (data) => {
     let obj = {};
     obj["CATEGORY"] = [];
     obj["CHARACTER"] = [];
     obj["WORLD"] = [];
     obj["TAG"] = [];
-    data?.length > 0 &&
-      data.forEach((item) => {
-        item.selected = false;
-        switch (item.type) {
-          case 1:
-            item.key = "CATEGORY";
-            obj["CATEGORY"].push(item);
-            break;
-          case 2:
-            item.key = "CHARACTER";
-            obj["CHARACTER"].push(item);
-            break;
-          case 3:
-            item.key = "WORLD";
-            obj["WORLD"].push(item);
-            break;
-          case 4:
-            item.key = "TAG";
-            obj["TAG"].push(item);
-            break;
-          default:
-            break;
-        }
-      });
+    data = data.map((item) => {
+      return { ...item, selected: false, key: "" };
+    });
+    data.forEach((item) => {
+      switch (item.type) {
+        case 1:
+          item.key = "CATEGORY";
+          obj["CATEGORY"].push(item);
+          break;
+        case 2:
+          item.key = "CHARACTER";
+          obj["CHARACTER"].push(item);
+          break;
+        case 3:
+          item.key = "WORLD";
+          obj["WORLD"].push(item);
+          break;
+        case 4:
+          item.key = "TAG";
+          obj["TAG"].push(item);
+          break;
+        default:
+          break;
+      }
+    });
     return obj;
   };
   const handleSetSelectedTag = (tag) => {
@@ -130,9 +145,7 @@ const StoryFilterGenre = ({
       <div className="selected-genre">
         <div className="tag-title">Đã chọn</div>
         <div className="tag-wrapper">
-          {searchValue && (
-            <span className="search-value">Đang tìm: {searchValue}</span>
-          )}
+          {q && <span className="search-value">Đang tìm: {q}</span>}
           {selectedStoryTag?.length > 0 &&
             selectedStoryTag.map((item) => {
               return (
