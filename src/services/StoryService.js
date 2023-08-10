@@ -6,6 +6,6 @@ const handleGetStoryService = (qs = {}) => {
   });
 };
 const handleShowStoryService = (id) => {
-  return axios.get(`api/story/show/${id}`);
+  return axios.get(`api/story/${id}/show`);
 };
 export { handleGetStoryService, handleShowStoryService };

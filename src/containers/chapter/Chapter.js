@@ -17,6 +17,7 @@ import { handleGetChapterService } from "../../services/ChapterService";
 
 import ChapterConfig from "./ChapterConfig";
 import Header from "../Home/Header";
+import { diffTime } from "../../utils/Helper";
 
 const Chapter = () => {
   const { name, index: chapterIndex } = useParams();
@@ -98,7 +99,7 @@ const Chapter = () => {
           </div>
           <div className="chapter-created-at">
             <AiOutlineFieldTime size={"1.5em"} />
-            <span> {chapter?.created_at}</span>
+            <span> {diffTime(chapter?.created_at)}</span>
           </div>
         </div>
 

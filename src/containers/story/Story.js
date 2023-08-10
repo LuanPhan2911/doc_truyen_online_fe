@@ -18,7 +18,7 @@ const Story = ({ story, isAdmin }) => {
       navigate(`/admin/story/${storyDetail?.id}`, {});
     } else {
       navigate(`/story/${storyDetail?.slug}`, {
-        state: storyDetail,
+        state: storyDetail?.id,
       });
     }
   };

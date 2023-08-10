@@ -1,8 +1,10 @@
 .comment-data {
   display: flex;
   gap: 20px;
+  border-bottom: 1px solid #bbb;
+  padding: 10px 0;
   .avatar {
-    width: 50px;
+    width: 60px;
     height: 50px;
     border-radius: 50%;
     overflow: hidden;
@@ -17,18 +19,29 @@
   }
   .comment-body {
     width: 100%;
-    .user-name {
-      font-size: 1.2em;
-      font-weight: 600;
-      cursor: pointer;
-      &:hover {
-        color: #bd953d;
+    .comment-info {
+      display: flex;
+      gap: 10px;
+      .user-name {
+        font-size: 1.2em;
+        font-weight: 600;
+        cursor: pointer;
+        &:hover {
+          color: #bd953d;
+        }
+      }
+      .time {
+        font-size: 12px;
+        font-weight: 300;
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
     }
 
     .comment-content {
       font-size: 1em;
-      font-weight: 500;
+      font-weight: 400;
     }
     .comment-replies {
       span {
@@ -44,8 +57,12 @@
       display: flex;
       justify-content: flex-end;
       span {
-        margin: 10px 15px;
         cursor: pointer;
+        padding: 5px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
         &:hover {
           color: #bd953d;
         }

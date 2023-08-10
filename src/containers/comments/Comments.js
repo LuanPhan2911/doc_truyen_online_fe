@@ -40,8 +40,8 @@ const Comments = ({ storyId, isReply, replies }) => {
 
   return (
     <div className="comments">
-      <div className="comment-list">
-        {!isReply && <CommentForm storyId={storyId} setIsSent={setIsSent} />}
+      {!isReply && <CommentForm storyId={storyId} setIsSent={setIsSent} />}
+      <div className="comments-list">
         {comments?.length > 0 &&
           comments.map((item) => {
             return (
@@ -54,7 +54,6 @@ const Comments = ({ storyId, isReply, replies }) => {
             );
           })}
       </div>
-      <div className="other"></div>
     </div>
   );
 };

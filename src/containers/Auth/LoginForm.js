@@ -32,7 +32,6 @@ const LoginForm = () => {
     setUser({ ...cpUser });
   };
   const handleLogin = async () => {
-    console.log(user);
     if (handleValidateForm(user)) {
       try {
         let res = await handleLoginService(user);

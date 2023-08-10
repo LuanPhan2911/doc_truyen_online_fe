@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import "./StoryContent.scss";
 import { asset } from "../../utils/Helper";
 import ChapterList from "../chapter/ChapterList";
+import { handleShowStoryService } from "../../services/StoryService";
 
 const StoryContent = () => {
   const location = useLocation();
@@ -19,51 +20,45 @@ const StoryContent = () => {
   const [genres, setGenres] = useState([]);
 
   useEffect(() => {
-    let storyState = location.state;
-    let cpStoryTag = [
-      {
-        id: 1,
-        name: "Giới thiệu",
-        active: true,
-        component: <Description description={storyState.description} />,
-        plug: "description",
-      },
-      {
-        id: 2,
-        name: "Đánh giá",
-        active: false,
-        component: null,
-        count: 15,
-        plug: "judge",
-      },
-      {
-        id: 3,
-        name: "DS. Chương",
-        active: false,
-        component: <ChapterList storyId={storyState.id} />,
-        count: storyState.chapters_count,
-        plug: "chapter-list",
-      },
-      {
-        id: 4,
-        name: "Bình luận",
-        active: false,
-        component: <Comments storyId={storyState.id} />,
-        count: 1200,
-        plug: "comment",
-      },
-      {
-        id: 5,
-        name: "Hâm mộ",
-        active: false,
-        component: null,
-        plug: "favorite",
-      },
-    ];
-    setStoryTag([...cpStoryTag]);
-    setStory({ ...storyState, chapterIndex: 1 });
-    setGenres([...storyState.genres]);
-  }, []);
+    let storyId = location.state;
+    async function fetchStory() {
+      try {
+        let res = await handleShowStoryService(storyId);
+        if (res?.success) {
+          let { genres, ...other } = res.data;
+          setStory({ ...other, chapterIndex: 1 });
+          setGenres([...genres]);
+          let cpStoryTag = [
+            {
+              id: 1,
+              name: "Giới thiệu",
+              active: true,
+              component: <Description description={other.description} />,
+              plug: "description",
+            },
+            {
+              id: 2,
+              name: "DS. Chương",
+              active: false,
+              component: <ChapterList storyId={storyId} />,
+              count: story.chapters_count,
+              plug: "chapter-list",
+            },
+            {
+              id: 3,
+              name: "Bình luận",
+              active: false,
+              component: <Comments storyId={storyId} />,
+              count: story.comments_count,
+              plug: "comment",
+            },
+          ];
+          setStoryTag([...cpStoryTag]);
+        }
+      } catch (error) {}
+    }
+    fetchStory();
+  }, [location.state]);
 
   const handleShowChapter = ({ chapterIndex }) => {
     navigate(`chapter/${chapterIndex}`, {});
@@ -82,7 +77,7 @@ const StoryContent = () => {
     setStoryTag([...cpStoryTag]);
   };
   return (
-    <div className="container content">
+    <div className="container story-detail-main">
       <div className="story-detail">
         <div className="story-detail-image">
           <img src={story?.avatar && asset(story?.avatar)} alt="Not found" />
@@ -121,8 +116,10 @@ const StoryContent = () => {
               <AiFillStar color="yellow" />
               <AiFillStar color="yellow" />
             </div>
-            4.62/5
-            <span>(24 lượt đánh giá)</span>
+            <div className="rate">
+              4.62/5
+              <span>(24 lượt đánh giá)</span>
+            </div>
           </div>
           <ul className="story-detail-action">
             <li
@@ -154,7 +151,7 @@ const StoryContent = () => {
                   onClick={() => handleChangeStoryTag(item.id)}
                 >
                   {item.name}
-                  {item?.count && <span className="count">{item.count}</span>}
+                  <span className="count">{item.count}</span>
                 </li>
               );
             })}

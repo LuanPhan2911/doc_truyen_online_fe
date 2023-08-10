@@ -42,7 +42,7 @@ const CommentForm = ({ isReply, storyId, parentId, setIsSent }) => {
   };
   return (
     <div className="comment-form">
-      <div className="avatar">
+      <div className="comment-avatar">
         <img
           src={user?.avatar ? asset(user.avatar) : avatarDefault}
           alt="Not found"

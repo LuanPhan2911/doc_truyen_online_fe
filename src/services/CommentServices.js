@@ -9,4 +9,11 @@ const handleGetCommentsService = (qs) => {
     },
   });
 };
-export { handleSendCommentService, handleGetCommentsService };
+const handleLikeCommentService = (commentId) => {
+  return axios.post(`api/comments/${commentId}/like`);
+};
+export {
+  handleSendCommentService,
+  handleGetCommentsService,
+  handleLikeCommentService,
+};

@@ -8,30 +8,72 @@ import { useEffect, useState } from "react";
 import CommentForm from "./CommentForm";
 import { asset, diffTime } from "../../utils/Helper";
 import Comments from "./Comments";
+import { useSelector } from "react-redux";
+import useDialog from "../../hooks/useDialog";
+import { handleLikeCommentService } from "../../services/CommentServices";
 const Comment = ({ comment: commentProps, isReply, setIsSent }) => {
   const [comment, setComment] = useState({});
   const [replies, setReplies] = useState([]);
   const [user, setUser] = useState({});
   const [showInput, setShowInput] = useState(false);
   const [showRelies, setShowRelies] = useState(false);
-
+  const [likeCounter, setLikeCounter] = useState(0);
+  const [repliesCounter, setRepliesCounter] = useState(0);
+  const isAuth = useSelector((state) => state.user.isAuth);
+  const { handleShowDialog } = useDialog();
   useEffect(() => {
-    if (isReply) {
-      let { user, ...other } = commentProps;
-      setUser({ ...user });
-      setComment({ ...other });
-    } else {
-      let { replies, user, ...other } = commentProps;
+    let {
+      user,
+      like_counter,
+      id,
+      parent_id,
+      commentable_id,
+      message,
+      created_at,
+      replies_count,
+    } = commentProps;
+    setRepliesCounter(replies_count);
+    if (!isReply) {
+      let { replies } = commentProps;
       setReplies([...replies]);
-      setUser({ ...user });
-      setComment({ ...other });
     }
+    if (like_counter) {
+      setLikeCounter(like_counter.count);
+    }
+    setUser({ ...user });
+    setComment({
+      id,
+      parent_id,
+      commentable_id,
+      message,
+      created_at,
+    });
   }, [commentProps]);
 
   const handleReply = () => {
     setShowInput(!showInput);
   };
-
+  const handleCheckLogin = () => {
+    if (!isAuth) {
+      handleShowDialog("login");
+    }
+  };
+  const handleLikeComment = async (commentId) => {
+    handleCheckLogin();
+    if (isAuth) {
+      try {
+        let res = await handleLikeCommentService(commentId);
+        if (res?.success) {
+          let message = res.data;
+          if (message === "like") {
+            setLikeCounter((likeCounter) => likeCounter + 1);
+          } else {
+            setLikeCounter((likeCounter) => likeCounter - 1);
+          }
+        }
+      } catch (error) {}
+    }
+  };
   return (
     <>
       <div className="comment-data">
@@ -43,8 +85,8 @@ const Comment = ({ comment: commentProps, isReply, setIsSent }) => {
           />
         </div>
         <div className="comment-body">
-          <div className="user-name">{user.name}</div>
           <div className="comment-info">
+            <span className="user-name">{user.name}</span>
             <span className="time">
               <AiOutlineFieldTime size={"1.5em"} />
               {diffTime(comment?.created_at)}
@@ -54,7 +96,9 @@ const Comment = ({ comment: commentProps, isReply, setIsSent }) => {
           {replies?.length > 0 && (
             <div className="comment-replies">
               {!showRelies ? (
-                <span onClick={() => setShowRelies(true)}>Xem trả lời</span>
+                <span onClick={() => setShowRelies(true)}>
+                  Xem {repliesCounter} trả lời
+                </span>
               ) : (
                 <>
                   <Comments isReply={true} replies={replies} />
@@ -72,21 +116,23 @@ const Comment = ({ comment: commentProps, isReply, setIsSent }) => {
             />
           )}
           <div className="comment-report">
-            <span className="like">
+            <span
+              className="like"
+              onClick={() => handleLikeComment(comment.id)}
+            >
               <BiLike />
-              Like
-              <span>{comment.like}</span>
+              <span> {`Like ${likeCounter}`}</span>
             </span>
             {!isReply && (
               <span className="reply" onClick={() => handleReply()}>
                 <BsReply />
-                {showInput ? "Đóng" : "Trả lời"}
+                <span>{showInput ? "Đóng" : "Trả lời"}</span>
               </span>
             )}
 
             <span className="report">
               <AiFillFlag />
-              Báo cáo
+              <span> Báo cáo</span>
             </span>
           </div>
         </div>
