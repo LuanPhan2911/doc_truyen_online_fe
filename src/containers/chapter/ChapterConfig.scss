@@ -1,0 +1,72 @@
+.chapter-config-menu {
+  position: fixed;
+  right: 20px;
+  top: 100px;
+  width: 50px;
+  height: 300px;
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  border-radius: 15px;
+  z-index: 50;
+  border: 1px solid #fff;
+
+  background: transparent;
+  li {
+    padding: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+    &:hover {
+      color: #bd953b;
+      transition: 0.5s;
+      &::before {
+        content: attr(content);
+        position: absolute;
+        height: 80%;
+        min-width: 100px;
+        top: 0;
+        left: 0;
+        transform: translateX(-100%);
+        transition: 0.5s;
+        // background: #333;
+        // color: #fff;
+        text-align: center;
+        border-radius: 10px;
+      }
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .chapter-config-menu {
+    position: fixed;
+    top: initial;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    background: #fff;
+    padding: 10px;
+    margin: 0;
+
+    li {
+      &:hover {
+        &::before {
+          left: 0;
+          top: 0;
+          transform: translateY(-75%);
+        }
+      }
+    }
+  }
+}

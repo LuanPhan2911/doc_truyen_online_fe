@@ -1,0 +1,25 @@
+.dropdown:hover .dropdown-menu,
+.dropdown:focus .dropdown-menu {
+  display: block !important;
+}
+.dropdown {
+  .btn-dropdown {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    span {
+      font-weight: 700;
+    }
+  }
+  .dropdown-menu {
+    min-width: 400px;
+    ul li {
+      padding: 5px 0;
+    }
+    ul li:hover {
+      color: #bd953b;
+      cursor: pointer;
+    }
+  }
+}

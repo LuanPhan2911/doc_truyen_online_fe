@@ -1,0 +1,19 @@
+.story-description-tag {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  gap: 20px;
+  min-height: 500px;
+  .story-description-content {
+    font-size: 1em;
+    font-weight: 500;
+  }
+  .auth-info {
+    background: #393939;
+    border-radius: 15px;
+  }
+}
+@media (max-width: 576px) {
+  .story-description-tag {
+    grid-template-columns: 1fr;
+  }
+}
