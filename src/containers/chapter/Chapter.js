@@ -17,7 +17,8 @@ import { handleGetChapterService } from "../../services/ChapterService";
 
 import ChapterConfig from "./ChapterConfig";
 import Header from "../Home/Header";
-import { diffTime } from "../../utils/Helper";
+import { countWords, diffTime } from "../../utils/Helper";
+import Comments from "../comments/Comments";
 
 const Chapter = () => {
   const { name, index: chapterIndex } = useParams();
@@ -45,6 +46,7 @@ const Chapter = () => {
 
       if (res?.success) {
         let { chapter, count, storyId } = res.data;
+
         setChapter({ ...chapter });
         setCountChapter(count);
         setStoryId(storyId);
@@ -79,6 +81,15 @@ const Chapter = () => {
     >
       <Header />
       <div className="chapter">
+        <div className="chapter-pre-next">
+          <div className="chapter-pre" onClick={() => handlePreChapter()}>
+            <AiOutlineArrowLeft size={"1.5em"} /> <span>Chương trước</span>
+          </div>
+          <div className="chapter-next" onClick={() => handleNextChapter()}>
+            <span className="chapter-next">Chương sau</span>
+            <AiOutlineArrowRight size={"1.5em"} />{" "}
+          </div>
+        </div>
         <div className="chapter-name">{chapter?.name}</div>
         <div className="chapter-story-info">
           <div className="story-name">
@@ -91,7 +102,7 @@ const Chapter = () => {
           </div>
           <div className="chapter-word-count">
             <BsCursorText size={"1.5em"} />
-            <span> 1333 chữ</span>
+            <span> {countWords(chapter?.content)} chữ</span>
           </div>
           <div className="chapter-liked">
             <AiOutlineHeart size={"1.5em"} />
@@ -104,7 +115,7 @@ const Chapter = () => {
         </div>
 
         <div
-          className="chapter-content"
+          className="chapter-content line-break"
           style={{
             color: "inherit",
             backgroundColor: "inherit",
@@ -127,6 +138,9 @@ const Chapter = () => {
         <div className="chapter-config">
           <ChapterConfig storyId={storyId} />
         </div>
+      </div>
+      <div className="container">
+        <Comments storyId={storyId} />
       </div>
     </div>
   );

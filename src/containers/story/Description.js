@@ -3,8 +3,8 @@ const Description = ({ description }) => {
   return (
     <>
       <div className="story-description-tag">
-        <div className="story-description-content">
-          <span dangerouslySetInnerHTML={{ __html: description }}></span>
+        <div className="story-description-content line-break">
+          {description}
         </div>
         <div className="auth-info"></div>
       </div>

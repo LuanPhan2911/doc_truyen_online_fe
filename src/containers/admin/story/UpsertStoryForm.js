@@ -66,10 +66,10 @@ const UpsertStoryForm = ({ isUpdate }) => {
     genres_id: [],
     user_id: user.id,
     author_name: "",
+    description: "",
   });
 
   const [showChapterList, setShowChapterList] = useState(false);
-  const [storyDescription, setStoryDescription] = useState("");
   useEffect(() => {
     if (tagsFilter?.length === 0) {
       async function fetchGenre() {
@@ -88,7 +88,6 @@ const UpsertStoryForm = ({ isUpdate }) => {
             let cpStory = { ...res.data };
             let data = computedStory(cpStory);
             setStory({ ...data });
-            setStoryDescription(cpStory.description);
             let genres = computeGenre(cpStory.genres);
             setSelectedTag({ ...genres });
           }
@@ -140,7 +139,17 @@ const UpsertStoryForm = ({ isUpdate }) => {
     return obj;
   };
   const computedStory = (data) => {
-    let { name, author_name, avatar, status, user_id, view, genres, id } = data;
+    let {
+      name,
+      author_name,
+      avatar,
+      status,
+      user_id,
+      view,
+      genres,
+      id,
+      description,
+    } = data;
     let genres_id = (genres?.length > 0 && genres.map((item) => item.id)) || [];
     return {
       name,
@@ -151,6 +160,7 @@ const UpsertStoryForm = ({ isUpdate }) => {
       view,
       genres_id,
       id,
+      description,
     };
   };
   useEffect(() => {
@@ -194,7 +204,6 @@ const UpsertStoryForm = ({ isUpdate }) => {
       } else {
         try {
           let cpStory = { ...story };
-          cpStory["description"] = storyDescription;
           if (!(cpStory.avatar instanceof File)) {
             cpStory["avatar"] = null;
           }
@@ -204,7 +213,6 @@ const UpsertStoryForm = ({ isUpdate }) => {
             let data = res.data;
             let computedData = computedStory(data);
             setStory({ ...computedData });
-            setStoryDescription(data.description);
             let genres = computeGenre(data.genres);
             setSelectedTag({ ...genres });
           }
@@ -222,15 +230,15 @@ const UpsertStoryForm = ({ isUpdate }) => {
             toast.success("Tạo truyện thành công!");
             setStory({
               name: "",
-
               avatar: "",
               status: 1,
               view: 1,
               genres_id: [],
               user_id: user.id,
               author_name: "",
+              description: "",
             });
-            setStoryDescription("");
+
             setSelectedTag({});
           }
         } catch (error) {
@@ -322,12 +330,12 @@ const UpsertStoryForm = ({ isUpdate }) => {
               </button>
             </div>
           )}
-          <div className="col-12 description-box">
+          <div className="col-12 description-box form-group">
             <label>Mô tả truyện</label>
-            <TextEditor
-              value={storyDescription}
-              setValue={setStoryDescription}
-              className={"story-description-editor"}
+            <textarea
+              value={story.description}
+              className={"story-description-editor form-control"}
+              onChange={(e) => handleSetInput(e, "description")}
             />
           </div>
           <div className="col-12">

@@ -165,9 +165,6 @@ const StoryFilter = () => {
             </li>
             <li>Lượt đọc</li>
             <li>Điểm đánh giá</li>
-            <li>Cất giữ</li>
-            <li>Yêu thích</li>
-            <li>Đề cử</li>
             <li>Bình luận</li>
             <li>Số chương</li>
           </ul>

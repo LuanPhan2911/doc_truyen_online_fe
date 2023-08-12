@@ -85,6 +85,15 @@ function getQueryParams(url) {
 const diffTime = (time) => {
   return moment(time).locale("vi").fromNow();
 };
+const newLine2Br = (str) => {
+  return str.replace(/(?:\r\n|\r|\n)/g, "<br>");
+};
+function countWords(str) {
+  if (str) {
+    let matches = str.match(/[\w\d]+/gi);
+    return matches ? matches.length : 0;
+  }
+}
 export {
   isFunctionalComponent,
   isClassComponent,
@@ -93,4 +102,6 @@ export {
   asset,
   getQueryParams,
   diffTime,
+  newLine2Br,
+  countWords,
 };

@@ -7,8 +7,8 @@ import useDialog from "../../hooks/useDialog";
 import { asset, checkPropertiesIsEmpty } from "../../utils/Helper";
 import { handleSendCommentService } from "../../services/CommentServices";
 import { toast } from "react-toastify";
-const CommentForm = ({ isReply, storyId, parentId, setIsSent }) => {
-  const initComment = { message: "", parent_id: "", user_id: "", story_id: "" };
+const CommentForm = ({ isReply, storyId, parentId, handleSetNewComment }) => {
+  const initComment = { message: "", parent_id: "", user_id: "" };
   const user = useSelector((state) => state.user);
 
   const [comment, setComment] = useState({ ...initComment });
@@ -27,15 +27,19 @@ const CommentForm = ({ isReply, storyId, parentId, setIsSent }) => {
   const handleSendComment = async () => {
     let cpComment = { ...comment };
     cpComment["user_id"] = user.id;
-    cpComment["story_id"] = storyId;
+    cpComment["commentedId"] = storyId;
+    cpComment["type"] = "story";
     cpComment["parent_id"] = parentId || null;
+
     if (!checkPropertiesIsEmpty(cpComment, ["parent_id"])) {
       try {
         let res = await handleSendCommentService(cpComment);
         if (res?.success) {
+          let comment = res.data;
+          handleSetNewComment(comment, parentId);
+
           toast.success("Bình luận thành công!");
           setComment({ ...initComment });
-          setIsSent(true);
         }
       } catch (error) {}
     }

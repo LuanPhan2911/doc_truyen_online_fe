@@ -11,7 +11,9 @@ import Comments from "./Comments";
 import { useSelector } from "react-redux";
 import useDialog from "../../hooks/useDialog";
 import { handleLikeCommentService } from "../../services/CommentServices";
-const Comment = ({ comment: commentProps, isReply, setIsSent }) => {
+import { Modal } from "react-bootstrap";
+import ReportForm from "../reports/ReportForm";
+const Comment = ({ comment: commentProps, isReply, handleSetNewComment }) => {
   const [comment, setComment] = useState({});
   const [replies, setReplies] = useState([]);
   const [user, setUser] = useState({});
@@ -21,6 +23,7 @@ const Comment = ({ comment: commentProps, isReply, setIsSent }) => {
   const [repliesCounter, setRepliesCounter] = useState(0);
   const isAuth = useSelector((state) => state.user.isAuth);
   const { handleShowDialog } = useDialog();
+  const [showReport, setShowReport] = useState(false);
   useEffect(() => {
     let {
       user,
@@ -32,6 +35,7 @@ const Comment = ({ comment: commentProps, isReply, setIsSent }) => {
       created_at,
       replies_count,
     } = commentProps;
+
     setRepliesCounter(replies_count);
     if (!isReply) {
       let { replies } = commentProps;
@@ -48,7 +52,7 @@ const Comment = ({ comment: commentProps, isReply, setIsSent }) => {
       message,
       created_at,
     });
-  }, [commentProps]);
+  }, [commentProps, commentProps?.replies]);
 
   const handleReply = () => {
     setShowInput(!showInput);
@@ -72,6 +76,12 @@ const Comment = ({ comment: commentProps, isReply, setIsSent }) => {
           }
         }
       } catch (error) {}
+    }
+  };
+  const handleReportComment = () => {
+    handleCheckLogin();
+    if (isAuth) {
+      setShowReport(true);
     }
   };
   return (
@@ -111,8 +121,8 @@ const Comment = ({ comment: commentProps, isReply, setIsSent }) => {
             <CommentForm
               isReply={true}
               parentId={comment.id}
-              setIsSent={setIsSent}
               storyId={comment.commentable_id}
+              handleSetNewComment={handleSetNewComment}
             />
           )}
           <div className="comment-report">
@@ -130,13 +140,21 @@ const Comment = ({ comment: commentProps, isReply, setIsSent }) => {
               </span>
             )}
 
-            <span className="report">
+            <span className="report" onClick={() => handleReportComment()}>
               <AiFillFlag />
               <span> Báo cáo</span>
             </span>
           </div>
         </div>
       </div>
+      <Modal show={showReport} onHide={() => setShowReport(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Báo cáo bình luận</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {<ReportForm type={"comment"} reportedId={comment?.id} />}
+        </Modal.Body>
+      </Modal>
     </>
   );
 };

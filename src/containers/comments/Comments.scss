@@ -1,5 +1,9 @@
 .comments {
   .comments-list {
-    background: #fff;
+  }
+  .comments-see-more {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
   }
 }

@@ -6,7 +6,7 @@ import { useFetch } from "../../hooks";
 import Story from "./Story";
 const StoryHome = () => {
   let { data: stories } = useFetch(handleGetStoryService);
-  console.log(stories);
+
   return (
     <>
       <div className="d-flex justify-content-between">
