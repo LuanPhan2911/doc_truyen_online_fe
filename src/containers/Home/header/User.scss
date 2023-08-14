@@ -1,0 +1,11 @@
+.user-setting {
+  li {
+    a {
+      text-decoration: none;
+      color: #333;
+      &:hover {
+        color: #3d95b3;
+      }
+    }
+  }
+}

@@ -18,7 +18,7 @@ const UpsertChapterForm = ({ isUpdate }) => {
     name: "",
     index: "",
     content: "",
-    story_id: "",
+    story_id: storyId,
   });
   useEffect(() => {
     if (isUpdate) {
@@ -47,7 +47,7 @@ const UpsertChapterForm = ({ isUpdate }) => {
   };
   const handleUpsertChapter = async () => {
     //validate
-    let check = checkPropertiesIsEmpty(chapter, ["index"]);
+    let check = checkPropertiesIsEmpty(chapter, ["index", "id"]);
 
     if (check) {
       toast.error("Thiếu dữ liệu");
@@ -73,6 +73,7 @@ const UpsertChapterForm = ({ isUpdate }) => {
               index: "",
               content: "",
               id: "",
+              story_id: storyId,
             });
           }
         } catch (error) {

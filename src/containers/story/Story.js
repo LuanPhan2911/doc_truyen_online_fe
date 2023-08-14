@@ -1,11 +1,14 @@
 import { BsVectorPen } from "react-icons/bs";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./Story.scss";
 import { asset } from "../../utils/Helper";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 const Story = ({ story, isAdmin }) => {
   const navigate = useNavigate();
   const [genreName, setGenreName] = useState("");
+  const continueRead = useSelector((state) => state.story.continueRead);
+
   useEffect(() => {
     const { genres } = story;
     if (genres?.length > 0) {
@@ -13,14 +16,27 @@ const Story = ({ story, isAdmin }) => {
       setGenreName(genre.name);
     }
   }, [story]);
+  const getIndex = (continueRead, storyId) => {
+    let story =
+      continueRead?.length > 0 &&
+      continueRead.find((item) => item.id === storyId);
+    if (story) {
+      return story?.pivot?.index;
+    }
+    return null;
+  };
   const handleShowStoryDetail = (storyDetail) => {
     if (isAdmin) {
       navigate(`/admin/story/${storyDetail?.id}`, {});
     } else {
       navigate(`/story/${storyDetail?.slug}`, {
-        state: storyDetail?.id,
+        state: {
+          storyId: storyDetail?.id,
+          index: getIndex(continueRead, storyDetail?.id) || 1,
+        },
       });
     }
+    getIndex(continueRead, storyDetail?.id);
   };
   return (
     <div className="story">
@@ -34,10 +50,9 @@ const Story = ({ story, isAdmin }) => {
         >
           {story?.name}
         </div>
-        <div
-          className="story-description text-overflow-2-line "
-          dangerouslySetInnerHTML={{ __html: story?.description }}
-        ></div>
+        <div className="story-description text-overflow-2-line ">
+          {story?.description}
+        </div>
         <div className="auth-genre">
           <div className="auth text-overflow-1-line">
             <BsVectorPen size={"1.5em"} />

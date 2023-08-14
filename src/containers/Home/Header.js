@@ -9,6 +9,7 @@ import avatarDefault from "../../assets/avatar/default.png";
 import User from "./header/User";
 import { asset } from "../../utils/Helper";
 import { useDialog } from "../../hooks";
+import Notifies from "./header/Notifies";
 const Header = () => {
   const isAuth = useSelector((state) => state.user.isAuth);
   const user = useSelector((state) => state.user);
@@ -62,16 +63,20 @@ const Header = () => {
         </Link>
         <div className="group">
           <ul className="navigation">
-            {isAuth ? (
-              <li className="user-login">
-                <img
-                  src={user.avatar ? asset(user.avatar) : avatarDefault}
-                  alt="not found"
-                ></img>
-                <User btn={user.name} />
-              </li>
-            ) : (
-              <></>
+            {isAuth && (
+              <>
+                <li className="user-login">
+                  <img
+                    src={user.avatar ? asset(user.avatar) : avatarDefault}
+                    alt="not found"
+                  ></img>
+                  <User btn={user.name} />
+                </li>
+                <li>
+                  <i className="bi bi-bell"></i>
+                  <Notifies btn={"Thông báo"} />
+                </li>
+              </>
             )}
             <li>
               <i className="bi bi-border-all"></i>

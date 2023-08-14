@@ -20,13 +20,13 @@ const StoryContent = () => {
   const [genres, setGenres] = useState([]);
 
   useEffect(() => {
-    let storyId = location.state;
+    let { storyId, index } = location.state;
     async function fetchStory() {
       try {
         let res = await handleShowStoryService(storyId);
         if (res?.success) {
           let { genres, ...other } = res.data;
-          setStory({ ...other, chapterIndex: 1 });
+          setStory({ ...other, chapterIndex: index });
           setGenres([...genres]);
           let cpStoryTag = [
             {

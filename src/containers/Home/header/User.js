@@ -4,7 +4,7 @@ import { handleLogoutService } from "../../../services/AuthServices";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { userLogout } from "../../../features/userSlice";
-
+import "./User.scss";
 const User = ({ btn }) => {
   const dispatch = useDispatch();
   const handleUserLogout = async () => {
@@ -23,15 +23,18 @@ const User = ({ btn }) => {
       {{
         btn: <span className="btn-dropdown">{btn}</span>,
         body: (
-          <ul>
+          <ul className="user-setting">
             <li>
-              <Link to={"/user"}>Profile</Link>
+              <Link to={"/user"}>Hồ sơ</Link>
             </li>
             <li>
               <Link to={"/user/story-reading"}>Tủ truyện</Link>
             </li>
             <li>
               <Link to={"/user/setting"}>Cài đặt</Link>
+            </li>
+            <li>
+              <Link to={"/user/notify"}>Thông báo</Link>
             </li>
             <li onClick={() => handleUserLogout()}>Thoát</li>
           </ul>

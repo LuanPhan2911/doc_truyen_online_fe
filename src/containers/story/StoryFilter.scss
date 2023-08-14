@@ -99,12 +99,14 @@
     grid-template-columns: 1fr;
     .story-filter-tag {
       padding: 10px;
-      position: absolute;
+      position: fixed;
       transform: translateX(-100vw);
 
       width: 100%;
       top: 0;
       left: 0;
+      height: 100vh;
+      overflow: scroll;
       transition: 0.5s;
       &.active {
         transform: translateX(0);

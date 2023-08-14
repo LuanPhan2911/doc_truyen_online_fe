@@ -1,0 +1,13 @@
+.story-reading {
+  cursor: pointer;
+  padding: 10px;
+  .avatar {
+    width: 70px;
+    height: 100px;
+    border-radius: 20px;
+  }
+  .name {
+    font-weight: 600;
+    font-size: 1.1em;
+  }
+}

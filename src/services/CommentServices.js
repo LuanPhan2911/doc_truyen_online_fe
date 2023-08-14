@@ -12,8 +12,12 @@ const handleGetCommentsService = (qs) => {
 const handleLikeCommentService = (commentId) => {
   return axios.post(`api/comments/${commentId}/like`);
 };
+const handleDeleteCommentService = (commentId) => {
+  return axios.delete(`api/comments/${commentId}`);
+};
 export {
   handleSendCommentService,
   handleGetCommentsService,
   handleLikeCommentService,
+  handleDeleteCommentService,
 };
