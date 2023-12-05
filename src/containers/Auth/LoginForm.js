@@ -2,12 +2,12 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { handleLoginService } from "../../services/AuthServices";
 import { toast } from "react-toastify";
-import "./LoginForm.scss";
 import { userLogin } from "../../features/userSlice";
-import useDialog from "../../hooks/useDialog";
+import "./LoginForm.scss";
+import { Link } from "react-router-dom";
+import HomeLayout from "../layouts/HomeLayout";
 const LoginForm = () => {
   const dispatch = useDispatch();
-  const { handleShowDialog, handleCloseDialog } = useDialog();
   const [user, setUser] = useState({
     email: "",
     password: "",
@@ -39,7 +39,6 @@ const LoginForm = () => {
           toast.success("Đăng nhập thành công");
           let user = res.data;
           dispatch(userLogin(user));
-          handleCloseDialog();
           setUser({
             email: "",
             password: "",
@@ -51,18 +50,13 @@ const LoginForm = () => {
   };
 
   return (
-    <>
+    <HomeLayout>
       <div className="login-form">
         <div className="h3 text-center">Đăng nhập</div>
         <div className="form-group py-2">
           <div className="d-flex justify-content-between">
             <label>Email</label>
-            <div
-              className="verify-email"
-              onClick={() => handleShowDialog("verify-email")}
-            >
-              Gửi lại email kích hoạt
-            </div>
+            <div className="verify-email">Gửi lại email kích hoạt</div>
           </div>
           <input
             type={"email"}
@@ -75,12 +69,7 @@ const LoginForm = () => {
         <div className="form-group py-2">
           <div className="d-flex justify-content-between">
             <label>Password</label>
-            <div
-              className="forgot-password"
-              onClick={() => handleShowDialog("forgot-password")}
-            >
-              Quên mật khẩu?
-            </div>
+            <div className="forgot-password">Quên mật khẩu?</div>
           </div>
           <input
             type={"password"}
@@ -104,11 +93,10 @@ const LoginForm = () => {
           <button onClick={() => handleLogin()}>Đăng nhập</button>
         </div>
         <div className="no-account">
-          Bạn chưa có tài khoản?{" "}
-          <span onClick={() => handleShowDialog("register")}>Đăng ký ngay</span>
+          Bạn chưa có tài khoản? <Link to={"/register"}>Đăng ký</Link>{" "}
         </div>
       </div>
-    </>
+    </HomeLayout>
   );
 };
 export default LoginForm;

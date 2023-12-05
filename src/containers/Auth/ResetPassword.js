@@ -1,6 +1,5 @@
 import { useState } from "react";
 
-import Modals from "../../components/Modals";
 import { useQueryString } from "../../hooks";
 import { handleResetPasswordService } from "../../services/AuthServices";
 import ResetPasswordForm from "./ResetPasswordForm";
@@ -22,17 +21,10 @@ const ResetPassword = ({ show }) => {
     } catch (error) {}
   };
   return (
-    <Modals isShown={isShown} handleClose={handleClose} size={"md"}>
-      {{
-        Title: "Reset password",
-        Element: (
-          <ResetPasswordForm
-            queryString={queryString}
-            handleResetPassword={handleResetPassword}
-          />
-        ),
-      }}
-    </Modals>
+    <ResetPasswordForm
+      queryString={queryString}
+      handleResetPassword={handleResetPassword}
+    />
   );
 };
 export default ResetPassword;

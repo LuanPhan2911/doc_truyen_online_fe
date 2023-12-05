@@ -1,11 +1,10 @@
 .App {
   width: 100%;
   min-height: 100vh;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
+  justify-content: space-between;
 }
 .text-overflow-2-line {
   display: -webkit-box;

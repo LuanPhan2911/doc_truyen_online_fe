@@ -9,7 +9,6 @@ import CommentForm from "./CommentForm";
 import { asset, diffTime } from "../../utils/Helper";
 import Comments from "./Comments";
 import { useSelector } from "react-redux";
-import useDialog from "../../hooks/useDialog";
 import { handleLikeCommentService } from "../../services/CommentServices";
 import { Modal } from "react-bootstrap";
 import ReportForm from "../reports/ReportForm";
@@ -22,7 +21,6 @@ const Comment = ({ comment: commentProps, isReply, handleSetNewComment }) => {
   const [likeCounter, setLikeCounter] = useState(0);
   const [repliesCounter, setRepliesCounter] = useState(0);
   const isAuth = useSelector((state) => state.user.isAuth);
-  const { handleShowDialog } = useDialog();
   const [showReport, setShowReport] = useState(false);
   useEffect(() => {
     let {
@@ -57,11 +55,7 @@ const Comment = ({ comment: commentProps, isReply, handleSetNewComment }) => {
   const handleReply = () => {
     setShowInput(!showInput);
   };
-  const handleCheckLogin = () => {
-    if (!isAuth) {
-      handleShowDialog("login");
-    }
-  };
+  const handleCheckLogin = () => {};
   const handleLikeComment = async (commentId) => {
     handleCheckLogin();
     if (isAuth) {

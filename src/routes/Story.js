@@ -1,9 +1,8 @@
 import StoryHome from "../containers/admin/story/StoryHome";
 import Chapter from "../containers/chapter/Chapter";
-import HomeLayout from "../containers/Home/HomeLayout";
+import HomeLayout from "../containers/layouts/HomeLayout";
 import StoryContent from "../containers/story/StoryContent";
 import StoryFilter from "../containers/story/StoryFilter";
-import { AuthProvider } from "../hoc";
 import UpsertStoryForm from "../containers/admin/story/UpsertStoryForm";
 import UpsertChapterForm from "../containers/admin/chapter/UpsertChapterForm";
 
@@ -11,31 +10,25 @@ const Story = [
   {
     path: "/admin/story",
     element: (
-      <AuthProvider>
-        <HomeLayout>
-          <StoryHome />
-        </HomeLayout>
-      </AuthProvider>
+      <HomeLayout>
+        <StoryHome />
+      </HomeLayout>
     ),
   },
   {
     path: "/admin/story/:id",
     element: (
-      <AuthProvider>
-        <HomeLayout>
-          <UpsertStoryForm isUpdate={true} />
-        </HomeLayout>
-      </AuthProvider>
+      <HomeLayout>
+        <UpsertStoryForm isUpdate={true} />
+      </HomeLayout>
     ),
   },
   {
     path: "/admin/story/create",
     element: (
-      <AuthProvider>
-        <HomeLayout>
-          <UpsertStoryForm />
-        </HomeLayout>
-      </AuthProvider>
+      <HomeLayout>
+        <UpsertStoryForm />
+      </HomeLayout>
     ),
   },
   {

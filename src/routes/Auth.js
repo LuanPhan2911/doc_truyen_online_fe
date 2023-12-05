@@ -1,55 +1,19 @@
-import Profile from "../containers/user/Profile";
-import HomeLayout from "../containers/Home/HomeLayout";
-import Setting from "../containers/user/Setting";
-
-import { AuthProvider } from "../hoc";
-import StoryRead from "../containers/user/StoryRead";
-import Notify from "../containers/user/Notify";
+import LoginForm from "../containers/auth/LoginForm";
+import RegisterForm from "../containers/auth/RegisterForm";
+import VerifyEmail from "../containers/auth/VerifyEmail";
 
 const Auth = [
-  // {
-  //   path: "/email/verify/:id/:hash",
-  //   element: <VerifyEmail />,
-  // },
   {
-    path: "/user",
-    element: (
-      <AuthProvider>
-        <HomeLayout>
-          <Profile />
-        </HomeLayout>
-      </AuthProvider>
-    ),
+    path: "/login",
+    element: <LoginForm />,
   },
   {
-    path: "/user/setting",
-    element: (
-      <AuthProvider>
-        <HomeLayout>
-          <Setting />
-        </HomeLayout>
-      </AuthProvider>
-    ),
+    path: "/register",
+    element: <RegisterForm />,
   },
   {
-    path: "/user/story-reading",
-    element: (
-      <AuthProvider>
-        <HomeLayout>
-          <StoryRead />
-        </HomeLayout>
-      </AuthProvider>
-    ),
-  },
-  {
-    path: "/user/notify",
-    element: (
-      <AuthProvider>
-        <HomeLayout>
-          <Notify />
-        </HomeLayout>
-      </AuthProvider>
-    ),
+    path: "/email/verify/:id/:hash",
+    element: <VerifyEmail />,
   },
 ];
 export default Auth;

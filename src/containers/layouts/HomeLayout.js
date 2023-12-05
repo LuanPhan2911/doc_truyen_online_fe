@@ -2,7 +2,7 @@ import Header from "./Header";
 import Footer from "./Footer";
 import "./HomeLayout.scss";
 
-const HoneLayout = ({ children }) => {
+const HomeLayout = ({ children }) => {
   return (
     <>
       <Header />
@@ -12,4 +12,4 @@ const HoneLayout = ({ children }) => {
   );
 };
 
-export default HoneLayout;
+export default HomeLayout;

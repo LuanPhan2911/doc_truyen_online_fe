@@ -22,7 +22,7 @@ const Notifies = () => {
     }
     fetchNotify();
   }, []);
-  console.log(notifies);
+
   const handleShowStory = () => {};
   return (
     <DropdownBase minWidth="400px">

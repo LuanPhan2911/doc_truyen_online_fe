@@ -3,7 +3,7 @@ import { AiOutlineSend } from "react-icons/ai";
 import "./CommentForm.scss";
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import useDialog from "../../hooks/useDialog";
+
 import { asset, checkPropertiesIsEmpty } from "../../utils/Helper";
 import { handleSendCommentService } from "../../services/CommentServices";
 import { toast } from "react-toastify";
@@ -12,10 +12,9 @@ const CommentForm = ({ isReply, storyId, parentId, handleSetNewComment }) => {
   const user = useSelector((state) => state.user);
 
   const [comment, setComment] = useState({ ...initComment });
-  const { handleShowDialog } = useDialog();
+
   const handleFucusInput = () => {
     if (!user.isAuth) {
-      handleShowDialog("login");
     }
   };
 

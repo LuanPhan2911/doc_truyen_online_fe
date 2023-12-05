@@ -16,7 +16,6 @@ import { useEffect, useState } from "react";
 import { handleGetChapterService } from "../../services/ChapterService";
 
 import ChapterConfig from "./ChapterConfig";
-import Header from "../Home/Header";
 import { countWords, diffTime } from "../../utils/Helper";
 import Comments from "../comments/Comments";
 
@@ -79,7 +78,6 @@ const Chapter = () => {
         backgroundColor: selectedColor.backgroundColor,
       }}
     >
-      <Header />
       <div className="chapter">
         <div className="chapter-pre-next">
           <div className="chapter-pre" onClick={() => handlePreChapter()}>

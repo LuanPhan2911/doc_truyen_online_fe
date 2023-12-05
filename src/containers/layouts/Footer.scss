@@ -3,12 +3,6 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 20px;
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-color: #dee1e2;
-  background-blend-mode: multiply;
   margin-top: 15px;
   width: 100%;
   border-top: 3px solid rgba(51, 34, 0, 0.05);
@@ -19,12 +13,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-  }
-  .text {
-    padding: 0 50px;
-    text-align: center;
-    margin: 10px;
-    font-weight: 450;
   }
   ul {
     display: flex;

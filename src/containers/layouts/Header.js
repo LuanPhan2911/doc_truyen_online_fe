@@ -8,14 +8,12 @@ import "./Header.scss";
 import avatarDefault from "../../assets/avatar/default.png";
 import User from "./header/User";
 import { asset } from "../../utils/Helper";
-import { useDialog } from "../../hooks";
 import Notifies from "./header/Notifies";
 const Header = () => {
   const isAuth = useSelector((state) => state.user.isAuth);
   const user = useSelector((state) => state.user);
   const [searchBtn, setSearchBtn] = useState(false);
   const [toggleMenu, setToggleMenu] = useState(false);
-  const { handleShowDialog } = useDialog();
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
   useEffect(() => {
@@ -69,7 +67,7 @@ const Header = () => {
                   <img
                     src={user.avatar ? asset(user.avatar) : avatarDefault}
                     alt="not found"
-                  ></img>
+                  />
                   <User btn={user.name} />
                 </li>
                 <li>
@@ -86,23 +84,22 @@ const Header = () => {
               <i className="bi bi-bar-chart"></i>
               <Ranking btn={"Bảng xếp hạng"} />
             </li>
-            {!isAuth ? (
+            {!isAuth && (
               <>
                 <li>
                   <i className="bi bi-person-circle"></i>
-                  <span onClick={() => handleShowDialog("login")}>
-                    Đăng nhập
+                  <span>
+                    {" "}
+                    <Link to={"/login"}>Đăng nhập</Link>
                   </span>
                 </li>
                 <li>
                   <i className="bi bi-person-add"></i>
-                  <span onClick={() => handleShowDialog("register")}>
-                    Đăng ký
+                  <span>
+                    <Link to={"/register"}>Đăng ký</Link>
                   </span>
                 </li>
               </>
-            ) : (
-              <></>
             )}
           </ul>
           <div className="search">

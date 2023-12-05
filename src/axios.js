@@ -6,7 +6,7 @@ axios.defaults.withCredentials = true;
 const instance = axios.create({
   baseURL: process.env.REACT_APP_BACKEND_URL,
   headers: {
-    "Content-Type": "multipart/form-data",
+    // "Content-Type": "multipart/form-data",
   },
 });
 // axios.defaults.headers.common = { Authorization: `Bearer ${token}` };

@@ -12,17 +12,20 @@ import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistStore } from "redux-persist";
 import { ToastContainer } from "react-toastify";
-import { DialogProvider } from "./hoc";
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 let persistor = persistStore(store);
 root.render(
   // <React.StrictMode>
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
-      <DialogProvider>
-        <App />
-        <ToastContainer position="top-right" autoClose={3000} theme="colored" />
-      </DialogProvider>
+      <App />
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        theme="colored"
+        pauseOnHover={false}
+      />
     </PersistGate>
   </Provider>
   /* </React.StrictMode> */
