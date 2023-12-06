@@ -18,7 +18,7 @@ const Breadcrumb = () => {
           {breadcrumbs?.length > 0 &&
             breadcrumbs.map((item, index) => {
               return index !== breadcrumbs.length - 1 ? (
-                <li className="breadcrumb-item" key={item.title}>
+                <li className="breadcrumb-item fs-6" key={item.title}>
                   <Link
                     to={item.path}
                     className="text-decoration-none text-capitalize"
@@ -27,7 +27,7 @@ const Breadcrumb = () => {
                   </Link>
                 </li>
               ) : (
-                <li className="breadcrumb-item" key={item.title}>
+                <li className="breadcrumb-item fs-6" key={item.title}>
                   <p className="text-capitalize">{item.title}</p>
                 </li>
               );

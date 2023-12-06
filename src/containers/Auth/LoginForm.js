@@ -4,10 +4,11 @@ import { handleLoginService } from "../../services/AuthServices";
 import { toast } from "react-toastify";
 import { userLogin } from "../../features/userSlice";
 import "./LoginForm.scss";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import HomeLayout from "../layouts/HomeLayout";
 const LoginForm = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [user, setUser] = useState({
     email: "",
     password: "",
@@ -44,6 +45,7 @@ const LoginForm = () => {
             password: "",
             rememberMe: false,
           });
+          navigate("/");
         }
       } catch (error) {}
     }

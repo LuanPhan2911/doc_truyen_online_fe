@@ -90,13 +90,17 @@ const Header = () => {
                   <i className="bi bi-person-circle"></i>
                   <span>
                     {" "}
-                    <Link to={"/login"}>Đăng nhập</Link>
+                    <Link to={"/login"} className="text-decoration-none">
+                      Đăng nhập
+                    </Link>
                   </span>
                 </li>
                 <li>
                   <i className="bi bi-person-add"></i>
                   <span>
-                    <Link to={"/register"}>Đăng ký</Link>
+                    <Link to={"/register"} className="text-decoration-none">
+                      Đăng ký
+                    </Link>
                   </span>
                 </li>
               </>

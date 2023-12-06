@@ -1,14 +1,17 @@
 import Header from "./Header";
 import SideBar from "./Sidebar";
 
-const AdminLayout = ({ children }) => {
+const AdminLayout = ({ children, offcanvasTitle, offcanvasBody }) => {
   return (
     <div className="container-fluid">
       <div className="row flex-nowrap">
         <SideBar />
         <div className="col">
           <div className="container">
-            <Header />
+            <Header
+              offcanvasTitle={offcanvasTitle}
+              offcanvasBody={offcanvasBody}
+            />
             {children}
           </div>
         </div>

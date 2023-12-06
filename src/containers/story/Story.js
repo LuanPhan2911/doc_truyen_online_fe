@@ -27,11 +27,12 @@ const Story = ({ story, isAdmin }) => {
   };
   const handleShowStoryDetail = (storyDetail) => {
     if (isAdmin) {
-      navigate(`/admin/story/${storyDetail?.id}`, {});
+      navigate(`/admin/story/${storyDetail?.slug}`, {});
     } else {
       navigate(`/story/${storyDetail?.slug}`, {
         state: {
           storyId: storyDetail?.id,
+          slug: storyDetail?.slug,
           index: getIndex(continueRead, storyDetail?.id) || 1,
         },
       });
@@ -39,11 +40,14 @@ const Story = ({ story, isAdmin }) => {
     getIndex(continueRead, storyDetail?.id);
   };
   return (
-    <div className="story">
-      <div className="story-image" onClick={() => handleShowStoryDetail(story)}>
-        <img src={asset(story?.avatar)} alt="Not found" />
+    <div className="story col-lg-5 col-md-8 m-2 row bg-light">
+      <div
+        className="story-image col-3"
+        onClick={() => handleShowStoryDetail(story)}
+      >
+        <img src={asset(story?.avatar)} alt="Not found" className="img-fluid" />
       </div>
-      <div className="story-info">
+      <div className="story-info col-9">
         <div
           className="name text-overflow-1-line"
           onClick={() => handleShowStoryDetail(story)}
@@ -53,12 +57,14 @@ const Story = ({ story, isAdmin }) => {
         <div className="story-description text-overflow-2-line ">
           {story?.description}
         </div>
-        <div className="auth-genre">
-          <div className="auth text-overflow-1-line">
-            <BsVectorPen size={"1.5em"} />
-            <span>{story.author_name}</span>
-          </div>
-          <div className="genre">{genreName}</div>
+      </div>
+      <div className="auth-genre row my-2">
+        <div className="auth text-overflow-1-line col-6">
+          <BsVectorPen size={"1.5em"} />
+          <span className="mx-2">{story.author_name}</span>
+        </div>
+        <div className="genre col-6 border text-center rounded">
+          {genreName}
         </div>
       </div>
     </div>

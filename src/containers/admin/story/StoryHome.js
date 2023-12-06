@@ -2,10 +2,11 @@ import { useSelector } from "react-redux";
 import "./StoryHome.scss";
 
 import { handleGetStoryService } from "../../../services/AdminServices";
-import { useEffect, useLayoutEffect } from "react";
+import { useLayoutEffect } from "react";
 import { useState } from "react";
 import Story from "../../story/Story";
 import { Link } from "react-router-dom";
+import AdminLayout from "../layouts/AdminLayout";
 
 const StoryHome = () => {
   const userId = useSelector((state) => state.user.id);
@@ -20,23 +21,27 @@ const StoryHome = () => {
       } catch (error) {}
     }
     fetchStory();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
-    <div className="admin-story-home content">
-      <div className="admin-menu">
-        <Link to={"create"} className="btn btn-success">
-          Thêm truyện mới
-        </Link>
+    <AdminLayout>
+      <div className="content">
+        <div className="mb-3">
+          <Link to="/admin/story/create" className="btn btn-success">
+            Thêm truyện mới
+          </Link>
+        </div>
+        <div className="col">
+          {stories &&
+            stories.length > 0 &&
+            stories.map((item, index) => {
+              return <Story key={index} story={item} isAdmin={true} />;
+            })}
+        </div>
       </div>
-      <div className="stories-main">
-        {stories &&
-          stories.length > 0 &&
-          stories.map((item, index) => {
-            return <Story key={index} story={item} isAdmin={true} />;
-          })}
-      </div>
-    </div>
+    </AdminLayout>
   );
 };
 export default StoryHome;

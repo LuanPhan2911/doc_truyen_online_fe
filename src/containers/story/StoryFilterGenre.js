@@ -15,7 +15,7 @@ const StoryFilterGenre = ({ selectedStoryTag, setSelectedStoryTag }) => {
         let res = await handleGetGenreService();
         if (res?.success) {
           let data = res.data;
-          dispatch(setTagsFilter(data));
+          // dispatch(setTagsFilter(data));
 
           setStoryTag(computeData(data));
         }

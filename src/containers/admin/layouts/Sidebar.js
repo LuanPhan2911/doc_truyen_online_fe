@@ -28,6 +28,12 @@ const SideBar = () => {
               </Link>
             </li>
             <li className="nav-item">
+              <Link to="/admin/story" className="nav-link align-middle px-0">
+                <i className="fs-4 bi-book"></i>{" "}
+                <span className="ms-1 d-none d-sm-inline">Story</span>
+              </Link>
+            </li>
+            <li className="nav-item">
               <Link
                 to="/admin/reports/type/stories"
                 className="nav-link align-middle px-0"

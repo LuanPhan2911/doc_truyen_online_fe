@@ -10,17 +10,17 @@ const Notifies = () => {
   const [notifies, setNotifies] = useState([]);
   const [newNotifyCount, setNewNotifyCount] = useState(0);
   useEffect(() => {
-    async function fetchNotify() {
-      try {
-        let res = await handleGetNotifiesService(userId);
-        if (res?.success) {
-          let { notifies, new_notifies_count } = res.data;
-          setNotifies([...notifies]);
-          setNewNotifyCount(new_notifies_count);
-        }
-      } catch (error) {}
-    }
-    fetchNotify();
+    // async function fetchNotify() {
+    //   try {
+    //     let res = await handleGetNotifiesService(userId);
+    //     if (res?.success) {
+    //       let { notifies, new_notifies_count } = res.data;
+    //       setNotifies([...notifies]);
+    //       setNewNotifyCount(new_notifies_count);
+    //     }
+    //   } catch (error) {}
+    // }
+    // fetchNotify();
   }, []);
 
   const handleShowStory = () => {};

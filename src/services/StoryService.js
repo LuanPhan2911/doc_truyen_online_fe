@@ -5,7 +5,7 @@ const handleGetStoryService = (qs = {}) => {
     params: qs,
   });
 };
-const handleShowStoryService = (id) => {
-  return axios.get(`api/story/${id}/show`);
+const handleShowStoryService = (slug) => {
+  return axios.get(`api/story/show/${slug}`);
 };
 export { handleGetStoryService, handleShowStoryService };

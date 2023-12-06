@@ -20,10 +20,10 @@ const StoryContent = () => {
   const [genres, setGenres] = useState([]);
 
   useEffect(() => {
-    let { storyId, index } = location.state;
+    let { slug, index, storyId } = location.state;
     async function fetchStory() {
       try {
-        let res = await handleShowStoryService(storyId);
+        let res = await handleShowStoryService(slug);
         if (res?.success) {
           let { genres, ...other } = res.data;
           setStory({ ...other, chapterIndex: index });
@@ -77,7 +77,7 @@ const StoryContent = () => {
     setStoryTag([...cpStoryTag]);
   };
   return (
-    <div className="container story-detail-main">
+    <div className="container story-detail-main p-3 rounded">
       <div className="story-detail">
         <div className="story-detail-image">
           <img src={story?.avatar && asset(story?.avatar)} alt="Not found" />

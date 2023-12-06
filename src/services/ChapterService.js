@@ -3,7 +3,7 @@ import axios from "../axios";
 const handleGetChapterService = (name, chapterIndex) => {
   return axios.get(`/api/story/${name}/chapter/${chapterIndex}`);
 };
-const handleGetChapterListService = (storyId) => {
-  return axios.get(`api/story/${storyId}/chapter`);
+const handleGetChapterListService = (slug) => {
+  return axios.get(`/api/story/${slug}/chapter`);
 };
 export { handleGetChapterService, handleGetChapterListService };

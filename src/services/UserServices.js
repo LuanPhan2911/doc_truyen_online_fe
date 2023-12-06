@@ -5,16 +5,16 @@ const handleGetUser = async (userId) => {
 const handleUpdateUser = async (userId, data) => {
   return await axios.post(`/api/users/${userId}`, data);
 };
-const handleGetStoriesService = async (userId) => {
-  return axios.get(`api/users/stories/${userId}`);
-};
-const handleGetNotifiesService = async (userId) => {
-  return axios.get(`api/users/notifies/${userId}`);
-};
+// const handleGetStoriesService = async (userId) => {
+//   return axios.get(`api/users/stories/${userId}`);
+// };
+// const handleGetNotifiesService = async (userId) => {
+//   return axios.get(`api/users/notifies/${userId}`);
+// };
 
 export {
   handleGetUser,
   handleUpdateUser,
-  handleGetStoriesService,
-  handleGetNotifiesService,
+  // handleGetStoriesService,
+  // handleGetNotifiesService,
 };

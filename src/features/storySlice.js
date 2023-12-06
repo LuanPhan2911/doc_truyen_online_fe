@@ -4,15 +4,15 @@ export const storySlice = createSlice({
   name: "story",
   initialState: {
     genres: [],
-    tagsFilter: [],
+    genresFilter: [],
     continueRead: [],
   },
   reducers: {
     setGenres: (state, action) => {
       state.genres = action.payload;
     },
-    setTagsFilter: (state, action) => {
-      state.tagsFilter = action.payload;
+    setGenresFilter: (state, action) => {
+      state.genresFilter = action.payload;
     },
     setContinueRead: (state, action) => {
       state.continueRead = action.payload;
@@ -21,6 +21,7 @@ export const storySlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { setGenres, setTagsFilter, setContinueRead } = storySlice.actions;
+export const { setGenres, setGenresFilter, setContinueRead } =
+  storySlice.actions;
 
 export default storySlice.reducer;

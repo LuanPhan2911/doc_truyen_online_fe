@@ -10,21 +10,25 @@ import {
   handleShowChapterService,
   handleUpdateChapterService,
 } from "../../../services/AdminServices";
+import AdminLayout from "../layouts/AdminLayout";
+import ChapterList from "../../chapter/ChapterList";
 const UpsertChapterForm = ({ isUpdate }) => {
-  const { storyId, index: chapterIndex } = useParams();
-
-  const [chapter, setChapter] = useState({
+  const { slug, index } = useParams();
+  const initChapter = {
     id: "",
     name: "",
     index: "",
     content: "",
-    story_id: storyId,
+    story_id: "",
+  };
+  const [chapter, setChapter] = useState({
+    ...initChapter,
   });
   useEffect(() => {
     if (isUpdate) {
       async function fetchChapter() {
         try {
-          let res = await handleShowChapterService(storyId, chapterIndex);
+          let res = await handleShowChapterService(slug, index);
           if (res?.success) {
             let data = res.data;
             let computedData = computedChapter(data);
@@ -33,8 +37,10 @@ const UpsertChapterForm = ({ isUpdate }) => {
         } catch (error) {}
       }
       fetchChapter();
+    } else {
+      setChapter({ ...initChapter });
     }
-  }, []);
+  }, [index]);
 
   const computedChapter = (data) => {
     let { content, name, story_id, index, id } = data;
@@ -47,7 +53,7 @@ const UpsertChapterForm = ({ isUpdate }) => {
   };
   const handleUpsertChapter = async () => {
     //validate
-    let check = checkPropertiesIsEmpty(chapter, ["index", "id"]);
+    let check = checkPropertiesIsEmpty(chapter, ["index", "id", "story_id"]);
 
     if (check) {
       toast.error("Thiếu dữ liệu");
@@ -64,16 +70,11 @@ const UpsertChapterForm = ({ isUpdate }) => {
       } else {
         try {
           let cpChapter = { ...chapter };
-          cpChapter["story_id"] = storyId;
-          let res = await handleCreateChapterService(cpChapter, storyId);
+          let res = await handleCreateChapterService(cpChapter, slug);
           if (res && res?.success) {
             toast.success("Thêm thành công");
             setChapter({
-              name: "",
-              index: "",
-              content: "",
-              id: "",
-              story_id: storyId,
+              ...initChapter,
             });
           }
         } catch (error) {
@@ -84,10 +85,13 @@ const UpsertChapterForm = ({ isUpdate }) => {
   };
 
   return (
-    <>
+    <AdminLayout
+      offcanvasTitle={"Danh sách chương"}
+      offcanvasBody={<ChapterList isAdmin={true} />}
+    >
       <div className="container">
         <div className="row">
-          <div className="col-lg-6 col-sm-12">
+          <div className="col">
             <div className="form-group">
               <label>Tên chương</label>
               <input
@@ -116,7 +120,7 @@ const UpsertChapterForm = ({ isUpdate }) => {
           {isUpdate ? "Cập nhật" : "Thêm"}
         </button>
       </div>
-    </>
+    </AdminLayout>
   );
 };
 export default UpsertChapterForm;

@@ -16,8 +16,8 @@ const handleUpdateChapterService = (data, chapterId) => {
 const handleShowChapterService = (storyId, chapterIndex) => {
   return axios.get(`/api/admin/story/${storyId}/chapter/${chapterIndex}`);
 };
-const handleCreateChapterService = (data, storyId) => {
-  return axios.post(`/api/admin/story/${storyId}/chapter/create`, data);
+const handleCreateChapterService = (data, slug) => {
+  return axios.post(`/api/admin/story/${slug}/chapter/create`, data);
 };
 export {
   handleCreateStoryService,

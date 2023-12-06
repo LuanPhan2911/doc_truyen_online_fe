@@ -1,4 +1,3 @@
-// import { useEffect, useState } from "react";
 import { useEffect, useState } from "react";
 import DropdownBase from "../../../components/DropdownBase";
 import { handleGetGenreService } from "../../../services/GenreService";

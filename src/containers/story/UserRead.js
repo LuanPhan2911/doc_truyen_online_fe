@@ -9,16 +9,16 @@ const UserRead = () => {
   const dispatch = useDispatch();
   const [stories, setStories] = useState([]);
   useEffect(() => {
-    async function fetchStory() {
-      try {
-        let res = await handleGetStoriesService(userId);
-        if (res?.success) {
-          dispatch(setContinueRead(res.data));
-          setStories([...res.data]);
-        }
-      } catch (error) {}
-    }
-    fetchStory();
+    // async function fetchStory() {
+    //   try {
+    //     let res = await handleGetStoriesService(userId);
+    //     if (res?.success) {
+    //       dispatch(setContinueRead(res.data));
+    //       setStories([...res.data]);
+    //     }
+    //   } catch (error) {}
+    // }
+    // fetchStory();
   }, []);
   return (
     <>

@@ -9,14 +9,3 @@
   cursor: pointer;
   text-decoration: none;
 }
-.stories-main {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-  padding: 10px;
-}
-@media (max-width: 576px) {
-  .stories-main {
-    grid-template-columns: 1fr;
-  }
-}
