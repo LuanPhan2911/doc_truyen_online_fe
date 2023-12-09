@@ -11,6 +11,7 @@ import "./StoryContent.scss";
 import { asset } from "../../utils/Helper";
 import ChapterList from "../chapter/ChapterList";
 import { handleShowStoryService } from "../../services/StoryService";
+import HomeLayout from "../layouts/HomeLayout";
 
 const StoryContent = () => {
   const location = useLocation();
@@ -77,98 +78,104 @@ const StoryContent = () => {
     setStoryTag([...cpStoryTag]);
   };
   return (
-    <div className="container story-detail-main p-3 rounded">
-      <div className="story-detail">
-        <div className="story-detail-image">
-          <img src={story?.avatar && asset(story?.avatar)} alt="Not found" />
+    <HomeLayout>
+      <div className="container story-detail-main p-3 rounded">
+        <div className="story-detail row">
+          <div className="story-detail-image col-lg-4">
+            <img
+              src={story?.avatar && asset(story?.avatar)}
+              alt="Not found"
+              className="img-fluid w-100"
+            />
+          </div>
+          <div className="story-detail-info col-lg-8">
+            <div className="story-detail-title">{story?.name}</div>
+            <ul className="story-detail-genre">
+              {genres?.length > 0 &&
+                genres.map((item) => {
+                  return <li key={item.name}>{item.name}</li>;
+                })}
+            </ul>
+            <ul className="story-detail-full">
+              <li>
+                {story?.chapters_count}
+                <span>Chương</span>
+              </li>
+              <li>
+                11
+                <span>Chương/Tuần</span>
+              </li>
+              <li>
+                95.5k
+                <span>Lượt đọc</span>
+              </li>
+              <li>
+                1000
+                <span>Cất trữ</span>
+              </li>
+            </ul>
+            <div className="story-detail-rate">
+              <div className="star">
+                <AiFillStar color="yellow" />
+                <AiFillStar color="yellow" />
+                <AiFillStar color="yellow" />
+                <AiFillStar color="yellow" />
+                <AiFillStar color="yellow" />
+              </div>
+              <div className="rate">
+                4.62/5
+                <span>(24 lượt đánh giá)</span>
+              </div>
+            </div>
+            <ul className="story-detail-action">
+              <li
+                className="story-detail-read"
+                onClick={() => handleShowChapter(story)}
+              >
+                <FaGlasses color="white" size={"1.2em"} />
+                <span>Đọc truyện</span>
+              </li>
+              <li className="story-detail-mark">
+                <BsBookmark color="#333" size={"1.2em"} />
+                <span>Đánh dấu</span>
+              </li>
+              <li className="story-detail-suggest">
+                <GiCottonFlower />
+                <span>Đề cử</span>
+              </li>
+            </ul>
+          </div>
         </div>
-        <div className="story-detail-info">
-          <div className="story-detail-title">{story?.name}</div>
-          <ul className="story-detail-genre">
-            {genres?.length > 0 &&
-              genres.map((item) => {
-                return <li key={item.name}>{item.name}</li>;
+        <div className="story-detail-tag">
+          <ul>
+            {storyTag?.length > 0 &&
+              storyTag.map((item) => {
+                return (
+                  <li
+                    key={item.id}
+                    className={item.active ? "active" : ""}
+                    onClick={() => handleChangeStoryTag(item.id)}
+                  >
+                    {item.name}
+                    <span className="count">{item.count}</span>
+                  </li>
+                );
               })}
           </ul>
-          <ul className="story-detail-full">
-            <li>
-              {story?.chapters_count}
-              <span>Chương</span>
-            </li>
-            <li>
-              11
-              <span>Chương/Tuần</span>
-            </li>
-            <li>
-              95.5k
-              <span>Lượt đọc</span>
-            </li>
-            <li>
-              1000
-              <span>Cất trữ</span>
-            </li>
-          </ul>
-          <div className="story-detail-rate">
-            <div className="star">
-              <AiFillStar color="yellow" />
-              <AiFillStar color="yellow" />
-              <AiFillStar color="yellow" />
-              <AiFillStar color="yellow" />
-              <AiFillStar color="yellow" />
-            </div>
-            <div className="rate">
-              4.62/5
-              <span>(24 lượt đánh giá)</span>
-            </div>
-          </div>
-          <ul className="story-detail-action">
-            <li
-              className="story-detail-read"
-              onClick={() => handleShowChapter(story)}
-            >
-              <FaGlasses color="white" size={"1.2em"} />
-              <span>Đọc truyện</span>
-            </li>
-            <li className="story-detail-mark">
-              <BsBookmark color="#333" size={"1.2em"} />
-              <span>Đánh dấu</span>
-            </li>
-            <li className="story-detail-suggest">
-              <GiCottonFlower />
-              <span>Đề cử</span>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div className="story-detail-tag">
-        <ul>
-          {storyTag?.length > 0 &&
-            storyTag.map((item) => {
-              return (
-                <li
-                  key={item.id}
-                  className={item.active ? "active" : ""}
-                  onClick={() => handleChangeStoryTag(item.id)}
-                >
-                  {item.name}
-                  <span className="count">{item.count}</span>
-                </li>
-              );
-            })}
-        </ul>
 
-        <div className="tag-content">
-          {
-            (
-              storyTag?.length > 0 &&
-              storyTag.find((item) => {
-                return item.active === true;
-              })
-            )?.component
-          }
+          <div className="tag-content">
+            {
+              (
+                storyTag?.length > 0 &&
+                storyTag.find((item) => {
+                  return item.active === true;
+                })
+              )?.component
+            }
+          </div>
         </div>
       </div>
-    </div>
+    </HomeLayout>
   );
 };
 export default StoryContent;

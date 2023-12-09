@@ -15,11 +15,15 @@ const StoryHome = () => {
           Xem tất cả
         </Link>
       </div>
-      <div className="row justify-content-center">
+      <div className="row">
         {stories &&
           stories.length > 0 &&
-          stories.map((item, index) => {
-            return <Story key={index} story={item} />;
+          stories.map((item) => {
+            return (
+              <div className="col-lg-6 col-md-8" key={item.id}>
+                <Story story={item} />
+              </div>
+            );
           })}
       </div>
     </div>

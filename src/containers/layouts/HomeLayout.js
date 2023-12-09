@@ -2,13 +2,20 @@ import Header from "./Header";
 import Footer from "./Footer";
 import "./HomeLayout.scss";
 
-const HomeLayout = ({ children }) => {
+const HomeLayout = ({ children, color, backgroundColor }) => {
   return (
-    <>
-      <Header />
-      <div className="main">{children}</div>
+    <div
+      style={{
+        color,
+        backgroundColor,
+      }}
+    >
+      <Header color={color} backgroundColor={backgroundColor} />
+      <div className="main container justify-content-center d-flex">
+        {children}
+      </div>
       <Footer />
-    </>
+    </div>
   );
 };
 

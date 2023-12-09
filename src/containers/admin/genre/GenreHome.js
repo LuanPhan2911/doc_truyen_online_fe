@@ -1,27 +1,11 @@
+import { useGenresFilter } from "../../../hooks";
 import AdminLayout from "../layouts/AdminLayout";
 import GenreCreate from "./GenreCreate";
 import GenreIndex from "./GenreIndex";
 import { useState } from "react";
 
 const GenreHome = () => {
-  const genreType = [
-    {
-      title: "category",
-      value: 1,
-    },
-    {
-      title: "character",
-      value: 2,
-    },
-    {
-      title: "world building",
-      value: 3,
-    },
-    {
-      title: "tags",
-      value: 4,
-    },
-  ];
+  const [, , genreType] = useGenresFilter();
   const [newGenres, setNewGenres] = useState("");
   return (
     <AdminLayout>

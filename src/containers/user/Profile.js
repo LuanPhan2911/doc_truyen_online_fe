@@ -6,6 +6,7 @@ import { asset } from "../../utils/Helper";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { userUpdate } from "../../features/userSlice";
+import HomeLayout from "../layouts/HomeLayout";
 
 const Profile = () => {
   const imgRef = useRef();
@@ -123,79 +124,81 @@ const Profile = () => {
     setUser({ ...cpUser });
   };
   return (
-    <div className="profile">
-      <div className="avatar">
-        <label htmlFor="avatar">
-          <img
-            src={user.avatarUrl ? asset(user.avatarUrl) : avatarDefault}
-            alt="Not found"
-            ref={imgRef}
-          ></img>
-          <span className="note">
-            Ấn vào ảnh đại diện để cập nhật ảnh đại diện
-          </span>
-        </label>
+    <HomeLayout>
+      <div className="profile">
+        <div className="avatar">
+          <label htmlFor="avatar">
+            <img
+              src={user.avatarUrl ? asset(user.avatarUrl) : avatarDefault}
+              alt="Not found"
+              ref={imgRef}
+            ></img>
+            <span className="note">
+              Ấn vào ảnh đại diện để cập nhật ảnh đại diện
+            </span>
+          </label>
 
-        <input
-          type="file"
-          id="avatar"
-          name="avatar"
-          hidden
-          accept="image/*"
-          onChange={(e) => handleChangeAvatar(e)}
-        />
+          <input
+            type="file"
+            id="avatar"
+            name="avatar"
+            hidden
+            accept="image/*"
+            onChange={(e) => handleChangeAvatar(e)}
+          />
+        </div>
+        <div className="user-name">
+          <label>Tên hiển thị</label>
+          <input
+            value={user.name}
+            onChange={(event) => handleChangeInput(event, "name")}
+            type="text"
+          />
+        </div>
+        <div className="user-birthday">
+          <label>Năm sinh</label>
+          <input
+            value={user.birthday}
+            type="number"
+            onChange={(event) => handleChangeInput(event, "birthday")}
+          />
+        </div>
+        <div className="user-gender">
+          <label>Giới tính</label>
+          <select
+            onChange={(event) => handleChangeInput(event, "gender")}
+            value={user.gender}
+          >
+            {gender?.length > 0 &&
+              gender.map((item) => {
+                return (
+                  <option value={item.value} key={item.value}>
+                    {item.name}
+                  </option>
+                );
+              })}
+          </select>
+        </div>
+        <div className="user-description">
+          <label>Giới thiệu ngắn</label>
+          <textarea
+            rows={"3"}
+            value={user.description}
+            onChange={(e) => handleChangeInput(e, "description")}
+          ></textarea>
+        </div>
+        <div className="user-email">
+          <label>Email</label>
+          <input value={user.email} disabled />
+          <span className="note">
+            Lưu ý: nếu đổi email phải vào email cũ xác nhận thì mới có hiệu lực
+          </span>
+        </div>
+        <div className="btn-update">
+          <button onClick={() => OnUpdateUser()}>Cập nhật</button>
+        </div>
       </div>
-      <div className="user-name">
-        <label>Tên hiển thị</label>
-        <input
-          value={user.name}
-          onChange={(event) => handleChangeInput(event, "name")}
-          type="text"
-        />
-      </div>
-      <div className="user-birthday">
-        <label>Năm sinh</label>
-        <input
-          value={user.birthday}
-          type="number"
-          onChange={(event) => handleChangeInput(event, "birthday")}
-        />
-      </div>
-      <div className="user-gender">
-        <label>Giới tính</label>
-        <select
-          onChange={(event) => handleChangeInput(event, "gender")}
-          value={user.gender}
-        >
-          {gender?.length > 0 &&
-            gender.map((item) => {
-              return (
-                <option value={item.value} key={item.value}>
-                  {item.name}
-                </option>
-              );
-            })}
-        </select>
-      </div>
-      <div className="user-description">
-        <label>Giới thiệu ngắn</label>
-        <textarea
-          rows={"3"}
-          value={user.description}
-          onChange={(e) => handleChangeInput(e, "description")}
-        ></textarea>
-      </div>
-      <div className="user-email">
-        <label>Email</label>
-        <input value={user.email} disabled />
-        <span className="note">
-          Lưu ý: nếu đổi email phải vào email cũ xác nhận thì mới có hiệu lực
-        </span>
-      </div>
-      <div className="btn-update">
-        <button onClick={() => OnUpdateUser()}>Cập nhật</button>
-      </div>
-    </div>
+    </HomeLayout>
   );
 };
 export default Profile;

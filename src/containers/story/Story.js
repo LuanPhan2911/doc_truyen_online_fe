@@ -1,9 +1,8 @@
-import { BsVectorPen } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
-import "./Story.scss";
 import { asset } from "../../utils/Helper";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import "./Story.scss";
 const Story = ({ story, isAdmin }) => {
   const navigate = useNavigate();
   const [genreName, setGenreName] = useState("");
@@ -40,7 +39,7 @@ const Story = ({ story, isAdmin }) => {
     getIndex(continueRead, storyDetail?.id);
   };
   return (
-    <div className="story col-lg-5 col-md-8 m-2 row bg-light">
+    <div className="story row bg-light border-bottom border-end">
       <div
         className="story-image col-3"
         onClick={() => handleShowStoryDetail(story)}
@@ -58,13 +57,15 @@ const Story = ({ story, isAdmin }) => {
           {story?.description}
         </div>
       </div>
-      <div className="auth-genre row my-2">
-        <div className="auth text-overflow-1-line col-6">
-          <BsVectorPen size={"1.5em"} />
-          <span className="mx-2">{story.author_name}</span>
+      <div className="auth-genre d-flex my-3 justify-content-between">
+        <div className="auth text-overflow-1-line">
+          <i className="bi bi-pen"></i>
+          <span className="mx-2 fst-italic">{story.author_name}</span>
         </div>
-        <div className="genre col-6 border text-center rounded">
-          {genreName}
+        <div className="genre text-center ">
+          <span className="border rounded border-primary px-2 fs-6">
+            {genreName}
+          </span>
         </div>
       </div>
     </div>

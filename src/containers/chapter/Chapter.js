@@ -1,13 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 
-import {
-  AiOutlineArrowLeft,
-  AiOutlineArrowRight,
-  AiOutlineBook,
-  AiOutlineHeart,
-  AiOutlineFieldTime,
-} from "react-icons/ai";
-import { BsPencilSquare, BsCursorText } from "react-icons/bs";
+import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
 import "./Chapter.scss";
 
 import { useSelector } from "react-redux";
@@ -18,9 +11,10 @@ import { handleGetChapterService } from "../../services/ChapterService";
 import ChapterConfig from "./ChapterConfig";
 import { countWords, diffTime } from "../../utils/Helper";
 import Comments from "../comments/Comments";
+import HomeLayout from "../layouts/HomeLayout";
 
 const Chapter = () => {
-  const { name, index: chapterIndex } = useParams();
+  const { slug, index: chapterIndex } = useParams();
   const selectedFontFamily = useSelector((state) => state.app.fontFamily);
   const [storyId, setStoryId] = useState("");
   const navigate = useNavigate();
@@ -41,7 +35,7 @@ const Chapter = () => {
 
   async function fetchChapter() {
     try {
-      let res = await handleGetChapterService(name, chapterIndex);
+      let res = await handleGetChapterService(slug, chapterIndex);
 
       if (res?.success) {
         let { chapter, count, storyId } = res.data;
@@ -58,7 +52,7 @@ const Chapter = () => {
 
     if (index > 1) {
       navigate({
-        pathname: `/story/${name}/chapter/${index - 1}`,
+        pathname: `/story/${slug}/chapter/${index - 1}`,
       });
     }
   };
@@ -66,81 +60,88 @@ const Chapter = () => {
     const index = Number(chapterIndex);
     if (index < Number(countChapter)) {
       navigate({
-        pathname: `/story/${name}/chapter/${index + 1}`,
+        pathname: `/story/${slug}/chapter/${index + 1}`,
       });
     }
   };
   return (
-    <div
-      className="chapter-main"
-      style={{
-        color: selectedColor.color,
-        backgroundColor: selectedColor.backgroundColor,
-      }}
+    <HomeLayout
+      color={selectedColor.color}
+      backgroundColor={selectedColor.backgroundColor}
     >
-      <div className="chapter">
-        <div className="chapter-pre-next">
-          <div className="chapter-pre" onClick={() => handlePreChapter()}>
-            <AiOutlineArrowLeft size={"1.5em"} /> <span>Chương trước</span>
-          </div>
-          <div className="chapter-next" onClick={() => handleNextChapter()}>
-            <span className="chapter-next">Chương sau</span>
-            <AiOutlineArrowRight size={"1.5em"} />{" "}
-          </div>
-        </div>
-        <div className="chapter-name">{chapter?.name}</div>
-        <div className="chapter-story-info">
-          <div className="story-name">
-            <AiOutlineBook size={"1.5em"} />
-            <span>{chapter?.story?.name}</span>
-          </div>
-          <div className="auth-name">
-            <BsPencilSquare size={"1.5em"} />
-            <span>{chapter?.story?.author_name}</span>
-          </div>
-          <div className="chapter-word-count">
-            <BsCursorText size={"1.5em"} />
-            <span> {countWords(chapter?.content)} chữ</span>
-          </div>
-          <div className="chapter-liked">
-            <AiOutlineHeart size={"1.5em"} />
-            <span> 28 cảm xúc</span>
-          </div>
-          <div className="chapter-created-at">
-            <AiOutlineFieldTime size={"1.5em"} />
-            <span> {diffTime(chapter?.created_at)}</span>
-          </div>
-        </div>
-
-        <div
-          className="chapter-content line-break"
-          style={{
-            color: "inherit",
-            backgroundColor: "inherit",
-            fontSize: fontSize,
-            fontFamily: selectedFontFamily,
-          }}
-        >
-          {chapter?.content}
+      <div
+        className="chapter-main"
+        style={{
+          color: selectedColor.color,
+          backgroundColor: selectedColor.backgroundColor,
+        }}
+      >
+        <div className="chapter container">
           <div className="chapter-pre-next">
             <div className="chapter-pre" onClick={() => handlePreChapter()}>
-              <AiOutlineArrowLeft size={"1.5em"} /> <span>Chương trước</span>
+              <i className="bi bi-arrow-left"></i> <span>Chương trước</span>
             </div>
             <div className="chapter-next" onClick={() => handleNextChapter()}>
               <span className="chapter-next">Chương sau</span>
-              <AiOutlineArrowRight size={"1.5em"} />{" "}
+              <i className="bi bi-arrow-right"></i>
             </div>
           </div>
-        </div>
+          <div className="chapter-name">{chapter?.name}</div>
+          <div className="chapter-story-info row">
+            <div className="story-name col-lg-3 col-md-6">
+              <i className="bi bi-book"></i>
+              <span>{chapter?.story?.name}</span>
+            </div>
+            <div className="auth-name col-lg-3 col-md-6">
+              <i className="bi bi-pencil"></i>
+              <span>{chapter?.story?.author_name}</span>
+            </div>
+            <div className="chapter-word-count col-lg-2 col-md-6">
+              <i className="bi bi-textarea"></i>
+              <span> {countWords(chapter?.content)} chữ</span>
+            </div>
+            <div className="chapter-liked col-lg-2 col-md-6">
+              <i className="bi bi-heart"></i>
+              <span> 28 cảm xúc</span>
+            </div>
+            <div className="chapter-created-at col-lg-2 col-md-6">
+              <i className="bi bi-clock"></i>
+              <span> {diffTime(chapter?.created_at)}</span>
+            </div>
+          </div>
 
-        <div className="chapter-config">
-          <ChapterConfig storyId={storyId} />
+          <div
+            className="chapter-content line-break"
+            style={{
+              color: "inherit",
+              backgroundColor: "inherit",
+              fontSize: fontSize,
+              fontFamily: selectedFontFamily,
+              minHeight: "50vh",
+            }}
+          >
+            {chapter?.content}
+          </div>
+          <div className="chapter-pre-next">
+            <div className="chapter-pre" onClick={() => handlePreChapter()}>
+              <i className="bi bi-arrow-left"></i>
+              <span>Chương trước</span>
+            </div>
+            <div className="chapter-next" onClick={() => handleNextChapter()}>
+              <span className="chapter-next">Chương sau</span>
+              <i className="bi bi-arrow-right"></i>
+            </div>
+          </div>
+
+          <div className="chapter-config">
+            <ChapterConfig storyId={storyId} />
+          </div>
+        </div>
+        <div className="container">
+          <Comments storyId={storyId} />
         </div>
       </div>
-      <div className="container">
-        <Comments storyId={storyId} />
-      </div>
-    </div>
+    </HomeLayout>
   );
 };
 export default Chapter;

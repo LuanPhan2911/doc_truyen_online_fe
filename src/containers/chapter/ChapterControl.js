@@ -1,10 +1,3 @@
-import {
-  AiOutlineFontColors,
-  AiOutlineFontSize,
-  AiOutlineMinus,
-  AiOutlinePlus,
-} from "react-icons/ai";
-import { IoColorPaletteOutline } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import {
   changeColor,
@@ -106,7 +99,7 @@ const ChapterControl = () => {
     <div className="control-chapter-popup">
       <div className="change-color">
         <div className="background">
-          <IoColorPaletteOutline size={"1.5em"} />
+          <i className="bi bi-palette"></i>
           Màu nền
         </div>
         <div className="colors">
@@ -115,7 +108,7 @@ const ChapterControl = () => {
               return (
                 <div
                   key={index}
-                  className="color-item"
+                  className="color-item shadow"
                   style={{
                     backgroundColor: item.backgroundColor,
                   }}
@@ -127,7 +120,7 @@ const ChapterControl = () => {
       </div>
       <div className="change-font-family">
         <div className="font-family-title">
-          <AiOutlineFontColors size={"1.5em"} />
+          <i className="bi bi-code-slash"></i>
           Phong chữ
         </div>
         <div className="font-family">
@@ -148,19 +141,19 @@ const ChapterControl = () => {
       </div>
       <div className="change-font-size">
         <div className="font-size-title">
-          <AiOutlineFontSize size={"1.5em"} />
+          <i className="bi bi-file-font"></i>
           Cở chữ
         </div>
-        <div className="font-size">
-          <AiOutlineMinus
-            size={"1.5em"}
+        <div className="font-size text-decoration-underline">
+          <i
+            className="bi bi-dash-circle"
             onClick={() => handleChangeFontSize("minus")}
-          />
+          ></i>
           {fontSize}
-          <AiOutlinePlus
-            size={"1.5em"}
+          <i
+            className="bi bi-plus-circle"
             onClick={() => handleChangeFontSize("plus")}
-          />
+          ></i>
         </div>
       </div>
     </div>

@@ -2,10 +2,11 @@ import { Link } from "react-router-dom";
 import DropdownBase from "../../../components/DropdownBase";
 import { handleLogoutService } from "../../../services/AuthServices";
 import { toast } from "react-toastify";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { userLogout } from "../../../features/userSlice";
 import "./User.scss";
 const User = ({ btn }) => {
+  const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const handleUserLogout = async () => {
     try {
@@ -25,16 +26,16 @@ const User = ({ btn }) => {
         body: (
           <ul className="user-setting">
             <li>
-              <Link to={"/user"}>Hồ sơ</Link>
+              <Link to={`/user/${user.id}`}>Hồ sơ</Link>
             </li>
             <li>
-              <Link to={"/user/story-reading"}>Tủ truyện</Link>
+              <Link to={`/user/${user.id}/story-reading`}>Tủ truyện</Link>
             </li>
             <li>
-              <Link to={"/user/setting"}>Cài đặt</Link>
+              <Link to={`/user/${user.id}setting`}>Cài đặt</Link>
             </li>
             <li>
-              <Link to={"/user/notify"}>Thông báo</Link>
+              <Link to={`/user/${user.id}notify`}>Thông báo</Link>
             </li>
             <li onClick={() => handleUserLogout()}>Thoát</li>
           </ul>

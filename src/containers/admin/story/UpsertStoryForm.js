@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import { handleGetGenreService } from "../../../services/GenreService";
 import {
   handleCreateStoryService,
   handleUpdateStoryService,
@@ -10,9 +9,7 @@ import {
   handleErrorApiResponse,
 } from "../../../utils/Helper";
 import { toast } from "react-toastify";
-import { useDispatch, useSelector } from "react-redux";
-import { setGenresFilter } from "../../../features/storySlice";
-
+import { useSelector } from "react-redux";
 import storyDefaultImage from "../../../assets/stories/default.png";
 import { useNavigate, useParams } from "react-router-dom";
 import { handleShowStoryService } from "../../../services/StoryService";
@@ -21,6 +18,7 @@ import AdminLayout from "../layouts/AdminLayout";
 import "./UpsertStoryForm.scss";
 import _ from "lodash";
 import StoryGenre from "./StoryGenre";
+import { useGenresFilter } from "../../../hooks";
 const views = [
   {
     view: "Nam",
@@ -49,47 +47,17 @@ const UpsertStoryForm = ({ isUpdate }) => {
     description: "",
     slug: "",
   };
-  const genreType = [
-    {
-      title: "category",
-      value: 1,
-    },
-    {
-      title: "character",
-      value: 2,
-    },
-    {
-      title: "world building",
-      value: 3,
-    },
-    {
-      title: "tags",
-      value: 4,
-    },
-  ];
-
-  const dispatch = useDispatch();
   const { slug: storySlug } = useParams();
-  const genresFilter = useSelector((state) => state.story.genresFilter);
-  const [genres, setGenres] = useState("");
+  const [genres, setGenres] = useGenresFilter();
   const [selectedGenres, setSelectedGenres] = useState([]);
   const imgRef = useRef();
   const [story, setStory] = useState({
     ...initStory,
   });
   const navigate = useNavigate();
-
+  console.log(story);
   // const [showChapterList, setShowChapterList] = useState(false);
   useEffect(() => {
-    if (_.isEmpty(genresFilter)) {
-      async function fetchGenre() {
-        let res = await handleGetGenreService();
-        if (res?.success) {
-          dispatch(setGenresFilter(res.data));
-        }
-      }
-      fetchGenre();
-    }
     if (isUpdate) {
       async function fetchStory() {
         try {
@@ -110,23 +78,19 @@ const UpsertStoryForm = ({ isUpdate }) => {
   }, []);
 
   useEffect(() => {
-    if (!_.isEmpty(genresFilter)) {
-      let genreTypeCp = [...genreType];
+    if (!_.isEmpty(genres)) {
       let genres_id =
         selectedGenres?.length > 0 ? selectedGenres.map((item) => item.id) : [];
-      genreTypeCp = genreTypeCp.map((item) => {
-        let genresSplitted = genresFilter.filter(
-          (genre) => genre.type === item.value
-        );
+      let genresCp = [...genres];
+      genresCp = genresCp.map((item) => {
         return {
           ...item,
-          genres: genresSplitted,
           genreSelected:
-            genresSplitted.find((genre) => genres_id?.includes(genre.id)) ||
+            item?.genres?.find((genre) => genres_id?.includes(genre.id)) ||
             null,
         };
       });
-      setGenres(genreTypeCp);
+      setGenres(genresCp);
       setStory({ ...story, genres_id });
     }
 
@@ -164,7 +128,7 @@ const UpsertStoryForm = ({ isUpdate }) => {
 
   const handleUpsertStory = async () => {
     if (isUpdate) {
-      if (checkPropertiesIsEmpty(story, ["avatar"])) {
+      if (checkPropertiesIsEmpty(story, ["avatar", "slug"])) {
         toast.error("Không được để trống!");
       } else {
         try {
@@ -184,7 +148,7 @@ const UpsertStoryForm = ({ isUpdate }) => {
         }
       }
     } else {
-      if (checkPropertiesIsEmpty(story, ["id"])) {
+      if (checkPropertiesIsEmpty(story, ["id", "slug"])) {
         toast.error("Không được để trống!");
       } else {
         try {

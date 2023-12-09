@@ -6,6 +6,7 @@ import ErrorPage from "./ErrorPage";
 import Story from "./Story";
 import Report from "./Report";
 import Admin from "./Admin";
+import { User } from "./User";
 
 const Root = () => {
   const router = createBrowserRouter([
@@ -17,6 +18,7 @@ const Root = () => {
     ...Story,
     ...Report,
     ...Admin,
+    ...User,
     {
       path: "/error-page",
       element: <ErrorPage />,

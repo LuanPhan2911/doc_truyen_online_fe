@@ -1,20 +1,20 @@
 import { useEffect, useState } from "react";
 
-import Genre from "./header/Genre";
 import Ranking from "./header/Ranking";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useSelector } from "react-redux";
-import "./Header.scss";
 import avatarDefault from "../../assets/avatar/default.png";
 import User from "./header/User";
 import { asset } from "../../utils/Helper";
 import Notifies from "./header/Notifies";
-const Header = () => {
+import "./Header.scss";
+import Category from "./header/Category";
+const Header = ({ color, backgroundColor }) => {
   const isAuth = useSelector((state) => state.user.isAuth);
   const user = useSelector((state) => state.user);
   const [searchBtn, setSearchBtn] = useState(false);
   const [toggleMenu, setToggleMenu] = useState(false);
-  const [search, setSearch] = useState("");
+  const [qs, setQS] = useSearchParams();
   const navigate = useNavigate();
   useEffect(() => {
     if (toggleMenu) {
@@ -31,10 +31,10 @@ const Header = () => {
   };
   const handleSearch = () => {
     setSearchBtn(true);
-    if (search) {
+    if (qs.get("name")) {
       navigate({
         pathname: "/story",
-        search: `?q=${search}`,
+        search: `?name=${qs.get("name")}`,
       });
     }
   };
@@ -45,9 +45,15 @@ const Header = () => {
     });
   };
   const handleOnChangeInputSearch = (e) => {
-    let q = e.target.value;
-    setSearch(q);
-    if (!q) {
+    let search = e.target.value;
+    setQS((prev) => {
+      prev.set("name", search);
+      if (!search) {
+        prev.delete("name");
+      }
+      return prev;
+    });
+    if (!search) {
       navigate({
         pathname: "/story",
       });
@@ -55,7 +61,13 @@ const Header = () => {
   };
   return (
     <>
-      <div className={toggleMenu ? "header open" : "header"}>
+      <div
+        className={toggleMenu ? "header open" : "header"}
+        style={{
+          color,
+          backgroundColor,
+        }}
+      >
         <Link className="logo" to={"/"}>
           Stop truyen
         </Link>
@@ -78,7 +90,7 @@ const Header = () => {
             )}
             <li>
               <i className="bi bi-border-all"></i>
-              <Genre btn="Thể loại" />
+              <Category btn="Thể loại" />
             </li>
             <li>
               <i className="bi bi-bar-chart"></i>
@@ -132,7 +144,7 @@ const Header = () => {
           <input
             type="text"
             placeholder="Tìm kiếm"
-            value={search}
+            value={qs.get("name") || ""}
             onChange={(e) => handleOnChangeInputSearch(e)}
             onKeyDown={(e) => handleEnterToSearch(e)}
           />

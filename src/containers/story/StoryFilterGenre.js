@@ -1,158 +1,156 @@
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect } from "react";
 import "./StoryFilterGenre.scss";
-import { useQueryString } from "../../hooks";
-import { useDispatch, useSelector } from "react-redux";
-import { handleGetGenreService } from "../../services/GenreService";
-import { setTagsFilter } from "../../features/storySlice";
-const StoryFilterGenre = ({ selectedStoryTag, setSelectedStoryTag }) => {
-  const dispatch = useDispatch();
-  const tagsFilter = useSelector((state) => state.story.tagsFilter);
-  const [storyTag, setStoryTag] = useState({});
-  const { genre, q } = useQueryString();
+import { useGenresFilter, useQueryString } from "../../hooks";
+import _ from "lodash";
+import { useLocation, useSearchParams } from "react-router-dom";
+const APPEND = 0;
+const REMOVE = 1;
+const StoryFilterGenre = ({ selectedStoryGenres, setSelectedStoryGenres }) => {
+  const [genres, setGenres] = useGenresFilter();
+  const [qs, setQs] = useSearchParams();
+  const { name } = useQueryString();
+  const { state: category } = useLocation();
   useEffect(() => {
-    if (tagsFilter?.length === 0) {
-      async function fetchGenre() {
-        let res = await handleGetGenreService();
-        if (res?.success) {
-          let data = res.data;
-          // dispatch(setTagsFilter(data));
+    let genresSlug = qs.get("genres")?.split(",") || [];
+    let selectedGenresCp = [...selectedStoryGenres];
 
-          setStoryTag(computeData(data));
-        }
+    if (!_.isEmpty(genres)) {
+      let genresCp = [...genres];
+      genresCp = genresCp.map((item) => {
+        return {
+          ...item,
+          genres: item?.genres?.map((genre) => {
+            let slugExist = genresSlug.includes(genre?.slug);
+            if (slugExist) {
+              selectedGenresCp = [...selectedGenresCp, genre];
+            }
+            return {
+              ...genre,
+              selected: slugExist ? true : false,
+            };
+          }),
+        };
+      });
+      setGenres(genresCp);
+      setSelectedStoryGenres(selectedGenresCp);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [genres?.length]);
+  useEffect(() => {
+    let genresSlug = selectedStoryGenres?.map((item) => item?.slug);
+    if (!_.isEmpty(genresSlug)) {
+      setQs((prev) => {
+        prev.set("genres", genresSlug.join(","));
+        return prev;
+      });
+    }
+  }, [selectedStoryGenres]);
+  useEffect(() => {
+    if (!_.isEmpty(category)) {
+      if (category?.id) {
+        handleChangeSelectGenre(category, APPEND);
+      } else {
+        handleClearSelectGenre();
       }
-      fetchGenre();
+    }
+  }, [category]);
+  const handleChangeSelectedGenre = (genre, action) => {
+    let genresCp = [...genres];
+    let genreIndex = genresCp.findIndex((item) => item?.value === genre?.type);
+    let selectedGenres = {};
+    if (genreIndex === -1) {
+      selectedGenres = genresCp.find((item) => item?.value === 1);
     } else {
-      let data = computeData(tagsFilter);
-      setStoryTag(data);
+      selectedGenres = genresCp[genreIndex];
     }
-  }, []);
-  useEffect(() => {
-    if (genre) {
-      handleSetGenreFromUrl(genre);
-    }
-  }, [genre]);
+    selectedGenres = {
+      ...selectedGenres,
+      genres: selectedGenres?.genres?.map((item) => {
+        let selected = item.selected;
+        switch (action) {
+          case APPEND:
+            selected = item.id === genre?.id ? true : item.selected;
+            break;
+          case REMOVE:
+            selected = item.id === genre?.id ? false : item.selected;
+            break;
+          default:
+            break;
+        }
+        return {
+          ...item,
+          selected: selected,
+        };
+      }),
+    };
+    let categoryIndex = genresCp?.findIndex((item) => item.value === 1);
+    genresCp[genreIndex === -1 ? categoryIndex : genreIndex] = selectedGenres;
+    setGenres(genresCp);
+  };
 
-  const computeData = (data) => {
-    let obj = {};
-    obj["CATEGORY"] = [];
-    obj["CHARACTER"] = [];
-    obj["WORLD"] = [];
-    obj["TAG"] = [];
-    data = data.map((item) => {
-      return { ...item, selected: false, key: "" };
-    });
-    data.forEach((item) => {
-      switch (item.type) {
-        case 1:
-          item.key = "CATEGORY";
-          obj["CATEGORY"].push(item);
-          break;
-        case 2:
-          item.key = "CHARACTER";
-          obj["CHARACTER"].push(item);
-          break;
-        case 3:
-          item.key = "WORLD";
-          obj["WORLD"].push(item);
-          break;
-        case 4:
-          item.key = "TAG";
-          obj["TAG"].push(item);
-          break;
-        default:
-          break;
+  const handleChangeSelectGenre = (genre, action) => {
+    handleChangeSelectedGenre(genre, action);
+    let selectedGenresCp = [...selectedStoryGenres];
+    let genreIndex = selectedGenresCp.findIndex(
+      (item) => item.id === genre?.id
+    );
+    if (action === APPEND && genreIndex === -1) {
+      selectedGenresCp = [...selectedGenresCp, genre];
+      setSelectedStoryGenres(selectedGenresCp);
+    } else if (action === REMOVE) {
+      selectedGenresCp = selectedGenresCp.filter(
+        (item) => item.id !== genre?.id
+      );
+      if (_.isEmpty(selectedGenresCp)) {
+        setQs((prev) => {
+          prev.delete("genres");
+          return prev;
+        });
       }
+      setSelectedStoryGenres(selectedGenresCp);
+    }
+  };
+  const handleClearSelectGenre = () => {
+    let genresCp = [...genres];
+    genresCp = genresCp.map((item) => {
+      return {
+        ...item,
+        genres: item?.genres?.map((genre) => {
+          return {
+            ...genre,
+            selected: false,
+          };
+        }),
+      };
     });
-    return obj;
-  };
-  const handleSetSelectedTag = (tag) => {
-    let cpStoryTag = { ...storyTag };
-    let arr = cpStoryTag[tag.key];
-    if (arr?.length > 0) {
-      arr.forEach((item) => {
-        if (item.id === tag.id) {
-          item.selected = true;
-        }
-      });
-    }
-    cpStoryTag[tag.key] = arr;
-    setStoryTag({ ...cpStoryTag });
+    setGenres(genresCp);
+    setSelectedStoryGenres([]);
   };
 
-  const handleSelectGenre = (tag) => {
-    handleSetSelectedTag(tag);
-    let arr = [...selectedStoryTag, tag];
-    if (arr?.length > 0) {
-      arr = arr.filter((item, index) => {
-        return (
-          index ===
-          arr.findIndex((e) => {
-            return e.id === item.id;
-          })
-        );
-      });
-    }
-    setSelectedStoryTag([...arr]);
-  };
-  let handleRemoveSelectedTag = (tag) => {
-    let cpStoryTag = storyTag;
-    let arr = cpStoryTag[tag.key];
-    if (arr?.length > 0) {
-      arr.forEach((item) => {
-        if (item.id === tag.id) {
-          item.selected = false;
-        }
-      });
-    }
-    cpStoryTag[tag.key] = arr;
-
-    setStoryTag({ ...cpStoryTag });
-  };
-  const handleRemoveGenre = (tag) => {
-    handleRemoveSelectedTag(tag);
-    let arr = [...selectedStoryTag];
-    if (arr?.length > 0) {
-      arr = arr.filter((item) => {
-        return item.id !== tag.id;
-      });
-    }
-    setSelectedStoryTag([...arr]);
-  };
-  const handleSetGenreFromUrl = (genreId) => {
-    let cpStoryTag = { ...storyTag };
-    let genres = cpStoryTag["CATEGORY"];
-    if (!genreId) {
-      setSelectedStoryTag([]);
-      genres?.length > 0 && genres.forEach((item) => (item.selected = false));
-    }
-    let tag = genres?.length > 0 && genres.find((item) => item.id === +genreId);
-    if (tag) {
-      let arr = cpStoryTag[tag.key];
-      arr.forEach((item) => {
-        if (item.id === tag.id) {
-          item.selected = true;
-        } else {
-          item.selected = false;
-        }
-      });
-      cpStoryTag[tag.key] = arr;
-      setStoryTag({ ...cpStoryTag });
-      setSelectedStoryTag([tag]);
-    }
-  };
   return (
     <>
       <div className="selected-genre">
-        <div className="tag-title">Đã chọn</div>
+        <div className="d-flex justify-content-between mb-2">
+          <div className="tag-title">Đã chọn</div>
+          {selectedStoryGenres?.length > 0 && (
+            <button
+              className="clear-tag"
+              onClick={() => handleClearSelectGenre()}
+            >
+              Làm mới
+            </button>
+          )}
+        </div>
+
         <div className="tag-wrapper">
-          {q && <span className="search-value">Đang tìm: {q}</span>}
-          {selectedStoryTag?.length > 0 &&
-            selectedStoryTag.map((item) => {
+          {name && <span className="search-value">Đang tìm: {name}</span>}
+          {selectedStoryGenres?.length > 0 &&
+            selectedStoryGenres.map((item) => {
               return (
                 <span
                   key={item.id}
                   className="selected-tag"
-                  onClick={() => handleRemoveGenre(item)}
+                  onClick={() => handleChangeSelectGenre(item, REMOVE)}
                 >
                   {item.name}
                   <i className="bi bi-x-lg"></i>
@@ -161,74 +159,27 @@ const StoryFilterGenre = ({ selectedStoryTag, setSelectedStoryTag }) => {
             })}
         </div>
       </div>
-      <div className="story-category">
-        <div className="tag-title">Thể loại</div>
-        <div className="tag-wrapper">
-          {storyTag["CATEGORY"]?.length > 0 &&
-            storyTag["CATEGORY"].map((item) => {
-              return (
-                <span
-                  key={item.id}
-                  onClick={() => handleSelectGenre(item)}
-                  className={item.selected ? "selected-tag" : ""}
-                >
-                  {item.name}
-                </span>
-              );
-            })}
-        </div>
-      </div>
-      <div className="story-character">
-        <div className="tag-title">Tính cách nhân vật</div>
-        <div className="tag-wrapper">
-          {storyTag["CHARACTER"]?.length > 0 &&
-            storyTag["CHARACTER"].map((item) => {
-              return (
-                <span
-                  key={item.id}
-                  onClick={() => handleSelectGenre(item)}
-                  className={item.selected ? "selected-tag" : ""}
-                >
-                  {item.name}
-                </span>
-              );
-            })}
-        </div>
-      </div>
-      <div className="story-world">
-        <div className="tag-title">Bối cảnh thế giới</div>
-        <div className="tag-wrapper">
-          {storyTag["WORLD"]?.length > 0 &&
-            storyTag["WORLD"].map((item) => {
-              return (
-                <span
-                  key={item.id}
-                  onClick={() => handleSelectGenre(item)}
-                  className={item.selected ? "selected-tag" : ""}
-                >
-                  {item.name}
-                </span>
-              );
-            })}
-        </div>
-      </div>
-      <div className="story-tag">
-        <div className="tag-title">Chủ đề</div>
-        <div className="tag-wrapper">
-          {storyTag["TAG"]?.length > 0 &&
-            storyTag["TAG"].map((item) => {
-              return (
-                <span
-                  key={item.id}
-                  onClick={() => handleSelectGenre(item)}
-                  className={item.selected ? "selected-tag" : ""}
-                >
-                  {item.name}
-                </span>
-              );
-            })}
-        </div>
-      </div>
+      {genres?.length > 0 &&
+        genres?.map((item) => {
+          return (
+            <div className="story-genres" key={item?.value}>
+              <div className="tag-title">{item?.title}</div>
+              <div className="tag-wrapper">
+                {item?.genres?.map((genre) => {
+                  return (
+                    <span
+                      key={genre?.id}
+                      onClick={() => handleChangeSelectGenre(genre, APPEND)}
+                      className={genre?.selected ? "selected-tag" : ""}
+                    >
+                      {genre?.name}
+                    </span>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        })}
     </>
   );
 };
