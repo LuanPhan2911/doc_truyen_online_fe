@@ -1,10 +1,9 @@
-import ChapterHome from "../containers/admin/chapter/ChapterHome";
-import UpsertChapterForm from "../containers/admin/chapter/UpsertChapterForm";
-import GenreHome from "../containers/admin/genre/GenreHome";
-import Home from "../containers/admin/home/Home";
-import StoryHome from "../containers/admin/story/StoryHome";
-import UpsertStoryForm from "../containers/admin/story/UpsertStoryForm";
-import ChapterList from "../containers/chapter/ChapterList";
+import GenreHome from "../page/admin/genre/GenreHome";
+import Home from "../page/admin/Home";
+import StoryHome from "../page/admin/story/StoryHome";
+import UpsertStoryForm from "../page/admin/story/UpsertStoryForm";
+import ChapterHome from "../page/admin/chapter/ChapterHome";
+import UpsertChapter from "../page/admin/chapter/UpsertChapter";
 
 const Admin = [
   {
@@ -34,12 +33,12 @@ const Admin = [
   },
   {
     path: "/admin/story/:slug/chapter/create",
-    element: <UpsertChapterForm />,
+    element: <UpsertChapter />,
   },
 
   {
     path: "/admin/story/:slug/chapter/:index",
-    element: <UpsertChapterForm isUpdate={true} />,
+    element: <UpsertChapter isUpdate={true} />,
   },
 ];
 export default Admin;

@@ -4,9 +4,9 @@ import "./StoryHome.scss";
 import { handleGetStoryService } from "../../../services/AdminServices";
 import { useLayoutEffect } from "react";
 import { useState } from "react";
-import Story from "../../story/Story";
+import Story from "../../../containers/story/Story";
 import { Link } from "react-router-dom";
-import AdminLayout from "../layouts/AdminLayout";
+import AdminLayout from "../../../containers/admin/layouts/AdminLayout";
 
 const StoryHome = () => {
   const userId = useSelector((state) => state.user.id);

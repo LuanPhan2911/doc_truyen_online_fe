@@ -1,12 +1,11 @@
 import Chapter from "../containers/chapter/Chapter";
-import HomeLayout from "../containers/layouts/HomeLayout";
-import StoryContent from "../containers/story/StoryContent";
-import StoryFilter from "../containers/story/StoryFilter";
+import StoryDetail from "../page/StoryDetail";
+import StoryFilter from "../page/StoryFilter";
 
 const Story = [
   {
     path: "/story/:slug",
-    element: <StoryContent />,
+    element: <StoryDetail />,
   },
   {
     path: "/story",

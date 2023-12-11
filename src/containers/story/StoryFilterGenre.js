@@ -1,29 +1,28 @@
-import { useEffect, useLayoutEffect } from "react";
+import { useEffect } from "react";
 import "./StoryFilterGenre.scss";
 import { useGenresFilter, useQueryString } from "../../hooks";
 import _ from "lodash";
-import { useLocation, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 const APPEND = 0;
 const REMOVE = 1;
 const StoryFilterGenre = ({ selectedStoryGenres, setSelectedStoryGenres }) => {
-  const [genres, setGenres] = useGenresFilter();
+  const [genres, setGenres, , hasGenres] = useGenresFilter();
   const [qs, setQs] = useSearchParams();
   const { name } = useQueryString();
-  const { state: category } = useLocation();
-  useEffect(() => {
-    let genresSlug = qs.get("genres")?.split(",") || [];
-    let selectedGenresCp = [...selectedStoryGenres];
 
-    if (!_.isEmpty(genres)) {
+  useEffect(() => {
+    let selectedGenresCp = [...selectedStoryGenres];
+    let genresSlug = qs.get("genres")?.split(",") || [];
+    let allGenres = [];
+    if (hasGenres) {
       let genresCp = [...genres];
       genresCp = genresCp.map((item) => {
+        let genres = item?.genres;
+        allGenres = [...allGenres, ...genres];
         return {
           ...item,
           genres: item?.genres?.map((genre) => {
             let slugExist = genresSlug.includes(genre?.slug);
-            if (slugExist) {
-              selectedGenresCp = [...selectedGenresCp, genre];
-            }
             return {
               ...genre,
               selected: slugExist ? true : false,
@@ -32,82 +31,30 @@ const StoryFilterGenre = ({ selectedStoryGenres, setSelectedStoryGenres }) => {
         };
       });
       setGenres(genresCp);
+      genresSlug = genresSlug.map((item) => ({ slug: item }));
+      selectedGenresCp = _.intersectionBy(allGenres, genresSlug, "slug");
       setSelectedStoryGenres(selectedGenresCp);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [genres?.length]);
-  useEffect(() => {
-    let genresSlug = selectedStoryGenres?.map((item) => item?.slug);
-    if (!_.isEmpty(genresSlug)) {
+  }, [hasGenres, qs.get("genres")]);
+  const handleChangeSelectGenre = (genre, action) => {
+    let genresSlug = qs.get("genres")?.split(",") || [];
+
+    if (action === APPEND) {
       setQs((prev) => {
-        prev.set("genres", genresSlug.join(","));
+        prev.set("genres", [...genresSlug, genre?.slug].toString());
         return prev;
       });
-    }
-  }, [selectedStoryGenres]);
-  useEffect(() => {
-    if (!_.isEmpty(category)) {
-      if (category?.id) {
-        handleChangeSelectGenre(category, APPEND);
-      } else {
-        handleClearSelectGenre();
-      }
-    }
-  }, [category]);
-  const handleChangeSelectedGenre = (genre, action) => {
-    let genresCp = [...genres];
-    let genreIndex = genresCp.findIndex((item) => item?.value === genre?.type);
-    let selectedGenres = {};
-    if (genreIndex === -1) {
-      selectedGenres = genresCp.find((item) => item?.value === 1);
-    } else {
-      selectedGenres = genresCp[genreIndex];
-    }
-    selectedGenres = {
-      ...selectedGenres,
-      genres: selectedGenres?.genres?.map((item) => {
-        let selected = item.selected;
-        switch (action) {
-          case APPEND:
-            selected = item.id === genre?.id ? true : item.selected;
-            break;
-          case REMOVE:
-            selected = item.id === genre?.id ? false : item.selected;
-            break;
-          default:
-            break;
-        }
-        return {
-          ...item,
-          selected: selected,
-        };
-      }),
-    };
-    let categoryIndex = genresCp?.findIndex((item) => item.value === 1);
-    genresCp[genreIndex === -1 ? categoryIndex : genreIndex] = selectedGenres;
-    setGenres(genresCp);
-  };
-
-  const handleChangeSelectGenre = (genre, action) => {
-    handleChangeSelectedGenre(genre, action);
-    let selectedGenresCp = [...selectedStoryGenres];
-    let genreIndex = selectedGenresCp.findIndex(
-      (item) => item.id === genre?.id
-    );
-    if (action === APPEND && genreIndex === -1) {
-      selectedGenresCp = [...selectedGenresCp, genre];
-      setSelectedStoryGenres(selectedGenresCp);
     } else if (action === REMOVE) {
-      selectedGenresCp = selectedGenresCp.filter(
-        (item) => item.id !== genre?.id
-      );
-      if (_.isEmpty(selectedGenresCp)) {
-        setQs((prev) => {
+      genresSlug = genresSlug.filter((item) => item && item !== genre?.slug);
+
+      setQs((prev) => {
+        prev.set("genres", genresSlug.toString());
+        if (_.isEmpty(genresSlug)) {
           prev.delete("genres");
-          return prev;
-        });
-      }
-      setSelectedStoryGenres(selectedGenresCp);
+        }
+        return prev;
+      });
     }
   };
   const handleClearSelectGenre = () => {
@@ -125,6 +72,10 @@ const StoryFilterGenre = ({ selectedStoryGenres, setSelectedStoryGenres }) => {
     });
     setGenres(genresCp);
     setSelectedStoryGenres([]);
+    setQs((prev) => {
+      prev.delete("genres");
+      return prev;
+    });
   };
 
   return (

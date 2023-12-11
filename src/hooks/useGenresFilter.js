@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { handleGetGenreService } from "../services/GenreService";
 import { setGenresFilter } from "../features/storySlice";
@@ -26,6 +26,7 @@ const useGenresFilter = () => {
   const dispatch = useDispatch();
   const genresFilter = useSelector((state) => state.story.genresFilter);
   const [genres, setGenres] = useState([]);
+  const [hasData, setHasData] = useState(false);
   useLayoutEffect(() => {
     if (_.isEmpty(genresFilter)) {
       async function fetchGenre() {
@@ -47,13 +48,13 @@ const useGenresFilter = () => {
           genres: genresFilter.filter((genre) => genre.type === item.value),
         };
       });
-
       setGenres(genresCp);
+      setHasData(true);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [genresFilter]);
 
-  return [genres, setGenres, GENRE_TYPE];
+  return [genres, setGenres, GENRE_TYPE, hasData];
 };
 export default useGenresFilter;

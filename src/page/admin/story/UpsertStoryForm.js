@@ -13,11 +13,11 @@ import { useSelector } from "react-redux";
 import storyDefaultImage from "../../../assets/stories/default.png";
 import { useNavigate, useParams } from "react-router-dom";
 import { handleShowStoryService } from "../../../services/StoryService";
-import ChapterList from "../../chapter/ChapterList";
-import AdminLayout from "../layouts/AdminLayout";
+import ChapterList from "../../../containers/chapter/ChapterList";
+import AdminLayout from "../../../containers/admin/layouts/AdminLayout";
 import "./UpsertStoryForm.scss";
 import _ from "lodash";
-import StoryGenre from "./StoryGenre";
+import StoryGenre from "../../../containers/admin/story/StoryGenre";
 import { useGenresFilter } from "../../../hooks";
 const views = [
   {

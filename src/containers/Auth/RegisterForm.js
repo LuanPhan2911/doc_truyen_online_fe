@@ -47,7 +47,7 @@ const RegisterForm = () => {
   };
   return (
     <HomeLayout>
-      <div className="register-form">
+      <div className="register-form my-2">
         <div className="h3 text-center">Đăng ký</div>
         <div className="form-group">
           <label>Tên hiển thị</label>

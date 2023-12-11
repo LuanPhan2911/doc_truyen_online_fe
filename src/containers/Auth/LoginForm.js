@@ -53,7 +53,7 @@ const LoginForm = () => {
 
   return (
     <HomeLayout>
-      <div className="login-form">
+      <div className="login-form my-2">
         <div className="h3 text-center">Đăng nhập</div>
         <div className="form-group py-2">
           <div className="d-flex justify-content-between">

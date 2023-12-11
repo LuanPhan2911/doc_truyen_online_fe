@@ -1,6 +1,6 @@
-import StoryHome from "../story/StoryHome";
-import UserRead from "../story/UserRead";
-import HomeLayout from "../layouts/HomeLayout";
+import StoryHome from "../containers/story/StoryHome";
+import UserRead from "../containers/story/UserRead";
+import HomeLayout from "../containers/layouts/HomeLayout";
 import "./HomePage.scss";
 const HomePage = () => {
   return (

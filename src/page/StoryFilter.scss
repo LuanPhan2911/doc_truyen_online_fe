@@ -7,6 +7,8 @@
 
   .story-filter-tag {
     padding: 10px;
+    max-height: 80vh;
+    overflow-y: scroll;
 
     .close-filter-story-tag {
       opacity: 0;

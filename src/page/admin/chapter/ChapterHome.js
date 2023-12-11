@@ -1,5 +1,5 @@
-import ChapterList from "../../chapter/ChapterList";
-import AdminLayout from "../layouts/AdminLayout";
+import ChapterList from "../../../containers/chapter/ChapterList";
+import AdminLayout from "../../../containers/admin/layouts/AdminLayout";
 
 const ChapterHome = () => {
   return (

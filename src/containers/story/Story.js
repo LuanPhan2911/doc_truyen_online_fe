@@ -15,38 +15,23 @@ const Story = ({ story, isAdmin }) => {
       setGenreName(genre.name);
     }
   }, [story]);
-  const getIndex = (continueRead, storyId) => {
-    let story =
-      continueRead?.length > 0 &&
-      continueRead.find((item) => item.id === storyId);
-    if (story) {
-      return story?.pivot?.index;
-    }
-    return null;
-  };
+
   const handleShowStoryDetail = (storyDetail) => {
     if (isAdmin) {
-      navigate(`/admin/story/${storyDetail?.slug}`, {});
+      navigate(`/admin/story/${storyDetail?.slug}`);
     } else {
-      navigate(`/story/${storyDetail?.slug}`, {
-        state: {
-          storyId: storyDetail?.id,
-          slug: storyDetail?.slug,
-          index: getIndex(continueRead, storyDetail?.id) || 1,
-        },
-      });
+      navigate(`/story/${storyDetail?.slug}`);
     }
-    getIndex(continueRead, storyDetail?.id);
   };
   return (
-    <div className="story row bg-light border-bottom border-end">
+    <div className="story row bg-light shadow">
       <div
-        className="story-image col-3"
+        className="story-image col-4"
         onClick={() => handleShowStoryDetail(story)}
       >
         <img src={asset(story?.avatar)} alt="Not found" className="img-fluid" />
       </div>
-      <div className="story-info col-9">
+      <div className="story-info col-8">
         <div
           className="name text-overflow-1-line"
           onClick={() => handleShowStoryDetail(story)}
@@ -57,7 +42,7 @@ const Story = ({ story, isAdmin }) => {
           {story?.description}
         </div>
       </div>
-      <div className="auth-genre d-flex my-3 justify-content-between">
+      <div className="auth-genre d-flex justify-content-between">
         <div className="auth text-overflow-1-line">
           <i className="bi bi-pen"></i>
           <span className="mx-2 fst-italic">{story.author_name}</span>

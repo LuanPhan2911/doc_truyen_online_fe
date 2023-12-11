@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import DropdownBase from "../../../components/DropdownBase";
 import "./Category.scss";
-import { createSearchParams, useNavigate } from "react-router-dom";
+import { Link, createSearchParams, useNavigate } from "react-router-dom";
 import { useGenresFilter } from "../../../hooks";
 import _ from "lodash";
 const Category = ({ btn }) => {
@@ -25,13 +25,6 @@ const Category = ({ btn }) => {
       setCategory(categoryCp);
     }
   }, [genres]);
-  const navigate = useNavigate();
-  const handleFilterStoryGenre = (genre) => {
-    navigate("/story", {
-      state: genre,
-    });
-  };
-
   return (
     <DropdownBase>
       {{
@@ -41,11 +34,15 @@ const Category = ({ btn }) => {
             {category?.genres?.length > 0 &&
               category?.genres?.map((item) => {
                 return (
-                  <li
-                    key={item.id}
-                    onClick={() => handleFilterStoryGenre(item)}
-                  >
-                    {item.name}
+                  <li key={item.id}>
+                    <Link
+                      to={`/story?${createSearchParams({
+                        genres: item.slug || [],
+                      }).toString()}`}
+                      className="text-decoration-none"
+                    >
+                      {item.name}
+                    </Link>
                   </li>
                 );
               })}

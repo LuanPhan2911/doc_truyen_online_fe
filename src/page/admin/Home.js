@@ -1,4 +1,4 @@
-import AdminLayout from "../layouts/AdminLayout";
+import AdminLayout from "../../containers/admin/layouts/AdminLayout";
 
 const Home = () => {
   return <AdminLayout />;

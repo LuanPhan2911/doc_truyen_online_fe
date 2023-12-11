@@ -1,55 +1,54 @@
 import { AiFillStar } from "react-icons/ai";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { FaGlasses } from "react-icons/fa";
 import { BsBookmark } from "react-icons/bs";
 import { GiCottonFlower } from "react-icons/gi";
 
-import Description from "./Description";
-import Comments from "../comments/Comments";
+import Description from "../containers/story/Description";
+import Comments from "../containers/comments/Comments";
 import { useEffect, useState } from "react";
-import "./StoryContent.scss";
-import { asset } from "../../utils/Helper";
-import ChapterList from "../chapter/ChapterList";
-import { handleShowStoryService } from "../../services/StoryService";
-import HomeLayout from "../layouts/HomeLayout";
+import "./StoryDetail.scss";
+import { asset } from "../utils/Helper";
+import ChapterList from "../containers/chapter/ChapterList";
+import { handleShowStoryService } from "../services/StoryService";
+import HomeLayout from "../containers/layouts/HomeLayout";
 
-const StoryContent = () => {
-  const location = useLocation();
+const StoryDetail = () => {
   const navigate = useNavigate();
   const [story, setStory] = useState({});
   const [storyTag, setStoryTag] = useState([]);
   const [genres, setGenres] = useState([]);
-
+  const { slug } = useParams();
   useEffect(() => {
-    let { slug, index, storyId } = location.state;
     async function fetchStory() {
       try {
         let res = await handleShowStoryService(slug);
         if (res?.success) {
-          let { genres, ...other } = res.data;
-          setStory({ ...other, chapterIndex: index });
+          let storyCp = res.data;
+          let { genres } = storyCp;
+          setStory({ ...storyCp, chapterIndex: 1 });
           setGenres([...genres]);
           let cpStoryTag = [
             {
               id: 1,
               name: "Giới thiệu",
               active: true,
-              component: <Description description={other.description} />,
+              component: <Description description={storyCp?.description} />,
               plug: "description",
             },
             {
               id: 2,
               name: "DS. Chương",
               active: false,
-              component: <ChapterList storyId={storyId} />,
-              count: story.chapters_count,
+              component: <ChapterList storyId={storyCp?.id} />,
+              count: storyCp?.chapters_count,
               plug: "chapter-list",
             },
             {
               id: 3,
               name: "Bình luận",
               active: false,
-              component: <Comments storyId={storyId} />,
+              component: <Comments storyId={storyCp?.id} />,
               count: story.comments_count,
               plug: "comment",
             },
@@ -59,7 +58,7 @@ const StoryContent = () => {
       } catch (error) {}
     }
     fetchStory();
-  }, [location.state]);
+  }, []);
 
   const handleShowChapter = ({ chapterIndex }) => {
     navigate(`chapter/${chapterIndex}`, {});
@@ -178,4 +177,4 @@ const StoryContent = () => {
     </HomeLayout>
   );
 };
-export default StoryContent;
+export default StoryDetail;

@@ -10,9 +10,9 @@ import {
   handleShowChapterService,
   handleUpdateChapterService,
 } from "../../../services/AdminServices";
-import AdminLayout from "../layouts/AdminLayout";
-import ChapterList from "../../chapter/ChapterList";
-const UpsertChapterForm = ({ isUpdate }) => {
+import AdminLayout from "../../../containers/admin/layouts/AdminLayout";
+import ChapterList from "../../../containers/chapter/ChapterList";
+const UpsertChapter = ({ isUpdate }) => {
   const { slug, index } = useParams();
   const initChapter = {
     id: "",
@@ -123,4 +123,4 @@ const UpsertChapterForm = ({ isUpdate }) => {
     </AdminLayout>
   );
 };
-export default UpsertChapterForm;
+export default UpsertChapter;

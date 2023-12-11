@@ -1,8 +1,8 @@
 import { useGenresFilter } from "../../../hooks";
-import AdminLayout from "../layouts/AdminLayout";
-import GenreCreate from "./GenreCreate";
-import GenreIndex from "./GenreIndex";
-import { useState } from "react";
+import AdminLayout from "../../../containers/admin/layouts/AdminLayout";
+import GenreCreate from "../../../containers/admin/genre/GenreCreate";
+import GenreIndex from "../../../containers/admin/genre/GenreIndex";
+import { useEffect, useState } from "react";
 
 const GenreHome = () => {
   const [, , genreType] = useGenresFilter();

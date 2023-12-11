@@ -1,13 +1,11 @@
 import { useEffect, useState } from "react";
-import { handleGetStoryService } from "../../services/StoryService";
+import { handleGetStoryService } from "../services/StoryService";
 import { Link, useSearchParams } from "react-router-dom";
-import StoryFilterGenre from "./StoryFilterGenre";
-import DropdownBase from "../../components/DropdownBase";
-import Story from "./Story";
-import HomeLayout from "../layouts/HomeLayout";
+import StoryFilterGenre from "../containers/story/StoryFilterGenre";
+import DropdownBase from "../components/DropdownBase";
+import Story from "../containers/story/Story";
+import HomeLayout from "../containers/layouts/HomeLayout";
 import "./StoryFilter.scss";
-import _ from "lodash";
-import { useGenresFilter } from "../../hooks";
 const menu = [
   {
     id: 1,
@@ -160,11 +158,11 @@ const StoryFilter = () => {
             </div>
           ) : (
             <>
-              <div className="stories-main mb-3">
+              <div className="stories-main row">
                 {stories?.length > 0 ? (
                   stories.map((item) => {
                     return (
-                      <div className="col-lg-10" key={item.id}>
+                      <div className="col-lg-6" key={item.id}>
                         <Story story={item} />
                       </div>
                     );
@@ -175,7 +173,7 @@ const StoryFilter = () => {
                   </div>
                 )}
               </div>
-              <ul className="pagination justify-content-center">
+              <ul className="pagination justify-content-center mt-3">
                 {stories?.length > 0 &&
                   links?.length > 0 &&
                   links.map((item) => {

@@ -5,6 +5,7 @@ import { handleGetGenreService } from "../../../services/GenreService";
 const GenreIndex = ({ genreType, newGenres, setNewGenres }) => {
   const [genres, setGenres] = useState([...genreType]);
   const [deletedGenre, setDeletedGenre] = useState("");
+
   useEffect(() => {
     async function fetchGenre() {
       try {
@@ -64,6 +65,7 @@ const GenreIndex = ({ genreType, newGenres, setNewGenres }) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [deletedGenre]);
+
   return (
     <>
       <h4>List Genre</h4>
