@@ -4,7 +4,7 @@ import {
   handleGetUserService,
 } from "../../services/AuthServices";
 
-const VerifyEmailForm = ({ handleCloseModal }) => {
+const VerifyEmailForm = () => {
   const [email, setEmail] = useState("");
   useEffect(() => {
     const handleGetUser = async () => {
@@ -24,7 +24,6 @@ const VerifyEmailForm = ({ handleCloseModal }) => {
       if (!res?.success) {
         return;
       }
-      handleCloseModal();
     } catch (error) {}
   };
   return (

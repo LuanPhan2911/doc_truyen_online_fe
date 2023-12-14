@@ -1,4 +1,4 @@
-import Chapter from "../containers/chapter/Chapter";
+import Chapter from "../page/Chapter";
 import StoryDetail from "../page/StoryDetail";
 import StoryFilter from "../page/StoryFilter";
 

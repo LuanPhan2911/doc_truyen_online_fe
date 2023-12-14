@@ -7,56 +7,8 @@ import {
 import "./ChapterControl.scss";
 const ChapterControl = () => {
   const dispatch = useDispatch();
-  const fontSize = useSelector((state) => state.app.fontSize);
-  const colors = [
-    {
-      id: 1,
-      backgroundColor: "#a99d9d",
-      color: "#000",
-    },
-    {
-      id: 2,
-      backgroundColor: "#a9a28d",
-      color: "#000",
-    },
-    {
-      id: 3,
-      backgroundColor: "#9ca49c",
-      color: "#000",
-    },
-    {
-      id: 4,
-      backgroundColor: "#9ba0a0",
-      color: "#000",
-    },
-    {
-      id: 5,
-      backgroundColor: "#a29d92",
-      color: "#000",
-    },
-    {
-      id: 6,
-      backgroundColor: "#9e9d9a",
-      color: "#000",
-    },
-    {
-      id: 7,
-      backgroundColor: "#171717",
-      color: "#fff",
-    },
-    {
-      id: 8,
-      backgroundColor: "#fff",
-      color: "#000",
-    },
-  ];
-  const fontFamily = [
-    "Palatino Linotype",
-    "Times New Roman",
-    "Verdana",
-    "Tahoma",
-    "Arial",
-  ];
+  const { fontSize, colors, fontsFamily } = useSelector((state) => state.app);
+
   const handleChangeFontSize = (id) => {
     let copyFontSize = fontSize;
     if (fontSize <= 12) {
@@ -83,7 +35,6 @@ const ChapterControl = () => {
   };
   const handleChangeColor = (item) => {
     let { color, backgroundColor } = item;
-    // setSelectedColor(obj);
     dispatch(
       changeColor({
         color,
@@ -99,7 +50,7 @@ const ChapterControl = () => {
     <div className="control-chapter-popup">
       <div className="change-color">
         <div className="background">
-          <i className="bi bi-palette"></i>
+          <i className="bi bi-palette me-2"></i>
           Màu nền
         </div>
         <div className="colors">
@@ -120,7 +71,7 @@ const ChapterControl = () => {
       </div>
       <div className="change-font-family">
         <div className="font-family-title">
-          <i className="bi bi-code-slash"></i>
+          <i className="bi bi-code-slash me-2"></i>
           Phong chữ
         </div>
         <div className="font-family">
@@ -128,8 +79,8 @@ const ChapterControl = () => {
             className="form-control"
             onChange={(e) => handleChangeFontFamily(e)}
           >
-            {fontFamily?.length > 0 &&
-              fontFamily.map((item, index) => {
+            {fontsFamily?.length > 0 &&
+              fontsFamily.map((item, index) => {
                 return (
                   <option value={item} key={index}>
                     {item}
@@ -141,10 +92,10 @@ const ChapterControl = () => {
       </div>
       <div className="change-font-size">
         <div className="font-size-title">
-          <i className="bi bi-file-font"></i>
+          <i className="bi bi-file-font me-2"></i>
           Cở chữ
         </div>
-        <div className="font-size text-decoration-underline">
+        <div className="font-size">
           <i
             className="bi bi-dash-circle"
             onClick={() => handleChangeFontSize("minus")}

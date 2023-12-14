@@ -3,24 +3,21 @@ import { createSlice } from "@reduxjs/toolkit";
 export const userSlice = createSlice({
   name: "user",
   initialState: {
-    isAuth: false,
     name: "",
     avatar: "",
     id: "",
   },
   reducers: {
-    userLogin: (state, { payload, type }) => {
-      state.isAuth = true;
+    login: (state, { payload, type }) => {
       state.id = payload.id;
       state.name = payload.name;
       state.avatar = payload.avatar;
     },
-    userUpdate: (state, { payload, type }) => {
+    update: (state, { payload, type }) => {
       state.avatar = payload.avatar;
       state.name = payload.name;
     },
-    userLogout: (state, payload) => {
-      state.isAuth = false;
+    logout: (state, payload) => {
       state.name = "";
       state.id = "";
       state.avatar = "";
@@ -29,6 +26,6 @@ export const userSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { userLogin, userLogout, userUpdate } = userSlice.actions;
+export const { login, logout, update } = userSlice.actions;
 
 export default userSlice.reducer;

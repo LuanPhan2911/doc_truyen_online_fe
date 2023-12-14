@@ -1,22 +1,20 @@
-import { useNavigate, useParams } from "react-router-dom";
-
-import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import "./Chapter.scss";
 
 import { useSelector } from "react-redux";
 
 import { useEffect, useState } from "react";
-import { handleGetChapterService } from "../../services/ChapterService";
+import { handleGetChapterService } from "../services/ChapterService";
 
-import ChapterConfig from "./ChapterConfig";
-import { countWords, diffTime } from "../../utils/Helper";
-import Comments from "../comments/Comments";
-import HomeLayout from "../layouts/HomeLayout";
+import ChapterConfig from "../containers/chapter/ChapterConfig";
+import { countWords, formatTime } from "../utils/Helper";
+import Comments from "../containers/comments/Comments";
+import HomeLayout from "../containers/layouts/HomeLayout";
+import _ from "lodash";
 
 const Chapter = () => {
   const { slug, index: chapterIndex } = useParams();
   const selectedFontFamily = useSelector((state) => state.app.fontFamily);
-  const [storyId, setStoryId] = useState("");
   const navigate = useNavigate();
   const selectedColor = useSelector((state) => {
     return {
@@ -27,10 +25,12 @@ const Chapter = () => {
   const fontSize = useSelector((state) => state.app.fontSize);
   const [chapter, setChapter] = useState("");
   const [countChapter, setCountChapter] = useState("");
-
+  const [chapterReaction, setChapterReaction] = useState({});
+  const [countReactions, setCountReactions] = useState(0);
   useEffect(() => {
     window.scrollTo(0, 0);
     fetchChapter();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chapterIndex]);
 
   async function fetchChapter() {
@@ -38,11 +38,14 @@ const Chapter = () => {
       let res = await handleGetChapterService(slug, chapterIndex);
 
       if (res?.success) {
-        let { chapter, count, storyId } = res.data;
+        let { chapter, countChapter, reaction } = res.data;
 
         setChapter({ ...chapter });
-        setCountChapter(count);
-        setStoryId(storyId);
+        setCountChapter(countChapter);
+        setChapterReaction(reaction);
+        let summary = reaction?.summary;
+        let countReactionsCp = _.sumBy(summary, "count");
+        setCountReactions(countReactionsCp);
       }
     } catch (error) {}
   }
@@ -64,6 +67,8 @@ const Chapter = () => {
       });
     }
   };
+
+  const storyId = chapter?.story_id || "";
   return (
     <HomeLayout
       color={selectedColor.color}
@@ -90,7 +95,11 @@ const Chapter = () => {
           <div className="chapter-story-info row">
             <div className="story-name col-lg-3 col-md-6">
               <i className="bi bi-book"></i>
-              <span>{chapter?.story?.name}</span>
+              <span>
+                <Link to={`/story/${slug}`} className="text-decoration-none">
+                  {chapter?.story?.name}
+                </Link>
+              </span>
             </div>
             <div className="auth-name col-lg-3 col-md-6">
               <i className="bi bi-pencil"></i>
@@ -102,11 +111,11 @@ const Chapter = () => {
             </div>
             <div className="chapter-liked col-lg-2 col-md-6">
               <i className="bi bi-heart"></i>
-              <span> 28 cảm xúc</span>
+              <span> {countReactions} cảm xúc</span>
             </div>
             <div className="chapter-created-at col-lg-2 col-md-6">
               <i className="bi bi-clock"></i>
-              <span> {diffTime(chapter?.created_at)}</span>
+              <span> {formatTime(chapter?.created_at)}</span>
             </div>
           </div>
 
@@ -134,7 +143,10 @@ const Chapter = () => {
           </div>
 
           <div className="chapter-config">
-            <ChapterConfig storyId={storyId} />
+            <ChapterConfig
+              storyId={storyId}
+              chapterReaction={chapterReaction}
+            />
           </div>
         </div>
         <div className="container">

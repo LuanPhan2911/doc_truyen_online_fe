@@ -85,6 +85,9 @@ function getQueryParams(url) {
 const diffTime = (time) => {
   return moment(time).locale("vi").fromNow();
 };
+const formatTime = (time) => {
+  return moment(time).format("YYYY-MM-DD HH:mm");
+};
 const newLine2Br = (str) => {
   return str.replace(/(?:\r\n|\r|\n)/g, "<br>");
 };
@@ -104,4 +107,5 @@ export {
   diffTime,
   newLine2Br,
   countWords,
+  formatTime,
 };

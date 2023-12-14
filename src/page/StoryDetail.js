@@ -3,8 +3,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { FaGlasses } from "react-icons/fa";
 import { BsBookmark } from "react-icons/bs";
 import { GiCottonFlower } from "react-icons/gi";
-
-import Description from "../containers/story/Description";
 import Comments from "../containers/comments/Comments";
 import { useEffect, useState } from "react";
 import "./StoryDetail.scss";
@@ -12,6 +10,10 @@ import { asset } from "../utils/Helper";
 import ChapterList from "../containers/chapter/ChapterList";
 import { handleShowStoryService } from "../services/StoryService";
 import HomeLayout from "../containers/layouts/HomeLayout";
+import StoryDescription from "../containers/story/StoryDescription";
+import { useSelector } from "react-redux";
+import _ from "lodash";
+import StoryRating from "../containers/story/StoryRating";
 
 const StoryDetail = () => {
   const navigate = useNavigate();
@@ -19,6 +21,7 @@ const StoryDetail = () => {
   const [storyTag, setStoryTag] = useState([]);
   const [genres, setGenres] = useState([]);
   const { slug } = useParams();
+  const borderColor = useSelector((state) => state.app.borderColor);
   useEffect(() => {
     async function fetchStory() {
       try {
@@ -33,8 +36,13 @@ const StoryDetail = () => {
               id: 1,
               name: "Giới thiệu",
               active: true,
-              component: <Description description={storyCp?.description} />,
-              plug: "description",
+              component: (
+                <StoryDescription
+                  description={storyCp?.description}
+                  reactionSummary={storyCp?.reaction_summary}
+                  newestChapter={storyCp?.newest_chapter}
+                />
+              ),
             },
             {
               id: 2,
@@ -42,15 +50,20 @@ const StoryDetail = () => {
               active: false,
               component: <ChapterList storyId={storyCp?.id} />,
               count: storyCp?.chapters_count,
-              plug: "chapter-list",
             },
             {
               id: 3,
+              name: "Đánh giá",
+              active: false,
+              component: <StoryRating storyId={storyCp?.id} />,
+              count: 0,
+            },
+            {
+              id: 4,
               name: "Bình luận",
               active: false,
               component: <Comments storyId={storyCp?.id} />,
-              count: story.comments_count,
-              plug: "comment",
+              count: storyCp?.comments_count,
             },
           ];
           setStoryTag([...cpStoryTag]);
@@ -58,6 +71,7 @@ const StoryDetail = () => {
       } catch (error) {}
     }
     fetchStory();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleShowChapter = ({ chapterIndex }) => {
@@ -92,7 +106,14 @@ const StoryDetail = () => {
             <ul className="story-detail-genre">
               {genres?.length > 0 &&
                 genres.map((item) => {
-                  return <li key={item.name}>{item.name}</li>;
+                  return (
+                    <li
+                      key={item.name}
+                      className={`border ${_.sample(borderColor)} `}
+                    >
+                      {item.name}
+                    </li>
+                  );
                 })}
             </ul>
             <ul className="story-detail-full">
@@ -146,7 +167,7 @@ const StoryDetail = () => {
           </div>
         </div>
         <div className="story-detail-tag">
-          <ul>
+          <ul className="tag-ul">
             {storyTag?.length > 0 &&
               storyTag.map((item) => {
                 return (
@@ -156,7 +177,7 @@ const StoryDetail = () => {
                     onClick={() => handleChangeStoryTag(item.id)}
                   >
                     {item.name}
-                    <span className="count">{item.count}</span>
+                    <span className="count">{item?.count}</span>
                   </li>
                 );
               })}

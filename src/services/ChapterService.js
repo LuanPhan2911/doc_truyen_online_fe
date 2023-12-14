@@ -6,4 +6,13 @@ const handleGetChapterService = (name, chapterIndex) => {
 const handleGetChapterListService = (slug) => {
   return axios.get(`/api/story/${slug}/chapter`);
 };
-export { handleGetChapterService, handleGetChapterListService };
+const handleChapterReactionService = ({ slug, index, name }) => {
+  return axios.post(`/api/story/${slug}/chapter/${index}/reaction`, {
+    name,
+  });
+};
+export {
+  handleGetChapterService,
+  handleGetChapterListService,
+  handleChapterReactionService,
+};

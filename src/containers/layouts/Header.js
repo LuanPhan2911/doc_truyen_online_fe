@@ -1,20 +1,29 @@
-import { useEffect, useRef, useState } from "react";
-
+import { useEffect, useState } from "react";
 import Ranking from "./header/Ranking";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import avatarDefault from "../../assets/avatar/default.png";
 import User from "./header/User";
 import { asset } from "../../utils/Helper";
 import Notifies from "./header/Notifies";
 import "./Header.scss";
 import Category from "./header/Category";
+import { handleClose, handleShow } from "../../features/authSlice";
+import Modal from "react-bootstrap/Modal";
 const Header = ({ color, backgroundColor }) => {
-  const isAuth = useSelector((state) => state.user.isAuth);
+  const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const [searchBtn, setSearchBtn] = useState(false);
   const [toggleMenu, setToggleMenu] = useState(false);
   const [qs, setQS] = useSearchParams();
+
+  const { isShow, item } = useSelector((state) => state.auth);
+
+  const isAuth = useSelector((state) => state.auth.isAuth);
+
+  const handleShowModal = (id) => dispatch(handleShow(id));
+  const handleCloseModal = () => dispatch(handleClose());
+
   const navigate = useNavigate();
   useEffect(() => {
     if (toggleMenu) {
@@ -100,19 +109,15 @@ const Header = ({ color, backgroundColor }) => {
               <>
                 <li>
                   <i className="bi bi-person-circle"></i>
-                  <span>
+                  <span onClick={() => handleShowModal("login")}>
                     {" "}
-                    <Link to={"/login"} className="text-decoration-none">
-                      Đăng nhập
-                    </Link>
+                    Đăng nhập
                   </span>
                 </li>
                 <li>
                   <i className="bi bi-person-add"></i>
-                  <span>
-                    <Link to={"/register"} className="text-decoration-none">
-                      Đăng ký
-                    </Link>
+                  <span onClick={() => handleShowModal("register")}>
+                    Đăng ký
                   </span>
                 </li>
               </>
@@ -150,6 +155,14 @@ const Header = ({ color, backgroundColor }) => {
           />
         </div>
       </div>
+      {isShow && (
+        <Modal show={isShow} onHide={() => handleCloseModal()}>
+          <Modal.Header closeButton>
+            <Modal.Title>{item?.name}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>{item?.component}</Modal.Body>
+        </Modal>
+      )}
     </>
   );
 };

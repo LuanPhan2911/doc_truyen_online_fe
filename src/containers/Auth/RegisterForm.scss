@@ -1,8 +1,5 @@
 .register-form {
   padding: 20px;
-  width: 400px;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-  border-radius: 20px;
   .register {
     display: flex;
     justify-content: center;
@@ -20,11 +17,12 @@
   }
   .no-account {
     padding: 20px;
-    a {
+    span {
       text-decoration: none;
       color: #bd953b;
       font-size: 1em;
       font-weight: 600;
+      cursor: pointer;
     }
   }
 }

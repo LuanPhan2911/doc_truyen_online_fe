@@ -1,8 +1,10 @@
 import Header from "./Header";
 import Footer from "./Footer";
 import "./HomeLayout.scss";
+import { useAuth } from "../../hooks";
 
 const HomeLayout = ({ children, color, backgroundColor }) => {
+  useAuth();
   return (
     <div
       style={{

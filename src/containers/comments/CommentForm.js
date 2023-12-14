@@ -2,19 +2,23 @@ import avatarDefault from "../../assets/avatar/default.png";
 import { AiOutlineSend } from "react-icons/ai";
 import "./CommentForm.scss";
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { asset, checkPropertiesIsEmpty } from "../../utils/Helper";
 import { handleSendCommentService } from "../../services/CommentServices";
 import { toast } from "react-toastify";
+import { handleShow } from "../../features/authSlice";
 const CommentForm = ({ isReply, storyId, parentId, handleSetNewComment }) => {
   const initComment = { message: "", parent_id: "", user_id: "" };
   const user = useSelector((state) => state.user);
+  const isAuth = useSelector((state) => state.auth.isAuth);
+  const dispatch = useDispatch();
 
   const [comment, setComment] = useState({ ...initComment });
 
-  const handleFucusInput = () => {
-    if (!user.isAuth) {
+  const handleFocusInput = () => {
+    if (!isAuth) {
+      dispatch(handleShow("login"));
     }
   };
 
@@ -56,7 +60,7 @@ const CommentForm = ({ isReply, storyId, parentId, handleSetNewComment }) => {
           placeholder={
             isReply ? "Nhập trả lời của bạn" : "Nhập bình luận của bạn"
           }
-          onFocus={() => handleFucusInput()}
+          onFocus={() => handleFocusInput()}
           onChange={(e) => handleChangeInput(e.target.value, "message")}
           value={comment.message}
         ></textarea>

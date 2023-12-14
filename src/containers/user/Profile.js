@@ -5,7 +5,7 @@ import { handleGetUser, handleUpdateUser } from "../../services/UserServices";
 import { asset } from "../../utils/Helper";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
-import { userUpdate } from "../../features/userSlice";
+import { update } from "../../features/userSlice";
 import HomeLayout from "../layouts/HomeLayout";
 
 const Profile = () => {
@@ -46,6 +46,7 @@ const Profile = () => {
       } catch (error) {}
     }
     getUser();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   useEffect(() => {
     if (!user.avatarFile) {
@@ -107,7 +108,7 @@ const Profile = () => {
       if (res?.success) {
         let data = res.data;
         dispatch(
-          userUpdate({
+          update({
             name: data.name,
             avatar: data.avatar,
           })

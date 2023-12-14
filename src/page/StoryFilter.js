@@ -23,12 +23,18 @@ const menu = [
 const StoryFilter = () => {
   const [selectedStoryGenres, setSelectedStoryGenres] = useState([]);
   const [toggleMenuTag, setToggleMenuTag] = useState(false);
-  const [storiesPaginated, setStoriesPaginated] = useState({});
+  const [storiesPaginated, setStoriesPaginated] = useState({
+    currentPage: "",
+    stories: [],
+    links: [],
+    totals: "",
+  });
   const [orderByMenu, setOrderByMenu] = useState([]);
   const [orderBy, setOrderBy] = useState("desc");
 
   const [qs] = useSearchParams();
   const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     setOrderByMenu([...menu]);
     const delaySearch = setTimeout(() => {
@@ -54,12 +60,18 @@ const StoryFilter = () => {
         genres_id: genres_id,
       });
       if (res?.success) {
-        let { current_page: currentPage, data: stories, links } = res.data;
+        let {
+          current_page: currentPage,
+          data: stories,
+          links,
+          totals,
+        } = res.data;
         links = customLink(links);
         setStoriesPaginated({
           currentPage,
           stories,
           links,
+          totals,
         });
       }
     } catch (error) {
@@ -87,6 +99,7 @@ const StoryFilter = () => {
 
   const stories = storiesPaginated?.stories || [];
   const links = storiesPaginated?.links || [];
+  const totals = storiesPaginated?.totals;
   return (
     <HomeLayout>
       <div className="story-filter-main row">
@@ -173,29 +186,31 @@ const StoryFilter = () => {
                   </div>
                 )}
               </div>
-              <ul className="pagination justify-content-center mt-3">
-                {stories?.length > 0 &&
-                  links?.length > 0 &&
-                  links.map((item) => {
-                    return (
-                      <li
-                        className={
-                          item.url ? "page-item" : "page-item disabled"
-                        }
-                        key={item.label}
-                      >
-                        <Link
+              {totals > 1 && (
+                <ul className="pagination justify-content-center mt-3">
+                  {stories?.length > 0 &&
+                    links?.length > 0 &&
+                    links.map((item) => {
+                      return (
+                        <li
                           className={
-                            item.active ? "page-link active" : "page-link"
+                            item.url ? "page-item" : "page-item disabled"
                           }
-                          // onClick={() => handleChangePage(item.page)}
+                          key={item.label}
                         >
-                          {item.label}
-                        </Link>
-                      </li>
-                    );
-                  })}
-              </ul>
+                          <Link
+                            className={
+                              item.active ? "page-link active" : "page-link"
+                            }
+                            // onClick={() => handleChangePage(item.page)}
+                          >
+                            {item.label}
+                          </Link>
+                        </li>
+                      );
+                    })}
+                </ul>
+              )}
             </>
           )}
         </div>

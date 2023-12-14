@@ -1,8 +1,3 @@
-* {
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
-}
 body {
   margin: 0;
   -webkit-font-smoothing: antialiased;
@@ -22,10 +17,4 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
-}
-.popover {
-  max-width: 80vw !important;
-}
-.line-break {
-  white-space: pre-line;
 }

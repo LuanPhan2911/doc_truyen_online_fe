@@ -55,7 +55,7 @@ const UpsertStoryForm = ({ isUpdate }) => {
     ...initStory,
   });
   const navigate = useNavigate();
-  console.log(story);
+
   // const [showChapterList, setShowChapterList] = useState(false);
   useEffect(() => {
     if (isUpdate) {

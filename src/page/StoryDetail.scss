@@ -26,7 +26,6 @@
       padding: 0;
       li {
         border-radius: 5px;
-        box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
         padding: 5px 10px;
         margin: 5px;
         display: flex;
@@ -115,7 +114,7 @@
     background: #fff;
     padding: 10px;
     border-radius: 10px;
-    ul {
+    .tag-ul {
       display: flex;
       list-style: none;
       position: relative;
@@ -126,7 +125,7 @@
       li {
         flex-basis: 100%;
         padding: 10px 20px;
-        font-size: 1.2em;
+        font-size: 1em;
         font-weight: 600;
         position: relative;
         cursor: pointer;
@@ -192,7 +191,7 @@
       }
     }
     .story-detail-tag {
-      ul {
+      .tag-ul {
         width: 100%;
       }
       .tag-content {

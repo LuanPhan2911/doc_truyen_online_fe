@@ -8,16 +8,18 @@ import thunk from "redux-thunk";
 import userSlice from "../features/userSlice";
 import appSlice from "../features/appSlice";
 import storySlice from "../features/storySlice";
+import authSlice from "../features/authSlice";
 const reducers = combineReducers({
   user: userSlice,
   app: appSlice,
   story: storySlice,
+  auth: authSlice,
 });
 const persistConfig = {
   key: "root",
   storage: storage,
   stateReconciler: autoMergeLevel2,
-  whitelist: ["user", "app", "story"],
+  whitelist: ["app", "story"],
 };
 const persistedReducer = persistReducer(persistConfig, reducers);
 const store = configureStore({

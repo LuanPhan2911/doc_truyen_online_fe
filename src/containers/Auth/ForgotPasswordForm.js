@@ -26,7 +26,7 @@ const ForgotPasswordForm = () => {
           className="btn btn-primary"
           onClick={() => handleForgotPassword()}
         >
-          Gui mat khau
+          Gửi mật khẩu
         </button>
       </div>
     </div>
