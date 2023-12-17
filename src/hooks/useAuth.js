@@ -22,12 +22,12 @@ const useAuth = () => {
         dispatch(setAuth(false));
       }
     }
-
-    if (userId) {
-      dispatch(setAuth(true));
-    } else {
+    if (!userId) {
       fetchUser();
+    } else {
+      dispatch(setAuth(true));
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return [isAuth];

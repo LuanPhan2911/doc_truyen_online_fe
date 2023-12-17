@@ -9,7 +9,7 @@ const Story = ({ story, isAdmin }) => {
   // const continueRead = useSelector((state) => state.story.continueRead);
   const handleShowStoryDetail = (storyDetail) => {
     if (isAdmin) {
-      navigate(`/admin/story/${storyDetail?.slug}`);
+      navigate(`/admin/story/${storyDetail?.id}`);
     } else {
       navigate(`/story/${storyDetail?.slug}`);
     }
@@ -17,12 +17,12 @@ const Story = ({ story, isAdmin }) => {
   return (
     <div className="story row">
       <div
-        className="story-image col-4"
+        className="story-image col-3"
         onClick={() => handleShowStoryDetail(story)}
       >
         <img src={asset(story?.avatar)} alt="Not found" className="img-fluid" />
       </div>
-      <div className="story-info col-8">
+      <div className="story-info col-9">
         <div
           className="name text-overflow-1-line"
           onClick={() => handleShowStoryDetail(story)}

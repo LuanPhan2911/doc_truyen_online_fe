@@ -13,7 +13,7 @@ import {
 import AdminLayout from "../../../containers/admin/layouts/AdminLayout";
 import ChapterList from "../../../containers/chapter/ChapterList";
 const UpsertChapter = ({ isUpdate }) => {
-  const { slug, index } = useParams();
+  const { id, index } = useParams();
   const initChapter = {
     id: "",
     name: "",
@@ -28,7 +28,7 @@ const UpsertChapter = ({ isUpdate }) => {
     if (isUpdate) {
       async function fetchChapter() {
         try {
-          let res = await handleShowChapterService(slug, index);
+          let res = await handleShowChapterService(id, index);
           if (res?.success) {
             let data = res.data;
             let computedData = computedChapter(data);
@@ -70,7 +70,7 @@ const UpsertChapter = ({ isUpdate }) => {
       } else {
         try {
           let cpChapter = { ...chapter };
-          let res = await handleCreateChapterService(cpChapter, slug);
+          let res = await handleCreateChapterService(cpChapter, id);
           if (res && res?.success) {
             toast.success("Thêm thành công");
             setChapter({

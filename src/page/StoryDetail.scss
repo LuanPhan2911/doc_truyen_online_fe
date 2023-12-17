@@ -93,6 +93,9 @@
         }
         &.story-detail-read {
           background: #bd953b;
+          &.active {
+            background: #e34608;
+          }
           span {
             color: #fff;
             font-weight: 600;

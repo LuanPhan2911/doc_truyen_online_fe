@@ -1,26 +1,25 @@
-import { useSelector } from "react-redux";
 import "./StoryHome.scss";
 
 import { handleGetStoryService } from "../../../services/AdminServices";
-import { useLayoutEffect } from "react";
+import { useEffect } from "react";
 import { useState } from "react";
 import Story from "../../../containers/story/Story";
 import { Link } from "react-router-dom";
 import AdminLayout from "../../../containers/admin/layouts/AdminLayout";
 
 const StoryHome = () => {
-  const userId = useSelector((state) => state.user.id);
   const [stories, setStories] = useState([]);
-  useLayoutEffect(() => {
+  useEffect(() => {
+    fetchStory();
+
     async function fetchStory() {
       try {
-        let res = await handleGetStoryService({ user_id: userId });
+        let res = await handleGetStoryService();
         if (res?.success) {
           setStories([...res.data]);
         }
       } catch (error) {}
     }
-    fetchStory();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -33,11 +32,15 @@ const StoryHome = () => {
             Thêm truyện mới
           </Link>
         </div>
-        <div className="col">
+        <div className="stories">
           {stories &&
             stories.length > 0 &&
             stories.map((item, index) => {
-              return <Story key={index} story={item} isAdmin={true} />;
+              return (
+                <div className="col-lg-6 border-bottom" key={item.id}>
+                  <Story story={item} isAdmin={true} />
+                </div>
+              );
             })}
         </div>
       </div>

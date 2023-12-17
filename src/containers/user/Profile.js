@@ -4,13 +4,14 @@ import { useEffect, useRef, useState } from "react";
 import { handleGetUser, handleUpdateUser } from "../../services/UserServices";
 import { asset } from "../../utils/Helper";
 import { toast } from "react-toastify";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { update } from "../../features/userSlice";
 import HomeLayout from "../layouts/HomeLayout";
+import { useParams } from "react-router-dom";
 
 const Profile = () => {
   const imgRef = useRef();
-  const userId = useSelector((state) => state.user.id);
+  const { id: userId } = useParams();
   const dispatch = useDispatch();
   const [user, setUser] = useState({
     avatarUrl: "",
@@ -35,6 +36,7 @@ const Profile = () => {
       name: "Khác",
     },
   ]);
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     async function getUser() {
       try {
@@ -90,6 +92,7 @@ const Profile = () => {
     setUser({ ...cpUser });
   };
   const OnUpdateUser = async () => {
+    setLoading(true);
     let {
       name,
       birthday: birth_date,
@@ -98,13 +101,20 @@ const Profile = () => {
       description,
     } = user;
     try {
-      let res = await handleUpdateUser(userId, {
-        name,
-        birth_date,
-        gender,
-        description,
-        avatar,
-      });
+      const res = await toast.promise(
+        handleUpdateUser(userId, {
+          name,
+          birth_date,
+          gender,
+          description,
+          avatar,
+        }),
+        {
+          pending: "Đang cập nhật người dùng",
+          success: "Cập nhật thành công 👌",
+          error: "Cập nhật thất bại 🤯",
+        }
+      );
       if (res?.success) {
         let data = res.data;
         dispatch(
@@ -114,9 +124,11 @@ const Profile = () => {
           })
         );
         setUser(computed(data));
-        toast.success("Cập nhật thành công!");
       }
-    } catch (error) {}
+    } catch (error) {
+    } finally {
+      setLoading(false);
+    }
   };
   const handleChangeAvatar = (e) => {
     let avatarFile = e.target.files[0];
@@ -196,7 +208,9 @@ const Profile = () => {
           </span>
         </div>
         <div className="btn-update">
-          <button onClick={() => OnUpdateUser()}>Cập nhật</button>
+          <button onClick={() => OnUpdateUser()} disabled={loading}>
+            Cập nhật
+          </button>
         </div>
       </div>
     </HomeLayout>

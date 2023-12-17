@@ -3,7 +3,7 @@ import ErrorPage from "./ErrorPage";
 import Story from "./Story";
 import Report from "./Report";
 import Admin from "./Admin";
-import { User } from "./User";
+import User from "./User";
 import HomePage from "../page/HomePage";
 import Logout from "../containers/auth/Logout";
 const Root = () => {

@@ -20,8 +20,6 @@
   .comment-body {
     width: 100%;
     .comment-info {
-      display: flex;
-      gap: 10px;
       .user-name {
         font-size: 1.2em;
         font-weight: 600;
@@ -34,7 +32,6 @@
         font-size: 12px;
         font-weight: 300;
         display: flex;
-        justify-content: center;
         align-items: center;
       }
     }

@@ -4,6 +4,7 @@ import { handleLogoutService } from "../../services/AuthServices";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { logout } from "../../features/userSlice";
+import { setAuth } from "../../features/authSlice";
 
 const Logout = () => {
   const navigate = useNavigate();
@@ -15,6 +16,7 @@ const Logout = () => {
         if (res?.success) {
           toast.success("Bạn đã đăng xuất!");
           dispatch(logout());
+          dispatch(setAuth(false));
           navigate("/");
         }
       } catch (error) {

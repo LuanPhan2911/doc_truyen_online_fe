@@ -1,4 +1,3 @@
-import { AiFillStar } from "react-icons/ai";
 import { useNavigate, useParams } from "react-router-dom";
 import { FaGlasses } from "react-icons/fa";
 import { BsBookmark } from "react-icons/bs";
@@ -14,6 +13,7 @@ import StoryDescription from "../containers/story/StoryDescription";
 import { useSelector } from "react-redux";
 import _ from "lodash";
 import StoryRating from "../containers/story/StoryRating";
+import StarRatings from "react-star-ratings";
 
 const StoryDetail = () => {
   const navigate = useNavigate();
@@ -22,6 +22,7 @@ const StoryDetail = () => {
   const [genres, setGenres] = useState([]);
   const { slug } = useParams();
   const borderColor = useSelector((state) => state.app.borderColor);
+  const [rateStory, setRateStory] = useState(0);
   useEffect(() => {
     async function fetchStory() {
       try {
@@ -29,8 +30,9 @@ const StoryDetail = () => {
         if (res?.success) {
           let storyCp = res.data;
           let { genres } = storyCp;
-          setStory({ ...storyCp, chapterIndex: 1 });
+          setStory({ ...storyCp });
           setGenres([...genres]);
+          setRateStory(storyCp?.rate_story);
           let cpStoryTag = [
             {
               id: 1,
@@ -56,13 +58,13 @@ const StoryDetail = () => {
               name: "Đánh giá",
               active: false,
               component: <StoryRating storyId={storyCp?.id} />,
-              count: 0,
+              count: storyCp?.rate_comments_count,
             },
             {
               id: 4,
               name: "Bình luận",
               active: false,
-              component: <Comments storyId={storyCp?.id} />,
+              component: <Comments storyId={storyCp?.id} type={0} />,
               count: storyCp?.comments_count,
             },
           ];
@@ -73,9 +75,8 @@ const StoryDetail = () => {
     fetchStory();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const handleShowChapter = ({ chapterIndex }) => {
-    navigate(`chapter/${chapterIndex}`, {});
+  const handleShowChapter = ({ chapter_index: chapterIndex }) => {
+    navigate(`chapter/${chapterIndex || 1}`);
   };
   const handleChangeStoryTag = (tagId) => {
     let cpStoryTag = storyTag;
@@ -90,6 +91,10 @@ const StoryDetail = () => {
       });
     setStoryTag([...cpStoryTag]);
   };
+  let rateValue = [];
+  if (rateStory) {
+    rateValue = Object.values(rateStory);
+  }
   return (
     <HomeLayout>
       <div className="container story-detail-main p-3 rounded">
@@ -108,7 +113,7 @@ const StoryDetail = () => {
                 genres.map((item) => {
                   return (
                     <li
-                      key={item.name}
+                      key={item.id}
                       className={`border ${_.sample(borderColor)} `}
                     >
                       {item.name}
@@ -136,24 +141,35 @@ const StoryDetail = () => {
             </ul>
             <div className="story-detail-rate">
               <div className="star">
-                <AiFillStar color="yellow" />
-                <AiFillStar color="yellow" />
-                <AiFillStar color="yellow" />
-                <AiFillStar color="yellow" />
-                <AiFillStar color="yellow" />
+                <StarRatings
+                  rating={_.mean(rateValue) || 0}
+                  starRatedColor="yellow"
+                  numberOfStars={5}
+                  name="rating"
+                  starDimension="16px"
+                  starSpacing="2px"
+                />
               </div>
               <div className="rate">
-                4.62/5
-                <span>(24 lượt đánh giá)</span>
+                {_.mean(rateValue) || 0}/5
+                <span className="fs-small">
+                  ({story?.rate_comments_count} lượt đánh giá)
+                </span>
               </div>
             </div>
             <ul className="story-detail-action">
               <li
-                className="story-detail-read"
+                className={`story-detail-read ${
+                  story?.chapter_index && "active"
+                }`}
                 onClick={() => handleShowChapter(story)}
               >
                 <FaGlasses color="white" size={"1.2em"} />
-                <span>Đọc truyện</span>
+                {story?.chapter_index ? (
+                  <span>Đọc tiếp</span>
+                ) : (
+                  <span>Đọc truyện</span>
+                )}
               </li>
               <li className="story-detail-mark">
                 <BsBookmark color="#333" size={"1.2em"} />

@@ -1,13 +1,20 @@
 .story-reading {
-  cursor: pointer;
   padding: 10px;
   .avatar {
-    width: 70px;
-    height: 100px;
-    border-radius: 20px;
+    width: 40px;
+    height: 60px;
   }
   .name {
     font-weight: 600;
     font-size: 1.1em;
+  }
+  .chapter-reading {
+    .trash-icon {
+      font-size: 15px;
+      &:hover {
+        color: rgb(223, 70, 70);
+      }
+      cursor: pointer;
+    }
   }
 }

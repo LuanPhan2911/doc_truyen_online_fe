@@ -4,28 +4,27 @@ import Comments from "../comments/Comments";
 const StoryRating = ({ storyId }) => {
   const menu = [
     {
-      id: 1,
+      id: "characteristic",
       name: "Tính cách nhân vật",
-      value: 0,
+      value: 5,
     },
     {
-      id: 2,
+      id: "plot",
       name: "Nội dung cốt truyện",
-      value: 0,
+      value: 5,
     },
     {
-      id: 3,
+      id: "world_building",
       name: "Bối cảnh thể giới",
-      value: 0,
+      value: 5,
     },
     {
-      id: 4,
+      id: "quality_convert",
       name: "Chất lượng bản dịch",
-      value: 0,
+      value: 5,
     },
   ];
   const [ratings, setRatings] = useState([...menu]);
-
   const handleChangeRange = (e, id) => {
     let ratingsCp = [...ratings];
     ratingsCp = ratingsCp.map((item) => {
@@ -48,7 +47,7 @@ const StoryRating = ({ storyId }) => {
                   <div className="col-9">
                     <input
                       type="range"
-                      class="form-range"
+                      className="form-range"
                       min={0}
                       max={5}
                       step={0.5}
@@ -61,7 +60,7 @@ const StoryRating = ({ storyId }) => {
               </div>
             );
           })}
-          <Comments storyId={storyId} />
+          <Comments storyId={storyId} type={1} storyRatings={ratings} />
         </div>
       </div>
     </div>

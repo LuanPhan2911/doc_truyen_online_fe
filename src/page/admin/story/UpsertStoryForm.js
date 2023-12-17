@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import {
   handleCreateStoryService,
+  handleShowStoryService,
   handleUpdateStoryService,
 } from "../../../services/AdminServices";
 import {
@@ -12,7 +13,6 @@ import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import storyDefaultImage from "../../../assets/stories/default.png";
 import { useNavigate, useParams } from "react-router-dom";
-import { handleShowStoryService } from "../../../services/StoryService";
 import ChapterList from "../../../containers/chapter/ChapterList";
 import AdminLayout from "../../../containers/admin/layouts/AdminLayout";
 import "./UpsertStoryForm.scss";
@@ -45,9 +45,8 @@ const UpsertStoryForm = ({ isUpdate }) => {
     user_id: user.id,
     author_name: "",
     description: "",
-    slug: "",
   };
-  const { slug: storySlug } = useParams();
+  const { id: storyId } = useParams();
   const [genres, setGenres] = useGenresFilter();
   const [selectedGenres, setSelectedGenres] = useState([]);
   const imgRef = useRef();
@@ -61,7 +60,7 @@ const UpsertStoryForm = ({ isUpdate }) => {
     if (isUpdate) {
       async function fetchStory() {
         try {
-          let res = await handleShowStoryService(storySlug);
+          let res = await handleShowStoryService(storyId);
           if (res?.success) {
             let cpStory = { ...res.data };
             let data = computedStory(cpStory);
@@ -170,26 +169,17 @@ const UpsertStoryForm = ({ isUpdate }) => {
   return (
     <AdminLayout
       offcanvasTitle={"Danh sách chương"}
-      offcanvasBody={<ChapterList isAdmin={true} />}
+      offcanvasBody={<ChapterList isAdmin={true} storyId={story?.id} />}
     >
       <div className="container content">
         <div className="row">
-          <div className="mb-3">
-            <label className="form-label">Tên truyện</label>
-            <input
-              className="form-control"
-              type={"text"}
-              value={story.name}
-              onChange={(e) => handleSetInput(e, "name")}
-            />
-          </div>
           <div className="row">
             <div className="col-lg-4 col-sm-8">
               <label htmlFor="avatar" className="avatar-box">
                 <img
                   alt="Not Found"
-                  className="avatar w-100"
-                  src={story.avatar ? asset(story.avatar) : storyDefaultImage}
+                  className="avatar"
+                  src={story?.avatar ? asset(story.avatar) : storyDefaultImage}
                   ref={imgRef}
                 />
                 Ảnh đại diện
@@ -222,6 +212,15 @@ const UpsertStoryForm = ({ isUpdate }) => {
                     </div>
                   );
                 })}
+            </div>
+            <div className="mb-3">
+              <label className="form-label">Tên truyện</label>
+              <input
+                className="form-control"
+                type={"text"}
+                value={story.name}
+                onChange={(e) => handleSetInput(e, "name")}
+              />
             </div>
           </div>
           {genres?.length > 0 &&

@@ -8,4 +8,11 @@ const handleGetStoryService = (qs = {}) => {
 const handleShowStoryService = (slug) => {
   return axios.get(`api/story/show/${slug}`);
 };
-export { handleGetStoryService, handleShowStoryService };
+const handleRateStoryService = (slug, data) => {
+  return axios.post(`api/story/${slug}/rate`, data);
+};
+export {
+  handleGetStoryService,
+  handleShowStoryService,
+  handleRateStoryService,
+};

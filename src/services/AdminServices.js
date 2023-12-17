@@ -6,9 +6,10 @@ const handleUpdateStoryService = (data) => {
   return axios.post(`/api/admin/story/update/${data.id}`, data);
 };
 const handleGetStoryService = (qs) => {
-  return axios.get("/api/admin/story/", {
-    params: qs,
-  });
+  return axios.get("/api/admin/story/");
+};
+const handleShowStoryService = (id) => {
+  return axios.get(`/api/admin/story/${id}`);
 };
 const handleUpdateChapterService = (data, chapterId) => {
   return axios.post(`/api/admin/story/chapter/${chapterId}`, data);
@@ -16,8 +17,11 @@ const handleUpdateChapterService = (data, chapterId) => {
 const handleShowChapterService = (storyId, chapterIndex) => {
   return axios.get(`/api/admin/story/${storyId}/chapter/${chapterIndex}`);
 };
-const handleCreateChapterService = (data, slug) => {
-  return axios.post(`/api/admin/story/${slug}/chapter/create`, data);
+const handleCreateChapterService = (data, id) => {
+  return axios.post(`/api/admin/story/${id}/chapter/create`, data);
+};
+const handleGetChapterListIdService = (id) => {
+  return axios.get(`/api/admin/story/${id}/chapter`);
 };
 export {
   handleCreateStoryService,
@@ -26,4 +30,6 @@ export {
   handleUpdateChapterService,
   handleShowChapterService,
   handleCreateChapterService,
+  handleShowStoryService,
+  handleGetChapterListIdService,
 };

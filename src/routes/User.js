@@ -1,8 +1,9 @@
 import Profile from "../containers/user/Profile";
 
-export const User = [
+const User = [
   {
     path: "/user/:id",
     element: <Profile />,
   },
 ];
+export default User;

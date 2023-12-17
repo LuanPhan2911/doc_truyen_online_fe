@@ -4,7 +4,7 @@ import CommentForm from "./CommentForm";
 import "./Comments.scss";
 import { handleGetCommentsService } from "../../services/CommentServices";
 
-const Comments = ({ storyId, isReply, replies }) => {
+const Comments = ({ storyId, isReply, replies, type = 0, storyRatings }) => {
   const [comments, setComments] = useState([]);
   const [nextCursor, setNextCursor] = useState("");
 
@@ -14,6 +14,7 @@ const Comments = ({ storyId, isReply, replies }) => {
     } else {
       storyId && fetchComment(storyId);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [storyId]);
   const handleSetNewComment = (comment, parent_id) => {
     let cpComments = [...comments];
@@ -38,6 +39,7 @@ const Comments = ({ storyId, isReply, replies }) => {
       let res = await handleGetCommentsService({
         story_id: storyId,
         cursor: nextCursor,
+        type,
       });
       if (res?.success) {
         let { data, next_cursor } = res.data;
@@ -55,6 +57,8 @@ const Comments = ({ storyId, isReply, replies }) => {
         <CommentForm
           storyId={storyId}
           handleSetNewComment={handleSetNewComment}
+          type={type}
+          storyRatings={storyRatings}
         />
       )}
       <div className="comments-list">
@@ -66,6 +70,7 @@ const Comments = ({ storyId, isReply, replies }) => {
                 key={item.id}
                 isReply={isReply}
                 handleSetNewComment={handleSetNewComment}
+                type={type}
               />
             );
           })}
@@ -76,7 +81,7 @@ const Comments = ({ storyId, isReply, replies }) => {
             className="btn btn-success"
             onClick={() => handleSeeMoreComments()}
           >
-            Xem thêm bình luận
+            Xem thêm {type === 1 ? "đánh giá" : "bình luận"}
           </button>
         )}
       </div>

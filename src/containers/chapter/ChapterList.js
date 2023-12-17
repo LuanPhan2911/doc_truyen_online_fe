@@ -4,20 +4,29 @@ import "./ChapterList.scss";
 import { Link, useParams } from "react-router-dom";
 
 import { useEffect, useState } from "react";
-import { handleGetChapterListService } from "../../services/ChapterService";
+import { handleGetChapterListSlugService } from "../../services/ChapterService";
 import { diffTime } from "../../utils/Helper";
+import { handleGetChapterListIdService } from "../../services/AdminServices";
 
 const ChapterList = ({ isAdmin }) => {
   const [chapters, setChapters] = useState([]);
   const [isSortChapter, setSortChapter] = useState(false);
-  const { slug } = useParams();
+  const { slug, id: storyId } = useParams();
   useEffect(() => {
     async function fetchChapterList() {
       try {
-        let res = await handleGetChapterListService(slug);
-        if (res?.success) {
-          let cpChapter = res.data;
-          setChapters([...cpChapter]);
+        if (!slug) {
+          let res = await handleGetChapterListIdService(storyId);
+          if (res?.success) {
+            let cpChapter = res.data;
+            setChapters([...cpChapter]);
+          }
+        } else {
+          let res = await handleGetChapterListSlugService(slug);
+          if (res?.success) {
+            let cpChapter = res.data;
+            setChapters([...cpChapter]);
+          }
         }
       } catch (error) {}
     }
@@ -38,13 +47,13 @@ const ChapterList = ({ isAdmin }) => {
       setChapters([...chapterCp]);
     }
   }, [isSortChapter]);
-  return slug ? (
+  return storyId || slug ? (
     <div id="chapter-list-main">
       <div className="chapter-list-action">
         {isAdmin && (
           <Link
             className="btn btn-primary"
-            to={`/admin/story/${slug}/chapter/create`}
+            to={`/admin/story/${storyId}/chapter/create`}
           >
             Thêm chương mới
           </Link>
@@ -60,7 +69,7 @@ const ChapterList = ({ isAdmin }) => {
             chapters.map((item) => {
               return isAdmin ? (
                 <Link
-                  to={`/admin/story/${slug}/chapter/${item.index}`}
+                  to={`/admin/story/${storyId}/chapter/${item.index}`}
                   key={item.index}
                   className="col-lg-6"
                 >

@@ -1,7 +1,6 @@
 import { AiFillFlag, AiOutlineFieldTime } from "react-icons/ai";
-import { BiGlassesAlt, BiLike } from "react-icons/bi";
+import { BiLike } from "react-icons/bi";
 import { BsReply } from "react-icons/bs";
-import { Link } from "react-router-dom";
 import avatarDefault from "../../assets/avatar/default.png";
 import "./Comment.scss";
 import { useEffect, useState } from "react";
@@ -12,7 +11,14 @@ import { useSelector } from "react-redux";
 import { handleLikeCommentService } from "../../services/CommentServices";
 import { Modal } from "react-bootstrap";
 import ReportForm from "../reports/ReportForm";
-const Comment = ({ comment: commentProps, isReply, handleSetNewComment }) => {
+import StarRatings from "react-star-ratings";
+import _ from "lodash";
+const Comment = ({
+  comment: commentProps,
+  isReply,
+  handleSetNewComment,
+  type,
+}) => {
   const [comment, setComment] = useState({});
   const [replies, setReplies] = useState([]);
   const [user, setUser] = useState({});
@@ -22,6 +28,8 @@ const Comment = ({ comment: commentProps, isReply, handleSetNewComment }) => {
   const [repliesCounter, setRepliesCounter] = useState(0);
   const isAuth = useSelector((state) => state.user.isAuth);
   const [showReport, setShowReport] = useState(false);
+  const [isLeak, setLeak] = useState(false);
+  const [rateStory, setRateStory] = useState({});
   useEffect(() => {
     let {
       user,
@@ -32,6 +40,8 @@ const Comment = ({ comment: commentProps, isReply, handleSetNewComment }) => {
       message,
       created_at,
       replies_count,
+      is_leak,
+      rate_story,
     } = commentProps;
 
     setRepliesCounter(replies_count);
@@ -50,14 +60,20 @@ const Comment = ({ comment: commentProps, isReply, handleSetNewComment }) => {
       message,
       created_at,
     });
+    setLeak(is_leak);
+
+    if (!_.isEmpty(rate_story)) {
+      setRateStory(rate_story);
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [commentProps, commentProps?.replies]);
 
   const handleReply = () => {
     setShowInput(!showInput);
   };
-  const handleCheckLogin = () => {};
+
   const handleLikeComment = async (commentId) => {
-    handleCheckLogin();
     if (isAuth) {
       try {
         let res = await handleLikeCommentService(commentId);
@@ -73,11 +89,11 @@ const Comment = ({ comment: commentProps, isReply, handleSetNewComment }) => {
     }
   };
   const handleReportComment = () => {
-    handleCheckLogin();
     if (isAuth) {
       setShowReport(true);
     }
   };
+  const rateValue = Object.values(rateStory) || [];
   return (
     <>
       <div className="comment-data">
@@ -90,13 +106,40 @@ const Comment = ({ comment: commentProps, isReply, handleSetNewComment }) => {
         </div>
         <div className="comment-body">
           <div className="comment-info">
-            <span className="user-name">{user.name}</span>
-            <span className="time">
-              <AiOutlineFieldTime size={"1.5em"} />
-              {diffTime(comment?.created_at)}
-            </span>
+            <div className="user-name">{user.name}</div>
+            <div className="row">
+              {type === 1 && (
+                <div className="star col-lg-6">
+                  <StarRatings
+                    rating={_.mean(rateValue) || 0}
+                    starRatedColor="yellow"
+                    numberOfStars={5}
+                    name="rating"
+                    starDimension="16px"
+                    starSpacing="2px"
+                  />
+                  <span className="fs-small">{_.mean(rateValue) || 0}</span>
+                </div>
+              )}
+
+              <div className="time col-lg-6">
+                <AiOutlineFieldTime size={"1.5em"} />
+                {diffTime(comment?.created_at)}
+              </div>
+            </div>
           </div>
-          <div className="comment-content">{comment.message}</div>
+          <div className="comment-content">
+            {isLeak ? (
+              <div
+                className="comment-leak bg-primary p-3 text-center pointer"
+                onClick={() => setLeak(false)}
+              >
+                Tiết lộ nội dung cốt truyện
+              </div>
+            ) : (
+              comment.message
+            )}
+          </div>
           {replies?.length > 0 && (
             <div className="comment-replies">
               {!showRelies ? (
@@ -105,7 +148,7 @@ const Comment = ({ comment: commentProps, isReply, handleSetNewComment }) => {
                 </span>
               ) : (
                 <>
-                  <Comments isReply={true} replies={replies} />
+                  <Comments isReply={true} replies={replies} type={type} />
                   <span onClick={() => setShowRelies(false)}>Đóng</span>
                 </>
               )}
@@ -117,6 +160,7 @@ const Comment = ({ comment: commentProps, isReply, handleSetNewComment }) => {
               parentId={comment.id}
               storyId={comment.commentable_id}
               handleSetNewComment={handleSetNewComment}
+              type={type}
             />
           )}
           <div className="comment-report">

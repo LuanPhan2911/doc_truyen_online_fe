@@ -55,7 +55,10 @@ const Notifies = () => {
                       <div className="col-3">
                         <img
                           alt="?"
-                          src={item?.story?.avatar && asset(item?.story.avatar)}
+                          src={
+                            asset(item?.story?.avatar) &&
+                            asset(item?.story.avatar)
+                          }
                           className="avatar"
                         />
                       </div>

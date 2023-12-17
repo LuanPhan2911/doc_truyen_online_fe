@@ -1,3 +1,4 @@
+import { useAuth } from "../../../hooks";
 import Header from "./Header";
 import SideBar from "./Sidebar";
 

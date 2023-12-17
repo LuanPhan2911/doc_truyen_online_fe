@@ -1,10 +1,9 @@
 import { Link } from "react-router-dom";
-
-import "./StoryHome.scss";
 import { handleGetStoryService } from "../../services/StoryService";
 import { useFetch } from "../../hooks";
 import Story from "./Story";
-const StoryHome = () => {
+import "./StoryOutStanding.scss";
+const StoryOutStanding = () => {
   let { data: stories } = useFetch(handleGetStoryService);
 
   return (
@@ -29,4 +28,4 @@ const StoryHome = () => {
     </div>
   );
 };
-export default StoryHome;
+export default StoryOutStanding;
