@@ -27,28 +27,29 @@ const Category = ({ btn }) => {
   }, [genres]);
   return (
     <DropdownBase>
-      {{
-        btn: <span className="btn-dropdown">{btn}</span>,
-        body: (
-          <ul className="genre-list">
-            {category?.genres?.length > 0 &&
-              category?.genres?.map((item) => {
-                return (
-                  <li key={item.id}>
-                    <Link
-                      to={`/story?${createSearchParams({
-                        genres: item.slug || [],
-                      }).toString()}`}
-                      className="text-decoration-none"
-                    >
-                      {item.name}
-                    </Link>
-                  </li>
-                );
-              })}
-          </ul>
-        ),
-      }}
+      <DropdownBase.Button>
+        {" "}
+        <button className="btn-dropdown dropdown-toggle">{btn}</button>
+      </DropdownBase.Button>
+      <DropdownBase.Body>
+        <ul className="genre-list row">
+          {category?.genres?.length > 0 &&
+            category?.genres?.map((item) => {
+              return (
+                <li key={item.id} className="col-lg-6">
+                  <Link
+                    to={`/story?${createSearchParams({
+                      genres: item.slug || [],
+                    }).toString()}`}
+                    className="text-decoration-none"
+                  >
+                    {item.name}
+                  </Link>
+                </li>
+              );
+            })}
+        </ul>
+      </DropdownBase.Body>
     </DropdownBase>
   );
 };

@@ -30,18 +30,18 @@ const Story = ({ story, isAdmin }) => {
           {story?.name}
         </div>
         <div className="story-description text-overflow-2-line ">
-          {story?.description}
+          {story?.truncate_description}
         </div>
-      </div>
-      <div className="auth-genre d-flex justify-content-between my-2">
-        <div className="auth text-overflow-1-line">
-          <i className="bi bi-pen"></i>
-          <span className="mx-2 fst-italic">{story.author_name}</span>
-        </div>
-        <div className="genre text-center ">
-          <span className={`border rounded p-2 fs-6 ${_.sample(borderColor)}`}>
+        <div className="auth-genre d-flex justify-content-between my-2">
+          <div className="auth text-overflow-1-line">
+            <i className="bi bi-pen fs-small"></i>
+            <span className="mx-2 fst-italic fs-small">
+              {story.author_name}
+            </span>
+          </div>
+          <div className={`genre text-center border ${_.sample(borderColor)}`}>
             {story?.genre?.name}
-          </span>
+          </div>
         </div>
       </div>
     </div>

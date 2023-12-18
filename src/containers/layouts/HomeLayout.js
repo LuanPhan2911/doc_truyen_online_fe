@@ -10,9 +10,7 @@ const HomeLayout = ({ children, color, backgroundColor }) => {
       }}
     >
       <Header color={color} backgroundColor={backgroundColor} />
-      <div className="main container justify-content-center d-flex">
-        {children}
-      </div>
+      <div className="main container">{children}</div>
       <Footer />
     </div>
   );

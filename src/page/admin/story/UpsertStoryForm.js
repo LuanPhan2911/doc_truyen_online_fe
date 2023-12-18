@@ -19,23 +19,9 @@ import "./UpsertStoryForm.scss";
 import _ from "lodash";
 import StoryGenre from "../../../containers/admin/story/StoryGenre";
 import { useGenresFilter } from "../../../hooks";
-const views = [
-  {
-    view: "Nam",
-    id: 1,
-  },
-  {
-    view: "Nữ",
-    id: 2,
-  },
-  {
-    view: "Khác",
-    id: 3,
-  },
-];
-
 const UpsertStoryForm = ({ isUpdate }) => {
   const user = useSelector((state) => state.user);
+  const { views } = useSelector((state) => state.story);
   const initStory = {
     id: "",
     name: "",

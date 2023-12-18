@@ -25,17 +25,17 @@ const Ranking = ({ btn }) => {
   ]);
   return (
     <DropdownBase minWidth="200px">
-      {{
-        btn: <span className="btn-dropdown">{btn}</span>,
-        body: (
-          <ul>
-            {rankItem?.length > 0 &&
-              rankItem.map((item) => {
-                return <li key={item.id}>{item.name}</li>;
-              })}
-          </ul>
-        ),
-      }}
+      <DropdownBase.Button>
+        <button className="btn-dropdown dropdown-toggle">{btn}</button>
+      </DropdownBase.Button>
+      <DropdownBase.Body>
+        <ul>
+          {rankItem?.length > 0 &&
+            rankItem.map((item) => {
+              return <li key={item.id}>{item.name}</li>;
+            })}
+        </ul>
+      </DropdownBase.Body>
     </DropdownBase>
   );
 };

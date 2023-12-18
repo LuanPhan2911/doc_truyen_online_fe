@@ -113,6 +113,8 @@ export const appSlice = createSlice({
       "border-secondary",
       "border-warning",
       "border-info",
+      "border-black",
+      "border-dark",
     ],
   },
   reducers: {

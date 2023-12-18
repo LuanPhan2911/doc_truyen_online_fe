@@ -4,16 +4,14 @@
 }
 .dropdown {
   .btn-dropdown {
+    border: none;
+    outline: none;
+    background: none;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100%;
-    span {
-      font-weight: 700;
-    }
   }
   .dropdown-menu {
-    min-width: 400px;
     ul li {
       padding: 5px 0;
     }

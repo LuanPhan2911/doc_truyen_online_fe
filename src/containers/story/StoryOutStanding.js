@@ -19,7 +19,10 @@ const StoryOutStanding = () => {
           stories.length > 0 &&
           stories.map((item) => {
             return (
-              <div className="col-lg-6 col-md-8" key={item.id}>
+              <div
+                className="col-lg-6 col-md-8 border-bottom my-2"
+                key={item.id}
+              >
                 <Story story={item} />
               </div>
             );

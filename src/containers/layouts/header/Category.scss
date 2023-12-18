@@ -1,9 +1,8 @@
 .genre-list {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  width: 350px;
 }
 @media (max-width: 576px) {
   .genre-list {
-    grid-template-columns: 1fr;
+    width: 150px;
   }
 }

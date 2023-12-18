@@ -4,14 +4,14 @@ import { useEffect, useRef, useState } from "react";
 import { handleGetUser, handleUpdateUser } from "../../services/UserServices";
 import { asset } from "../../utils/Helper";
 import { toast } from "react-toastify";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { update } from "../../features/userSlice";
 import HomeLayout from "../layouts/HomeLayout";
 import { useParams } from "react-router-dom";
 
 const Profile = () => {
   const imgRef = useRef();
-  const { id: userId } = useParams();
+  const { id: userId } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [user, setUser] = useState({
     avatarUrl: "",
@@ -137,20 +137,18 @@ const Profile = () => {
     setUser({ ...cpUser });
   };
   return (
-    <HomeLayout>
-      <div className="profile">
-        <div className="avatar">
-          <label htmlFor="avatar">
-            <img
-              src={user.avatarUrl ? asset(user.avatarUrl) : avatarDefault}
-              alt="Not found"
-              ref={imgRef}
-            ></img>
-            <span className="note">
-              Ấn vào ảnh đại diện để cập nhật ảnh đại diện
-            </span>
-          </label>
+    <div className="profile col-lg-8">
+      <div className="avatar">
+        <label htmlFor="avatar">
+          <img
+            src={user.avatarUrl ? asset(user.avatarUrl) : avatarDefault}
+            alt="Not found"
+            ref={imgRef}
+          ></img>
 
+          <span className="note">
+            Ấn vào ảnh đại diện để cập nhật ảnh đại diện
+          </span>
           <input
             type="file"
             id="avatar"
@@ -159,61 +157,67 @@ const Profile = () => {
             accept="image/*"
             onChange={(e) => handleChangeAvatar(e)}
           />
-        </div>
-        <div className="user-name">
-          <label>Tên hiển thị</label>
-          <input
-            value={user.name}
-            onChange={(event) => handleChangeInput(event, "name")}
-            type="text"
-          />
-        </div>
-        <div className="user-birthday">
-          <label>Năm sinh</label>
-          <input
-            value={user.birthday}
-            type="number"
-            onChange={(event) => handleChangeInput(event, "birthday")}
-          />
-        </div>
-        <div className="user-gender">
-          <label>Giới tính</label>
-          <select
-            onChange={(event) => handleChangeInput(event, "gender")}
-            value={user.gender}
-          >
-            {gender?.length > 0 &&
-              gender.map((item) => {
-                return (
-                  <option value={item.value} key={item.value}>
-                    {item.name}
-                  </option>
-                );
-              })}
-          </select>
-        </div>
-        <div className="user-description">
-          <label>Giới thiệu ngắn</label>
-          <textarea
-            rows={"3"}
-            value={user.description}
-            onChange={(e) => handleChangeInput(e, "description")}
-          ></textarea>
-        </div>
-        <div className="user-email">
-          <label>Email</label>
-          <input value={user.email} disabled />
-          <span className="note">
-            Lưu ý: nếu đổi email phải vào email cũ xác nhận thì mới có hiệu lực
-          </span>
-        </div>
-        <div className="btn-update">
-          <button onClick={() => OnUpdateUser()} disabled={loading}>
-            Cập nhật
-          </button>
-        </div>
+        </label>
       </div>
-    </HomeLayout>
+      <div className="user-name">
+        <label>Tên hiển thị</label>
+
+        <input
+          value={user.name}
+          onChange={(event) => handleChangeInput(event, "name")}
+          type="text"
+          className="form-control"
+        />
+      </div>
+      <div className="user-birthday">
+        <label>Năm sinh</label>
+        <input
+          value={user.birthday}
+          type="number"
+          onChange={(event) => handleChangeInput(event, "birthday")}
+          className="form-control"
+        />
+      </div>
+      <div className="user-gender">
+        <label>Giới tính</label>
+        <select
+          onChange={(event) => handleChangeInput(event, "gender")}
+          value={user.gender}
+          className="form-select"
+        >
+          {gender?.length > 0 &&
+            gender.map((item) => {
+              return (
+                <option value={item.value} key={item.value}>
+                  {item.name}
+                </option>
+              );
+            })}
+        </select>
+      </div>
+      <div className="user-description">
+        <label>Giới thiệu ngắn</label>
+        <textarea
+          rows={"3"}
+          value={user.description}
+          onChange={(e) => handleChangeInput(e, "description")}
+          className="form-control"
+        ></textarea>
+      </div>
+      <div className="user-email">
+        <label>Email</label>
+        <input value={user.email} disabled className="form-control" />
+        <span className="note">
+          Lưu ý: nếu đổi email phải vào email cũ xác nhận thì mới có hiệu lực
+        </span>
+      </div>
+
+      <div className="btn-update">
+        <button onClick={() => OnUpdateUser()} disabled={loading}>
+          Cập nhật
+        </button>
+      </div>
+    </div>
   );
 };
 export default Profile;

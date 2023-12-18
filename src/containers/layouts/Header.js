@@ -3,13 +3,13 @@ import Ranking from "./header/Ranking";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import avatarDefault from "../../assets/avatar/default.png";
-import User from "./header/User";
 import Notifies from "./header/Notifies";
 import "./Header.scss";
 import Category from "./header/Category";
 import { handleClose, handleShow } from "../../features/authSlice";
 import Modal from "react-bootstrap/Modal";
 import { asset } from "../../utils/Helper";
+import UserMenu from "./header/UserMenu";
 const Header = ({ color, backgroundColor }) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
@@ -89,7 +89,7 @@ const Header = ({ color, backgroundColor }) => {
                     src={user.avatar ? asset(user.avatar) : avatarDefault}
                     alt="not found"
                   />
-                  <User btn={user.name} />
+                  <UserMenu />
                 </li>
                 <li>
                   <i className="bi bi-bell"></i>
@@ -109,16 +109,16 @@ const Header = ({ color, backgroundColor }) => {
               <>
                 <li>
                   <i className="bi bi-person-circle"></i>
-                  <span onClick={() => handleShowModal("login")}>
+                  <button onClick={() => handleShowModal("login")}>
                     {" "}
                     Đăng nhập
-                  </span>
+                  </button>
                 </li>
                 <li>
                   <i className="bi bi-person-add"></i>
-                  <span onClick={() => handleShowModal("register")}>
+                  <button onClick={() => handleShowModal("register")}>
                     Đăng ký
-                  </span>
+                  </button>
                 </li>
               </>
             )}

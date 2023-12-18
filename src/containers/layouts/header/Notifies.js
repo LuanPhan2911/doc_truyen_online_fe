@@ -26,52 +26,55 @@ const Notifies = () => {
   const handleShowStory = () => {};
   return (
     <DropdownBase minWidth="400px">
-      {{
-        btn: (
-          <span className="btn-dropdown">
-            Thông báo{" "}
-            {newNotifyCount > 0 && (
-              <span className="text-danger">{newNotifyCount}</span>
-            )}
-          </span>
-        ),
-        body: (
-          <div className="user-notify">
-            <div className="d-flex justify-content-around">
-              <h6>Thông báo</h6>
-              <Link to={"/user/notify"} className="link-success">
-                Xem tất cả
-              </Link>
-            </div>
-            {notifies?.length === 0 && <span>Không có thông báo mới</span>}
-            <div className="notify-content">
-              {notifies?.length > 0 &&
-                notifies.map((item) => {
-                  return (
-                    <div
-                      className="row notify-item"
-                      onClick={() => handleShowStory(item)}
-                    >
-                      <div className="col-3">
-                        <img
-                          alt="?"
-                          src={
-                            asset(item?.story?.avatar) &&
-                            asset(item?.story.avatar)
-                          }
-                          className="avatar"
-                        />
-                      </div>
-                      <div className="col-9">
-                        <div className="name">{item?.story.name}</div>
-                      </div>
-                    </div>
-                  );
-                })}
-            </div>
+      <DropdownBase.Button>
+        {" "}
+        <button className="btn-dropdown dropdown-toggle">
+          Thông báo{" "}
+          {newNotifyCount > 0 && (
+            <span className="text-danger">{newNotifyCount}</span>
+          )}
+        </button>
+      </DropdownBase.Button>
+      <DropdownBase.Body>
+        <div className="user-notify">
+          <div className="d-flex justify-content-around">
+            <h6>Thông báo</h6>
+            <Link to={"/user/notify"} className="text-decoration-none">
+              Xem tất cả
+            </Link>
           </div>
-        ),
-      }}
+          {notifies?.length === 0 && (
+            <div className="text-center text-primary">
+              Không có thông báo mới
+            </div>
+          )}
+          <div className="notify-content">
+            {notifies?.length > 0 &&
+              notifies.map((item) => {
+                return (
+                  <div
+                    className="row notify-item"
+                    onClick={() => handleShowStory(item)}
+                  >
+                    <div className="col-3">
+                      <img
+                        alt="?"
+                        src={
+                          asset(item?.story?.avatar) &&
+                          asset(item?.story.avatar)
+                        }
+                        className="avatar"
+                      />
+                    </div>
+                    <div className="col-9">
+                      <div className="name">{item?.story.name}</div>
+                    </div>
+                  </div>
+                );
+              })}
+          </div>
+        </div>
+      </DropdownBase.Body>
     </DropdownBase>
   );
 };

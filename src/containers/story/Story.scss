@@ -1,6 +1,5 @@
 .story {
   position: relative;
-  height: 170px;
   .story-image {
     cursor: pointer;
     img {
@@ -31,6 +30,13 @@
     .story-description {
       height: 40px;
       font-size: 0.8em;
+    }
+  }
+  .auth-genre {
+    .genre {
+      font-size: 12px;
+      width: 80px;
+      height: fit-content;
     }
   }
 }

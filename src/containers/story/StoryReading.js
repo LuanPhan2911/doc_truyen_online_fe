@@ -11,7 +11,7 @@ import { toast } from "react-toastify";
 const StoryReading = () => {
   const [storiesReading, setStoriesReading] = useState([]);
   const { isAuth } = useSelector((state) => state.auth);
-  const { id: userId } = useSelector((state) => state.user);
+  // const { id: userId } = useSelector((state) => state.user);
   const navigate = useNavigate();
   useEffect(() => {
     fetchStoriesReading();
@@ -39,12 +39,20 @@ const StoryReading = () => {
 
   return (
     <div className="story-reading">
-      <h4>Đang đọc</h4>
+      <div className="d-flex justify-content-between">
+        <div className="all-story-title">Đang đọc</div>
+        <Link className="all-story" to={"/user/story-reading"}>
+          Xem tất cả
+        </Link>
+      </div>
       {storiesReading?.length > 0 &&
         storiesReading?.map((story) => {
           const { pivot } = story;
           return (
-            <div className="row story-reading" key={story.id}>
+            <div
+              className="row story-reading col-md-8 col-lg-12 border-bottom my-2"
+              key={story.id}
+            >
               <div className="col-3">
                 <img
                   alt="?"
@@ -62,13 +70,23 @@ const StoryReading = () => {
                     {story.name}
                   </Link>
                 </div>
-                <div className="chapter-reading fs-small">
-                  Đã đọc {pivot?.index}/{story?.chapters_count}{" "}
+                <div className="d-flex justify-content-between">
+                  <div className="chapter-reading fs-small">
+                    Đã đọc {pivot?.index}/{story?.chapters_count}{" "}
+                    {isAuth && (
+                      <i
+                        className="bi bi-trash-fill trash-icon"
+                        onClick={() => handleDestroyStoryReading(story?.id)}
+                      ></i>
+                    )}
+                  </div>
                   {isAuth && (
-                    <i
-                      className="bi bi-trash-fill trash-icon"
-                      onClick={() => handleDestroyStoryReading(story?.id)}
-                    ></i>
+                    <Link
+                      to={`/story/${story?.slug}/chapter/${pivot?.index}`}
+                      className="continue-reading-btn"
+                    >
+                      Đọc tiếp
+                    </Link>
                   )}
                 </div>
               </div>

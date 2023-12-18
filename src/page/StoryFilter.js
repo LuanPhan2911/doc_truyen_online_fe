@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { handleGetStoryService } from "../services/StoryService";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 import StoryFilterGenre from "../containers/story/StoryFilterGenre";
 import DropdownBase from "../components/DropdownBase";
 import Story from "../containers/story/Story";
@@ -29,14 +29,9 @@ const StoryFilter = () => {
     links: [],
     totals: "",
   });
-  const [orderByMenu, setOrderByMenu] = useState([]);
-  const [orderBy, setOrderBy] = useState("desc");
-
-  const [qs] = useSearchParams();
+  const [qs, setQs] = useSearchParams();
   const [loading, setLoading] = useState(false);
-
   useEffect(() => {
-    setOrderByMenu([...menu]);
     const delaySearch = setTimeout(() => {
       fetchStories();
     }, 500);
@@ -45,7 +40,7 @@ const StoryFilter = () => {
     };
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [qs.get("name"), selectedStoryGenres]);
+  }, [qs.get("name"), selectedStoryGenres, qs.get("orderBy")]);
   async function fetchStories() {
     setLoading(true);
     let genres_id = selectedStoryGenres.map((item) => {
@@ -56,7 +51,7 @@ const StoryFilter = () => {
         page: storiesPaginated?.currentPage || 1,
         filter: true,
         name: qs.get("name") || null,
-        orderBy,
+        orderBy: qs.get("orderBy") || "desc",
         genres_id: genres_id,
       });
       if (res?.success) {
@@ -83,18 +78,6 @@ const StoryFilter = () => {
     links[0].label = "Trước";
     links[links.length - 1].label = "Sau";
     return links;
-  };
-  const handleSetOrderByStory = (id) => {
-    let cpOrderByMenu = [...orderByMenu];
-    cpOrderByMenu?.length > 0 &&
-      cpOrderByMenu.forEach((item) => {
-        if (item.id === id) {
-          item.active = true;
-          setOrderBy(item.value);
-        } else {
-          item.active = false;
-        }
-      });
   };
 
   const stories = storiesPaginated?.stories || [];
@@ -130,28 +113,40 @@ const StoryFilter = () => {
             </div>
             <ul className="story-filter-atr">
               <li>
-                <DropdownBase minWidth="150px">
-                  {{
-                    btn: <span className="btn-dropdown">Sắp xếp</span>,
-                    body:
-                      orderByMenu?.length > 0 &&
-                      orderByMenu.map((item) => {
-                        return (
-                          <li className="w-100" key={item.id}>
-                            <Link
-                              className={
-                                item.active
-                                  ? "dropdown-item active"
-                                  : "dropdown-item"
-                              }
-                              onClick={() => handleSetOrderByStory(item.id)}
-                            >
-                              {item.name}
-                            </Link>
-                          </li>
-                        );
-                      }),
-                  }}
+                <DropdownBase>
+                  <DropdownBase.Button>
+                    <button className="btn-dropdown dropdown-toggle">
+                      Sắp xếp
+                    </button>
+                  </DropdownBase.Button>
+                  <DropdownBase.Body>
+                    <li
+                      className={`text-center w-100 dropdown-item ${
+                        qs.get("orderBy") === "desc" && "active"
+                      }`}
+                      onClick={() => {
+                        setQs((prev) => {
+                          prev.set("orderBy", "desc");
+                          return prev;
+                        });
+                      }}
+                    >
+                      Mới nhất
+                    </li>
+                    <li
+                      className={`text-center w-100 dropdown-item ${
+                        qs.get("orderBy") === "asc" && "active"
+                      }`}
+                      onClick={() => {
+                        setQs((prev) => {
+                          prev.set("orderBy", "asc");
+                          return prev;
+                        });
+                      }}
+                    >
+                      Củ nhất
+                    </li>
+                  </DropdownBase.Body>
                 </DropdownBase>
               </li>
               <li>Lượt đọc</li>

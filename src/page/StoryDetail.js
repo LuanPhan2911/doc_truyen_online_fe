@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { FaGlasses } from "react-icons/fa";
 import { BsBookmark } from "react-icons/bs";
 import { GiCottonFlower } from "react-icons/gi";
@@ -14,60 +14,29 @@ import { useSelector } from "react-redux";
 import _ from "lodash";
 import StoryRating from "../containers/story/StoryRating";
 import StarRatings from "react-star-ratings";
+import NavTab from "../components/NavTab";
 
 const StoryDetail = () => {
   const navigate = useNavigate();
   const [story, setStory] = useState({});
   const [storyTag, setStoryTag] = useState([]);
-  const [genres, setGenres] = useState([]);
   const { slug } = useParams();
   const borderColor = useSelector((state) => state.app.borderColor);
   const [rateStory, setRateStory] = useState(0);
+  const { views } = useSelector((state) => state.story);
+  const [viewStory, setViewStory] = useState({});
   useEffect(() => {
     async function fetchStory() {
       try {
         let res = await handleShowStoryService(slug);
         if (res?.success) {
           let storyCp = res.data;
-          let { genres } = storyCp;
           setStory({ ...storyCp });
-          setGenres([...genres]);
-          setRateStory(storyCp?.rate_story);
-          let cpStoryTag = [
-            {
-              id: 1,
-              name: "Giới thiệu",
-              active: true,
-              component: (
-                <StoryDescription
-                  description={storyCp?.description}
-                  reactionSummary={storyCp?.reaction_summary}
-                  newestChapter={storyCp?.newest_chapter}
-                />
-              ),
-            },
-            {
-              id: 2,
-              name: "DS. Chương",
-              active: false,
-              component: <ChapterList storyId={storyCp?.id} />,
-              count: storyCp?.chapters_count,
-            },
-            {
-              id: 3,
-              name: "Đánh giá",
-              active: false,
-              component: <StoryRating storyId={storyCp?.id} />,
-              count: storyCp?.rate_comments_count,
-            },
-            {
-              id: 4,
-              name: "Bình luận",
-              active: false,
-              component: <Comments storyId={storyCp?.id} type={0} />,
-              count: storyCp?.comments_count,
-            },
-          ];
+          let rateStoryCp = getRateStory(storyCp?.rate_story);
+          setRateStory(rateStoryCp);
+          let viewStoryCp = getView(storyCp?.view);
+          setViewStory(viewStoryCp);
+          let cpStoryTag = getStoryTag(storyCp);
           setStoryTag([...cpStoryTag]);
         }
       } catch (error) {}
@@ -75,26 +44,53 @@ const StoryDetail = () => {
     fetchStory();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  const getStoryTag = (story) => {
+    return [
+      {
+        id: 1,
+        name: "Giới thiệu",
+        active: true,
+        component: (
+          <StoryDescription
+            description={story?.description}
+            reactionSummary={story?.reaction_summary}
+            newestChapter={story?.newest_chapter}
+          />
+        ),
+      },
+      {
+        id: 2,
+        name: "DS. Chương",
+        active: false,
+        component: <ChapterList storyId={story?.id} />,
+        count: story?.chapters_count,
+      },
+      {
+        id: 3,
+        name: "Đánh giá",
+        active: false,
+        component: <StoryRating storyId={story?.id} />,
+        count: story?.rate_comments_count,
+      },
+      {
+        id: 4,
+        name: "Bình luận",
+        active: false,
+        component: <Comments storyId={story?.id} type={0} />,
+        count: story?.comments_count,
+      },
+    ];
+  };
+  const getView = (viewId) => {
+    return views.find((item) => item.id === viewId) || {};
+  };
+  const getRateStory = (rateStory) => {
+    let rateValue = Object.values(rateStory);
+    return _.mean(rateValue);
+  };
   const handleShowChapter = ({ chapter_index: chapterIndex }) => {
     navigate(`chapter/${chapterIndex || 1}`);
   };
-  const handleChangeStoryTag = (tagId) => {
-    let cpStoryTag = storyTag;
-    cpStoryTag?.length > 0 &&
-      cpStoryTag.forEach((item) => {
-        if (item.id === tagId) {
-          item.active = true;
-        } else {
-          item.active = false;
-        }
-        return item;
-      });
-    setStoryTag([...cpStoryTag]);
-  };
-  let rateValue = [];
-  if (rateStory) {
-    rateValue = Object.values(rateStory);
-  }
   return (
     <HomeLayout>
       <div className="container story-detail-main p-3 rounded">
@@ -109,40 +105,53 @@ const StoryDetail = () => {
           <div className="story-detail-info col-lg-8">
             <div className="story-detail-title">{story?.name}</div>
             <ul className="story-detail-genre">
-              {genres?.length > 0 &&
-                genres.map((item) => {
+              <li className={`border ${_.sample(borderColor)} rounded-pill`}>
+                <Link className="text-decoration-none">
+                  {story?.author_name}
+                </Link>
+              </li>
+              {story?.genres?.length > 0 &&
+                story?.genres.map((item) => {
                   return (
                     <li
                       key={item.id}
-                      className={`border ${_.sample(borderColor)} `}
+                      className={`border ${_.sample(borderColor)} rounded-pill`}
                     >
-                      {item.name}
+                      <Link
+                        to={`/story/?genres=${item.slug}`}
+                        className="text-decoration-none"
+                      >
+                        {item.name}
+                      </Link>
                     </li>
                   );
                 })}
+              <li className={`border ${_.sample(borderColor)} rounded-pill`}>
+                <Link className="text-decoration-none">{viewStory?.view}</Link>
+              </li>
             </ul>
             <ul className="story-detail-full">
               <li>
                 {story?.chapters_count}
-                <span>Chương</span>
+                <span className="fs-small">Chương</span>
               </li>
               <li>
                 11
-                <span>Chương/Tuần</span>
+                <span className="fs-small">Chương/Tuần</span>
               </li>
               <li>
                 95.5k
-                <span>Lượt đọc</span>
+                <span className="fs-small">Lượt đọc</span>
               </li>
               <li>
                 1000
-                <span>Cất trữ</span>
+                <span className="fs-small">Cất trữ</span>
               </li>
             </ul>
             <div className="story-detail-rate">
               <div className="star">
                 <StarRatings
-                  rating={_.mean(rateValue) || 0}
+                  rating={rateStory || 0}
                   starRatedColor="yellow"
                   numberOfStars={5}
                   name="rating"
@@ -151,7 +160,7 @@ const StoryDetail = () => {
                 />
               </div>
               <div className="rate">
-                {_.mean(rateValue) || 0}/5
+                {rateStory || 0}/5
                 <span className="fs-small">
                   ({story?.rate_comments_count} lượt đánh giá)
                 </span>
@@ -182,34 +191,7 @@ const StoryDetail = () => {
             </ul>
           </div>
         </div>
-        <div className="story-detail-tag">
-          <ul className="tag-ul">
-            {storyTag?.length > 0 &&
-              storyTag.map((item) => {
-                return (
-                  <li
-                    key={item.id}
-                    className={item.active ? "active" : ""}
-                    onClick={() => handleChangeStoryTag(item.id)}
-                  >
-                    {item.name}
-                    <span className="count">{item?.count}</span>
-                  </li>
-                );
-              })}
-          </ul>
-
-          <div className="tag-content">
-            {
-              (
-                storyTag?.length > 0 &&
-                storyTag.find((item) => {
-                  return item.active === true;
-                })
-              )?.component
-            }
-          </div>
-        </div>
+        <NavTab navTab={storyTag} setNavTab={setStoryTag} />
       </div>
     </HomeLayout>
   );
