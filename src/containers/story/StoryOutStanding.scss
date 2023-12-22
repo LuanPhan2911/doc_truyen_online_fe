@@ -1,11 +1,22 @@
-.all-story-title {
-  font-size: 1.5em;
-  font-weight: 600;
-}
-.all-story {
-  color: #bd953b;
-  font-weight: 500;
-  font-size: 1em;
-  cursor: pointer;
-  text-decoration: none;
+.story-out-standing {
+  .all-story-title {
+    font-size: 1.5em;
+    font-weight: 600;
+  }
+  .all-story {
+    display: none;
+    color: #bd953b;
+    font-weight: 500;
+    font-size: 14px;
+    cursor: pointer;
+    text-decoration: none;
+    &:hover {
+      color: #333;
+    }
+  }
+  &:hover {
+    .all-story {
+      display: block;
+    }
+  }
 }

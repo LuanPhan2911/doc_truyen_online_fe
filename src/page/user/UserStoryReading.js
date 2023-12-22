@@ -2,6 +2,7 @@ import { useState } from "react";
 import NavTab from "../../components/NavTab";
 import HomeLayout from "../../containers/layouts/HomeLayout";
 import UserSidebar from "../../containers/user/UserSidebar";
+import StoryReading from "../../containers/user/StoryReading";
 
 const UserStoryReading = () => {
   const tabMenu = [
@@ -9,7 +10,7 @@ const UserStoryReading = () => {
       id: 1,
       name: "Đang đọc",
       active: true,
-      component: <></>,
+      component: <StoryReading />,
     },
     {
       id: 2,

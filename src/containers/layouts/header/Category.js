@@ -29,7 +29,7 @@ const Category = ({ btn }) => {
     <DropdownBase>
       <DropdownBase.Button>
         {" "}
-        <button className="btn-dropdown dropdown-toggle">{btn}</button>
+        <button className="btn-dropdown dropdown-toggle">Thể loại</button>
       </DropdownBase.Button>
       <DropdownBase.Body>
         <ul className="genre-list row">

@@ -1,18 +1,19 @@
-import { Link, useNavigate } from "react-router-dom";
-import { asset } from "../../utils/Helper";
+import { Link } from "react-router-dom";
+
 import "./StoryReading.scss";
 import { useEffect, useState } from "react";
 import {
   handleDestroyStoriesReadingService,
   handleGetStoriesReadingService,
+  handleUpdateStoryNotifiesService,
 } from "../../services/UserServices";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import StorySimple from "./StorySimple";
 const StoryReading = () => {
   const [storiesReading, setStoriesReading] = useState([]);
   const { isAuth } = useSelector((state) => state.auth);
-  // const { id: userId } = useSelector((state) => state.user);
-  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     fetchStoriesReading();
   }, []);
@@ -24,9 +25,6 @@ const StoryReading = () => {
       }
     } catch (error) {}
   }
-  const handleShowStoryDetail = (story) => {
-    navigate(`story/${story?.slug}`);
-  };
   const handleDestroyStoryReading = async (storyId) => {
     try {
       const res = await handleDestroyStoriesReadingService(storyId);
@@ -36,61 +34,50 @@ const StoryReading = () => {
       }
     } catch (error) {}
   };
-
+  const handleNotifyStoryReading = async (storyId) => {
+    setLoading(true);
+    try {
+      let res = await handleUpdateStoryNotifiesService(storyId);
+      if (res?.success) {
+        setStoriesReading((prev) => {
+          return prev.map((item) => {
+            return item.id !== storyId
+              ? item
+              : {
+                  ...item,
+                  pivot: {
+                    ...item.pivot,
+                    notified: !item.pivot.notified,
+                  },
+                };
+          });
+        });
+      }
+    } catch (error) {
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
-    <div className="story-reading">
+    <div className="story-reading-home p-3">
       <div className="d-flex justify-content-between">
         <div className="all-story-title">Đang đọc</div>
-        <Link className="all-story" to={"/user/story-reading"}>
-          Xem tất cả
-        </Link>
+        {isAuth && (
+          <Link className="all-story" to={"/user/story"}>
+            Xem tất cả
+          </Link>
+        )}
       </div>
       {storiesReading?.length > 0 &&
         storiesReading?.map((story) => {
-          const { pivot } = story;
           return (
-            <div
-              className="row story-reading col-md-8 col-lg-12 border-bottom my-2"
-              key={story.id}
-            >
-              <div className="col-3">
-                <img
-                  alt="?"
-                  src={story?.avatar && asset(story.avatar)}
-                  className="avatar"
-                  onClick={() => handleShowStoryDetail(story)}
-                />
-              </div>
-              <div className="col-9">
-                <div className="name">
-                  <Link
-                    to={`/story/${story?.slug}`}
-                    className="text-decoration-none fs-md"
-                  >
-                    {story.name}
-                  </Link>
-                </div>
-                <div className="d-flex justify-content-between">
-                  <div className="chapter-reading fs-small">
-                    Đã đọc {pivot?.index}/{story?.chapters_count}{" "}
-                    {isAuth && (
-                      <i
-                        className="bi bi-trash-fill trash-icon"
-                        onClick={() => handleDestroyStoryReading(story?.id)}
-                      ></i>
-                    )}
-                  </div>
-                  {isAuth && (
-                    <Link
-                      to={`/story/${story?.slug}/chapter/${pivot?.index}`}
-                      className="continue-reading-btn"
-                    >
-                      Đọc tiếp
-                    </Link>
-                  )}
-                </div>
-              </div>
-            </div>
+            <StorySimple
+              key={story?.id}
+              story={story}
+              handleDestroyStoryReading={handleDestroyStoryReading}
+              handleNotifyStoryReading={handleNotifyStoryReading}
+              loading={loading}
+            />
           );
         })}
     </div>

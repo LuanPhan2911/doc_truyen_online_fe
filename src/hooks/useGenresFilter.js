@@ -7,19 +7,19 @@ import { setGenresFilter } from "../features/storySlice";
 const useGenresFilter = () => {
   const GENRE_TYPE = [
     {
-      title: "category",
+      title: "Thể loại",
       value: 1,
     },
     {
-      title: "character",
+      title: "Tính cánh nhân vật",
       value: 2,
     },
     {
-      title: "world building",
+      title: "Bối cảnh thế giới",
       value: 3,
     },
     {
-      title: "tags",
+      title: "Lưu phái",
       value: 4,
     },
   ];

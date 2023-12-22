@@ -36,7 +36,7 @@ const Story = ({ story, isAdmin }) => {
           <div className="auth text-overflow-1-line">
             <i className="bi bi-pen fs-small"></i>
             <span className="mx-2 fst-italic fs-small">
-              {story.author_name}
+              {story?.author?.name}
             </span>
           </div>
           <div className={`genre text-center border ${_.sample(borderColor)}`}>

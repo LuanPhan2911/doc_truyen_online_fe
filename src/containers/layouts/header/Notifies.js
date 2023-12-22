@@ -3,36 +3,27 @@ import DropdownBase from "../../../components/DropdownBase";
 import "./Notifies.scss";
 import { Link } from "react-router-dom";
 import { handleGetNotifiesService } from "../../../services/UserServices";
-import { useSelector } from "react-redux";
 import { asset } from "../../../utils/Helper";
 const Notifies = () => {
-  const userId = useSelector((state) => state.user.id);
   const [notifies, setNotifies] = useState([]);
-  const [newNotifyCount, setNewNotifyCount] = useState(0);
   useEffect(() => {
-    // async function fetchNotify() {
-    //   try {
-    //     let res = await handleGetNotifiesService(userId);
-    //     if (res?.success) {
-    //       let { notifies, new_notifies_count } = res.data;
-    //       setNotifies([...notifies]);
-    //       setNewNotifyCount(new_notifies_count);
-    //     }
-    //   } catch (error) {}
-    // }
-    // fetchNotify();
+    async function fetchNotify() {
+      try {
+        let res = await handleGetNotifiesService();
+        if (res?.success) {
+          setNotifies(res.data);
+        }
+      } catch (error) {}
+    }
+    fetchNotify();
   }, []);
 
-  const handleShowStory = () => {};
   return (
     <DropdownBase minWidth="400px">
       <DropdownBase.Button>
         {" "}
-        <button className="btn-dropdown dropdown-toggle">
+        <button className="btn-dropdown dropdown-toggle position-relative">
           Thông báo{" "}
-          {newNotifyCount > 0 && (
-            <span className="text-danger">{newNotifyCount}</span>
-          )}
         </button>
       </DropdownBase.Button>
       <DropdownBase.Body>
@@ -52,22 +43,24 @@ const Notifies = () => {
             {notifies?.length > 0 &&
               notifies.map((item) => {
                 return (
-                  <div
-                    className="row notify-item"
-                    onClick={() => handleShowStory(item)}
-                  >
+                  <div className="row notify-item">
                     <div className="col-3">
                       <img
                         alt="?"
-                        src={
-                          asset(item?.story?.avatar) &&
-                          asset(item?.story.avatar)
-                        }
+                        src={item?.story?.avatar && asset(item?.story?.avatar)}
                         className="avatar"
                       />
                     </div>
                     <div className="col-9">
                       <div className="name">{item?.story.name}</div>
+                      <div className="chapter-name fs-small">
+                        <Link
+                          to={`/story/${item?.story?.slug}/chapter/${item?.index}`}
+                          className="text-decoration-none"
+                        >
+                          {item?.name}
+                        </Link>
+                      </div>
                     </div>
                   </div>
                 );

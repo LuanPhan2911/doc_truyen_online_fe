@@ -4,12 +4,12 @@ import "./Chapter.scss";
 import { useSelector } from "react-redux";
 
 import { useEffect, useState } from "react";
-import { handleGetChapterService } from "../services/ChapterService";
+import { handleGetChapterService } from "../../services/ChapterService";
 
-import ChapterConfig from "../containers/chapter/ChapterConfig";
-import { countWords, formatTime } from "../utils/Helper";
-import Comments from "../containers/comments/Comments";
-import HomeLayout from "../containers/layouts/HomeLayout";
+import ChapterConfig from "../../containers/chapter/ChapterConfig";
+import { countWords, formatTime } from "../../utils/Helper";
+import Comments from "../../containers/comments/Comments";
+import HomeLayout from "../../containers/layouts/HomeLayout";
 import _ from "lodash";
 
 const Chapter = () => {

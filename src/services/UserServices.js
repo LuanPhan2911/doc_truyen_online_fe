@@ -6,13 +6,21 @@ const handleUpdateUser = async (userId, data) => {
   return await axios.post(`/api/users/${userId}`, data);
 };
 const handleGetStoriesReadingService = async () => {
-  return axios.get(`api/users/stories_reading`);
+  return axios.get(`api/users/stories`);
 };
-const handleDestroyStoriesReadingService = async (id) => {
-  return axios.delete(`api/users/stories_reading/${id}`);
+const handleGetStoriesReadingPaginateService = async (qs) => {
+  return axios.get(`api/users/stories/paginate`, {
+    params: qs,
+  });
 };
-const handleGetNotifiesService = async (userId) => {
-  return axios.get(`api/users/notifies/${userId}`);
+const handleDestroyStoriesReadingService = async (storyId) => {
+  return axios.delete(`api/users/stories/${storyId}`);
+};
+const handleGetNotifiesService = async () => {
+  return axios.get(`api/users/notifies`);
+};
+const handleUpdateStoryNotifiesService = async (storyId) => {
+  return axios.post(`api/users/notifies/${storyId}`);
 };
 
 export {
@@ -21,4 +29,6 @@ export {
   handleGetStoriesReadingService,
   handleGetNotifiesService,
   handleDestroyStoriesReadingService,
+  handleGetStoriesReadingPaginateService,
+  handleUpdateStoryNotifiesService,
 };

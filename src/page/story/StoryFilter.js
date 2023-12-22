@@ -1,36 +1,22 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
-import { handleGetStoryService } from "../services/StoryService";
-import { Link, useParams, useSearchParams } from "react-router-dom";
-import StoryFilterGenre from "../containers/story/StoryFilterGenre";
-import DropdownBase from "../components/DropdownBase";
-import Story from "../containers/story/Story";
-import HomeLayout from "../containers/layouts/HomeLayout";
+import { handleGetStoryService } from "../../services/StoryService";
+import { useSearchParams } from "react-router-dom";
+import StoryFilterGenre from "../../containers/story/StoryFilterGenre";
+import DropdownBase from "../../components/DropdownBase";
+import Story from "../../containers/story/Story";
+import HomeLayout from "../../containers/layouts/HomeLayout";
 import "./StoryFilter.scss";
-const menu = [
-  {
-    id: 1,
-    name: "Mới nhất",
-    value: "desc",
-    active: true,
-  },
-  {
-    id: 2,
-    name: "Củ nhất",
-    value: "asc",
-    active: false,
-  },
-];
+import PaginateLink from "../../components/PaginateLink";
+import { useSelector } from "react-redux";
 const StoryFilter = () => {
   const [selectedStoryGenres, setSelectedStoryGenres] = useState([]);
   const [toggleMenuTag, setToggleMenuTag] = useState(false);
-  const [storiesPaginated, setStoriesPaginated] = useState({
-    currentPage: "",
-    stories: [],
-    links: [],
-    totals: "",
-  });
+  const [storiesPaginated, setStoriesPaginated] = useState({});
   const [qs, setQs] = useSearchParams();
   const [loading, setLoading] = useState(false);
+  const { views } = useSelector((state) => state.story);
+
   useEffect(() => {
     const delaySearch = setTimeout(() => {
       fetchStories();
@@ -40,7 +26,13 @@ const StoryFilter = () => {
     };
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [qs.get("name"), selectedStoryGenres, qs.get("orderBy")]);
+  }, [
+    qs.get("view"),
+    qs.get("page"),
+    qs.get("name"),
+    selectedStoryGenres,
+    qs.get("orderBy"),
+  ]);
   async function fetchStories() {
     setLoading(true);
     let genres_id = selectedStoryGenres.map((item) => {
@@ -48,41 +40,23 @@ const StoryFilter = () => {
     });
     try {
       let res = await handleGetStoryService({
-        page: storiesPaginated?.currentPage || 1,
+        view: qs.get("view") || null,
+        page: qs.get("page") || 1,
         filter: true,
         name: qs.get("name") || null,
         orderBy: qs.get("orderBy") || "desc",
         genres_id: genres_id,
       });
       if (res?.success) {
-        let {
-          current_page: currentPage,
-          data: stories,
-          links,
-          totals,
-        } = res.data;
-        links = customLink(links);
-        setStoriesPaginated({
-          currentPage,
-          stories,
-          links,
-          totals,
-        });
+        setStoriesPaginated(res.data);
       }
     } catch (error) {
     } finally {
       setLoading(false);
     }
   }
-  const customLink = (links) => {
-    links[0].label = "Trước";
-    links[links.length - 1].label = "Sau";
-    return links;
-  };
 
-  const stories = storiesPaginated?.stories || [];
-  const links = storiesPaginated?.links || [];
-  const totals = storiesPaginated?.totals;
+  const stories = storiesPaginated?.data || [];
   return (
     <HomeLayout>
       <div className="story-filter-main row">
@@ -121,7 +95,7 @@ const StoryFilter = () => {
                   </DropdownBase.Button>
                   <DropdownBase.Body>
                     <li
-                      className={`text-center w-100 dropdown-item ${
+                      className={`w-100 dropdown-item ${
                         qs.get("orderBy") === "desc" && "active"
                       }`}
                       onClick={() => {
@@ -134,7 +108,7 @@ const StoryFilter = () => {
                       Mới nhất
                     </li>
                     <li
-                      className={`text-center w-100 dropdown-item ${
+                      className={`w-100 dropdown-item ${
                         qs.get("orderBy") === "asc" && "active"
                       }`}
                       onClick={() => {
@@ -146,6 +120,35 @@ const StoryFilter = () => {
                     >
                       Củ nhất
                     </li>
+                  </DropdownBase.Body>
+                </DropdownBase>
+              </li>
+              <li>
+                <DropdownBase>
+                  <DropdownBase.Button>
+                    <button className="btn-dropdown dropdown-toggle">
+                      Góc nhìn
+                    </button>
+                  </DropdownBase.Button>
+                  <DropdownBase.Body>
+                    {views?.map((item) => {
+                      return (
+                        <li
+                          key={item.id}
+                          className={`w-100 dropdown-item ${
+                            +qs.get("view") === item.id && "active"
+                          }`}
+                          onClick={() => {
+                            setQs((prev) => {
+                              prev.set("view", item.id);
+                              return prev;
+                            });
+                          }}
+                        >
+                          {item.view}
+                        </li>
+                      );
+                    })}
                   </DropdownBase.Body>
                 </DropdownBase>
               </li>
@@ -181,30 +184,13 @@ const StoryFilter = () => {
                   </div>
                 )}
               </div>
-              {totals > 1 && (
-                <ul className="pagination justify-content-center mt-3">
-                  {stories?.length > 0 &&
-                    links?.length > 0 &&
-                    links.map((item) => {
-                      return (
-                        <li
-                          className={
-                            item.url ? "page-item" : "page-item disabled"
-                          }
-                          key={item.label}
-                        >
-                          <Link
-                            className={
-                              item.active ? "page-link active" : "page-link"
-                            }
-                            // onClick={() => handleChangePage(item.page)}
-                          >
-                            {item.label}
-                          </Link>
-                        </li>
-                      );
-                    })}
-                </ul>
+              {stories?.length > 0 && (
+                <PaginateLink
+                  totalCount={storiesPaginated?.total}
+                  currentPage={storiesPaginated?.current_page}
+                  pageSize={storiesPaginated?.per_page}
+                  siblingCount={1}
+                />
               )}
             </>
           )}

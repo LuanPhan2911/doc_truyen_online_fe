@@ -2,19 +2,19 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { FaGlasses } from "react-icons/fa";
 import { BsBookmark } from "react-icons/bs";
 import { GiCottonFlower } from "react-icons/gi";
-import Comments from "../containers/comments/Comments";
+import Comments from "../../containers/comments/Comments";
 import { useEffect, useState } from "react";
 import "./StoryDetail.scss";
-import { asset } from "../utils/Helper";
-import ChapterList from "../containers/chapter/ChapterList";
-import { handleShowStoryService } from "../services/StoryService";
-import HomeLayout from "../containers/layouts/HomeLayout";
-import StoryDescription from "../containers/story/StoryDescription";
+import { asset } from "../../utils/Helper";
+import ChapterList from "../../containers/chapter/ChapterList";
+import { handleShowStoryService } from "../../services/StoryService";
+import HomeLayout from "../../containers/layouts/HomeLayout";
+import StoryDescription from "../../containers/story/StoryDescription";
 import { useSelector } from "react-redux";
 import _ from "lodash";
-import StoryRating from "../containers/story/StoryRating";
+import StoryRating from "../../containers/story/StoryRating";
 import StarRatings from "react-star-ratings";
-import NavTab from "../components/NavTab";
+import NavTab from "../../components/NavTab";
 
 const StoryDetail = () => {
   const navigate = useNavigate();
@@ -107,7 +107,7 @@ const StoryDetail = () => {
             <ul className="story-detail-genre">
               <li className={`border ${_.sample(borderColor)} rounded-pill`}>
                 <Link className="text-decoration-none">
-                  {story?.author_name}
+                  {story?.author?.name}
                 </Link>
               </li>
               {story?.genres?.length > 0 &&

@@ -1,0 +1,45 @@
+.story-reading {
+  padding: 10px;
+  .avatar {
+    width: 40px;
+    height: 60px;
+    cursor: pointer;
+  }
+  .name {
+    font-weight: 600;
+    font-size: 1em;
+    a {
+      color: #333;
+      &:hover {
+        color: #bd953b;
+      }
+    }
+  }
+  .chapter-reading {
+    .trash-icon {
+      font-size: 15px;
+      margin: 0 5px;
+      &:hover {
+        color: rgb(223, 70, 70);
+      }
+      cursor: pointer;
+    }
+    .bell-icon {
+      font-size: 15px;
+      &:hover {
+        color: rgb(37, 210, 68);
+      }
+      &.active {
+        color: rgb(37, 210, 68);
+      }
+      cursor: pointer;
+    }
+  }
+  .continue-reading-btn {
+    font-size: 14px;
+    color: rgb(223, 70, 70);
+    text-decoration: none;
+    font-weight: 600;
+    animation-name: text;
+  }
+}

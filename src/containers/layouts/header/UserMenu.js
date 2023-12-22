@@ -17,13 +17,13 @@ const UserMenu = () => {
             <Link to={`/user/profile/${user.id}`}>Hồ sơ</Link>
           </li>
           <li>
-            <Link to={`/user/story-reading`}>Tủ truyện</Link>
+            <Link to={`/user/story`}>Tủ truyện</Link>
           </li>
           <li>
-            <Link to={`/user/${user.id}setting`}>Cài đặt</Link>
+            <Link to={`/user/setting`}>Cài đặt</Link>
           </li>
           <li>
-            <Link to={`/user/${user.id}notify`}>Thông báo</Link>
+            <Link to={`/user/notify`}>Thông báo</Link>
           </li>
           <li>
             <Link to={"/logout"}>Thoát</Link>

@@ -12,7 +12,7 @@ const UserSidebar = () => {
             <NavLink
               to="/user/"
               className={({ isActive }) => {
-                return `nav-link align-middle px-0 ${isActive && "active"}`;
+                return `custom-link align-middle px-0 ${isActive && "active"}`;
               }}
               end
             >
@@ -24,7 +24,7 @@ const UserSidebar = () => {
             <NavLink
               to="/user/story"
               className={({ isActive }) => {
-                return `nav-link align-middle px-0 ${isActive && "active"}`;
+                return `custom-link align-middle px-0 ${isActive && "active"}`;
               }}
             >
               <i className="fs-4 bi-book px-2"></i>{" "}
@@ -35,7 +35,7 @@ const UserSidebar = () => {
             <NavLink
               to="/user/setting"
               className={({ isActive }) => {
-                return `nav-link align-middle px-0 ${isActive && "active"}`;
+                return `custom-link align-middle px-0 ${isActive && "active"}`;
               }}
             >
               <i className="fs-4 bi-gear px-2"></i>{" "}
@@ -46,7 +46,7 @@ const UserSidebar = () => {
             <NavLink
               to="/user/notify"
               className={({ isActive }) => {
-                return `nav-link align-middle px-0 ${isActive && "active"}`;
+                return `custom-link align-middle px-0 ${isActive && "active"}`;
               }}
             >
               <i className="fs-4 bi-bell px-2"></i>{" "}

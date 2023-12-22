@@ -92,18 +92,20 @@ const Header = ({ color, backgroundColor }) => {
                   <UserMenu />
                 </li>
                 <li>
-                  <i className="bi bi-bell"></i>
-                  <Notifies btn={"Thông báo"} />
+                  <i className="bi bi-bell position-relative">
+                    <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"></span>
+                  </i>
+                  <Notifies />
                 </li>
               </>
             )}
             <li>
               <i className="bi bi-border-all"></i>
-              <Category btn="Thể loại" />
+              <Category />
             </li>
             <li>
               <i className="bi bi-bar-chart"></i>
-              <Ranking btn={"Bảng xếp hạng"} />
+              <Ranking />
             </li>
             {!isAuth && (
               <>

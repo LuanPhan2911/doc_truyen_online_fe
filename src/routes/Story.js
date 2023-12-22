@@ -1,6 +1,6 @@
-import Chapter from "../page/Chapter";
-import StoryDetail from "../page/StoryDetail";
-import StoryFilter from "../page/StoryFilter";
+import Chapter from "../page/chapter/Chapter";
+import StoryDetail from "../page/story/StoryDetail";
+import StoryFilter from "../page/story/StoryFilter";
 
 const Story = [
   {

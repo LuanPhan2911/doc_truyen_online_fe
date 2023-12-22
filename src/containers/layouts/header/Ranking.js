@@ -26,7 +26,7 @@ const Ranking = ({ btn }) => {
   return (
     <DropdownBase minWidth="200px">
       <DropdownBase.Button>
-        <button className="btn-dropdown dropdown-toggle">{btn}</button>
+        <button className="btn-dropdown dropdown-toggle">Xếp hạng</button>
       </DropdownBase.Button>
       <DropdownBase.Body>
         <ul>

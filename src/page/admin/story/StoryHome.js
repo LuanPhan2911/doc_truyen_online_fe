@@ -6,23 +6,28 @@ import { useState } from "react";
 import Story from "../../../containers/story/Story";
 import { Link } from "react-router-dom";
 import AdminLayout from "../../../containers/admin/layouts/AdminLayout";
+import PaginateLink from "../../../components/PaginateLink";
+import { useQueryString } from "../../../hooks";
 
 const StoryHome = () => {
-  const [stories, setStories] = useState([]);
+  const [stories, setStories] = useState({});
+  const { page } = useQueryString();
   useEffect(() => {
     fetchStory();
 
     async function fetchStory() {
       try {
-        let res = await handleGetStoryService();
+        let res = await handleGetStoryService({
+          page,
+        });
         if (res?.success) {
-          setStories([...res.data]);
+          setStories(res.data);
         }
       } catch (error) {}
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [page]);
 
   return (
     <AdminLayout>
@@ -33,16 +38,21 @@ const StoryHome = () => {
           </Link>
         </div>
         <div className="stories">
-          {stories &&
-            stories.length > 0 &&
-            stories.map((item, index) => {
-              return (
-                <div className="col-lg-6 border-bottom" key={item.id}>
-                  <Story story={item} isAdmin={true} />
-                </div>
-              );
-            })}
+          {stories?.data?.map((item, index) => {
+            return (
+              <div className="col-lg-6 border-bottom" key={item.id}>
+                <Story story={item} isAdmin={true} />
+              </div>
+            );
+          })}
         </div>
+
+        <PaginateLink
+          currentPage={stories?.current_page}
+          pageSize={stories?.per_page}
+          siblingCount={1}
+          totalCount={stories?.total}
+        />
       </div>
     </AdminLayout>
   );
