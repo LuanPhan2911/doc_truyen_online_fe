@@ -1,23 +1,18 @@
 import axios from "../axios";
-const handleSendCommentService = (data) => {
+const postComment = (data) => {
   return axios.post("/api/comments/create", data);
 };
-const handleGetCommentsService = (qs) => {
+const getComments = (qs) => {
   return axios.get("/api/comments", {
     params: {
       ...qs,
     },
   });
 };
-const handleLikeCommentService = (commentId) => {
+const putLikeComment = (commentId) => {
   return axios.post(`api/comments/${commentId}/like`);
 };
-const handleDeleteCommentService = (commentId) => {
+const deleteComment = (commentId) => {
   return axios.delete(`api/comments/${commentId}`);
 };
-export {
-  handleSendCommentService,
-  handleGetCommentsService,
-  handleLikeCommentService,
-  handleDeleteCommentService,
-};
+export { postComment, getComments, putLikeComment, deleteComment };

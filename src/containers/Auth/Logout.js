@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { handleLogoutService } from "../../services/AuthServices";
+import { logoutUser } from "../../services/AuthServices";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { logout } from "../../features/userSlice";
@@ -12,7 +12,7 @@ const Logout = () => {
   useEffect(() => {
     async function handleLogout() {
       try {
-        let res = await handleLogoutService();
+        let res = await logoutUser();
         if (res?.success) {
           toast.success("Bạn đã đăng xuất!");
           dispatch(logout());

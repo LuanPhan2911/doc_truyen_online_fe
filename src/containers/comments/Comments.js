@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Comment from "./Comment";
 import CommentForm from "./CommentForm";
 import "./Comments.scss";
-import { handleGetCommentsService } from "../../services/CommentServices";
+import { getComments } from "../../services/CommentServices";
 
 const Comments = ({ storyId, isReply, replies, type = 0, storyRatings }) => {
   const [comments, setComments] = useState([]);
@@ -36,7 +36,7 @@ const Comments = ({ storyId, isReply, replies, type = 0, storyRatings }) => {
 
   async function fetchComment(storyId, nextCursor = null) {
     try {
-      let res = await handleGetCommentsService({
+      let res = await getComments({
         story_id: storyId,
         cursor: nextCursor,
         type,

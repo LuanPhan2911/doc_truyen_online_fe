@@ -1,7 +1,7 @@
 import _ from "lodash";
 import { useLayoutEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { handleGetGenreService } from "../services/GenreService";
+import { getGenres } from "../services/GenreService";
 import { setGenresFilter } from "../features/storySlice";
 
 const useGenresFilter = () => {
@@ -30,7 +30,7 @@ const useGenresFilter = () => {
   useLayoutEffect(() => {
     if (_.isEmpty(genresFilter)) {
       async function fetchGenre() {
-        let res = await handleGetGenreService();
+        let res = await getGenres();
         if (res?.success) {
           dispatch(setGenresFilter(res.data));
         }

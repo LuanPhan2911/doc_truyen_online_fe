@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { handleRegisterService } from "../../services/AuthServices";
+import { registerUser } from "../../services/AuthServices";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import "./RegisterForm.scss";
@@ -34,7 +34,7 @@ const RegisterForm = () => {
       return;
     }
     try {
-      let res = await handleRegisterService(user);
+      let res = await registerUser(user);
 
       if (res?.success) {
         toast.success("Đăng ký thành công!");

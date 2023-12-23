@@ -4,13 +4,15 @@ import "./Chapter.scss";
 import { useSelector } from "react-redux";
 
 import { useEffect, useState } from "react";
-import { handleGetChapterService } from "../../services/ChapterService";
+import { getChapter } from "../../services/ChapterService";
 
 import ChapterConfig from "../../containers/chapter/ChapterConfig";
 import { countWords, formatTime } from "../../utils/Helper";
 import Comments from "../../containers/comments/Comments";
 import HomeLayout from "../../containers/layouts/HomeLayout";
 import _ from "lodash";
+import { useRef } from "react";
+import useOnScreen from "../../hooks/useOnScreeen";
 
 const Chapter = () => {
   const { slug, index: chapterIndex } = useParams();
@@ -27,6 +29,10 @@ const Chapter = () => {
   const [countChapter, setCountChapter] = useState("");
   const [chapterReaction, setChapterReaction] = useState({});
   const [countReactions, setCountReactions] = useState(0);
+  const chapterContentRef = useRef("");
+  const commentRef = useRef("");
+  const isShowChapterConfig = useOnScreen(chapterContentRef);
+
   useEffect(() => {
     window.scrollTo(0, 0);
     fetchChapter();
@@ -35,7 +41,7 @@ const Chapter = () => {
 
   async function fetchChapter() {
     try {
-      let res = await handleGetChapterService(slug, chapterIndex);
+      let res = await getChapter(slug, chapterIndex);
 
       if (res?.success) {
         let { chapter, countChapter, reaction } = res.data;
@@ -66,6 +72,9 @@ const Chapter = () => {
         pathname: `/story/${slug}/chapter/${index + 1}`,
       });
     }
+  };
+  const handleGoToCommentView = () => {
+    commentRef.current.scrollIntoView();
   };
 
   const storyId = chapter?.story_id || "";
@@ -103,7 +112,7 @@ const Chapter = () => {
             </div>
             <div className="auth-name col-lg-3 col-md-6">
               <i className="bi bi-pencil"></i>
-              <span>{chapter?.story?.author_name}</span>
+              <span>{chapter?.story?.author?.name}</span>
             </div>
             <div className="chapter-word-count col-lg-2 col-md-6">
               <i className="bi bi-textarea"></i>
@@ -128,8 +137,18 @@ const Chapter = () => {
               fontFamily: selectedFontFamily,
               minHeight: "50vh",
             }}
+            ref={chapterContentRef}
           >
             {chapter?.content}
+            <div className="chapter-config">
+              {isShowChapterConfig && (
+                <ChapterConfig
+                  storyId={storyId}
+                  chapterReaction={chapterReaction}
+                  handleGoToCommentView={handleGoToCommentView}
+                />
+              )}
+            </div>
           </div>
           <div className="chapter-pre-next">
             <div className="chapter-pre" onClick={() => handlePreChapter()}>
@@ -141,15 +160,8 @@ const Chapter = () => {
               <i className="bi bi-arrow-right"></i>
             </div>
           </div>
-
-          <div className="chapter-config">
-            <ChapterConfig
-              storyId={storyId}
-              chapterReaction={chapterReaction}
-            />
-          </div>
         </div>
-        <div className="container">
+        <div className="container" ref={commentRef}>
           <Comments storyId={storyId} />
         </div>
       </div>

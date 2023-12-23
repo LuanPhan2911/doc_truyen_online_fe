@@ -1,18 +1,14 @@
 import axios from "../axios";
 
-const handleGetChapterService = (name, chapterIndex) => {
+const getChapter = (name, chapterIndex) => {
   return axios.get(`/api/stories/${name}/chapter/${chapterIndex}`);
 };
-const handleGetChapterListSlugService = (slug) => {
+const getChapterList = (slug) => {
   return axios.get(`/api/stories/${slug}/chapter`);
 };
-const handleChapterReactionService = ({ slug, index, name }) => {
+const postChapterReaction = ({ slug, index, name }) => {
   return axios.post(`/api/stories/${slug}/chapter/${index}/reaction`, {
     name,
   });
 };
-export {
-  handleGetChapterService,
-  handleGetChapterListSlugService,
-  handleChapterReactionService,
-};
+export { getChapter, getChapterList, postChapterReaction };

@@ -2,17 +2,16 @@ import { useEffect, useState } from "react";
 import Ranking from "./header/Ranking";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import avatarDefault from "../../assets/avatar/default.png";
+
 import Notifies from "./header/Notifies";
 import "./Header.scss";
 import Category from "./header/Category";
 import { handleClose, handleShow } from "../../features/authSlice";
 import Modal from "react-bootstrap/Modal";
-import { asset } from "../../utils/Helper";
 import UserMenu from "./header/UserMenu";
 const Header = ({ color, backgroundColor }) => {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user);
+
   const [searchBtn, setSearchBtn] = useState(false);
   const [toggleMenu, setToggleMenu] = useState(false);
   const [qs, setQS] = useSearchParams();
@@ -85,26 +84,17 @@ const Header = ({ color, backgroundColor }) => {
             {isAuth && (
               <>
                 <li className="user-login">
-                  <img
-                    src={user.avatar ? asset(user.avatar) : avatarDefault}
-                    alt="not found"
-                  />
                   <UserMenu />
                 </li>
                 <li>
-                  <i className="bi bi-bell position-relative">
-                    <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"></span>
-                  </i>
                   <Notifies />
                 </li>
               </>
             )}
             <li>
-              <i className="bi bi-border-all"></i>
               <Category />
             </li>
             <li>
-              <i className="bi bi-bar-chart"></i>
               <Ranking />
             </li>
             {!isAuth && (

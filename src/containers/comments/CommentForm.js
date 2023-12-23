@@ -5,11 +5,11 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { asset, checkPropertiesIsEmpty } from "../../utils/Helper";
-import { handleSendCommentService } from "../../services/CommentServices";
+import { postComment } from "../../services/CommentServices";
 import { toast } from "react-toastify";
 import { handleShow } from "../../features/authSlice";
 import { useParams } from "react-router-dom";
-import { handleRateStoryService } from "../../services/StoryService";
+import { postRateStory } from "../../services/StoryService";
 const CommentForm = ({
   isReply,
   storyId,
@@ -47,7 +47,7 @@ const CommentForm = ({
 
     if (!checkPropertiesIsEmpty(cpComment, ["parent_id"])) {
       try {
-        let res = await handleSendCommentService(cpComment);
+        let res = await postComment(cpComment);
         if (res?.success) {
           let comment = res.data;
           let resRating = null;
@@ -71,7 +71,7 @@ const CommentForm = ({
   const handleRateStory = (ratings) => {
     return new Promise(async (resolve, reject) => {
       try {
-        let res = await handleRateStoryService(slug, ratings);
+        let res = await postRateStory(slug, ratings);
         if (res?.success) {
           resolve(res?.data);
         }

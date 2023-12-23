@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
 import CreatableSelect from "react-select/creatable";
-import {
-  handleCreateAuthorsService,
-  handleGetAuthorsService,
-} from "../../../services/AdminServices";
+import { postAuthor, getAuthors } from "../../../services/AdminServices";
 const StoryAuthor = ({ selectedAuthor, setSelectedAuthor }) => {
   const [authors, setAuthors] = useState([]);
   const [isLoading, setLoading] = useState(false);
@@ -12,7 +9,7 @@ const StoryAuthor = ({ selectedAuthor, setSelectedAuthor }) => {
   }, []);
   async function fetchAuthors() {
     try {
-      let res = await handleGetAuthorsService();
+      let res = await getAuthors();
       if (res?.success) {
         setAuthors((prev) => {
           return res.data.map((item) => {
@@ -28,7 +25,7 @@ const StoryAuthor = ({ selectedAuthor, setSelectedAuthor }) => {
   const handleCreateAuthor = async (label) => {
     setLoading(true);
     try {
-      let res = await handleCreateAuthorsService({
+      let res = await postAuthor({
         name: label,
       });
       if (res?.success) {

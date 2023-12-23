@@ -2,14 +2,14 @@ import { useEffect, useState } from "react";
 import DropdownBase from "../../../components/DropdownBase";
 import "./Notifies.scss";
 import { Link } from "react-router-dom";
-import { handleGetNotifiesService } from "../../../services/UserServices";
+import { getUserNotifies } from "../../../services/UserServices";
 import { asset } from "../../../utils/Helper";
 const Notifies = () => {
   const [notifies, setNotifies] = useState([]);
   useEffect(() => {
     async function fetchNotify() {
       try {
-        let res = await handleGetNotifiesService();
+        let res = await getUserNotifies();
         if (res?.success) {
           setNotifies(res.data);
         }
@@ -21,7 +21,11 @@ const Notifies = () => {
   return (
     <DropdownBase minWidth="400px">
       <DropdownBase.Button>
-        {" "}
+        <i className="bi bi-bell position-relative">
+          {notifies?.length > 0 && (
+            <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"></span>
+          )}
+        </i>
         <button className="btn-dropdown dropdown-toggle position-relative">
           Thông báo{" "}
         </button>

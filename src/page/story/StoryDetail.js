@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import "./StoryDetail.scss";
 import { asset } from "../../utils/Helper";
 import ChapterList from "../../containers/chapter/ChapterList";
-import { handleShowStoryService } from "../../services/StoryService";
+import { getStory } from "../../services/StoryService";
 import HomeLayout from "../../containers/layouts/HomeLayout";
 import StoryDescription from "../../containers/story/StoryDescription";
 import { useSelector } from "react-redux";
@@ -15,6 +15,8 @@ import _ from "lodash";
 import StoryRating from "../../containers/story/StoryRating";
 import StarRatings from "react-star-ratings";
 import NavTab from "../../components/NavTab";
+import { postStoryMarking } from "../../services/UserServices";
+import { toast } from "react-toastify";
 
 const StoryDetail = () => {
   const navigate = useNavigate();
@@ -28,7 +30,7 @@ const StoryDetail = () => {
   useEffect(() => {
     async function fetchStory() {
       try {
-        let res = await handleShowStoryService(slug);
+        let res = await getStory(slug);
         if (res?.success) {
           let storyCp = res.data;
           setStory({ ...storyCp });
@@ -91,6 +93,21 @@ const StoryDetail = () => {
   const handleShowChapter = ({ chapter_index: chapterIndex }) => {
     navigate(`chapter/${chapterIndex || 1}`);
   };
+  const handleMarkStory = async ({ slug, chapter_index }) => {
+    try {
+      toast.promise(
+        postStoryMarking({
+          slug,
+          index: chapter_index || 1,
+        }),
+        {
+          pending: "Đang đánh dấu truyện",
+          success: "Đánh dấu thành công 👌",
+          error: "Có lỗi xảy ra🤯",
+        }
+      );
+    } catch (error) {}
+  };
   return (
     <HomeLayout>
       <div className="container story-detail-main p-3 rounded">
@@ -106,7 +123,10 @@ const StoryDetail = () => {
             <div className="story-detail-title">{story?.name}</div>
             <ul className="story-detail-genre">
               <li className={`border ${_.sample(borderColor)} rounded-pill`}>
-                <Link className="text-decoration-none">
+                <Link
+                  className="text-decoration-none"
+                  to={`/author/${story?.author?.slug}`}
+                >
                   {story?.author?.name}
                 </Link>
               </li>
@@ -127,7 +147,12 @@ const StoryDetail = () => {
                   );
                 })}
               <li className={`border ${_.sample(borderColor)} rounded-pill`}>
-                <Link className="text-decoration-none">{viewStory?.view}</Link>
+                <Link
+                  className="text-decoration-none"
+                  to={`/story?view=${viewStory?.id}`}
+                >
+                  {viewStory?.view}
+                </Link>
               </li>
             </ul>
             <ul className="story-detail-full">
@@ -180,7 +205,10 @@ const StoryDetail = () => {
                   <span>Đọc truyện</span>
                 )}
               </li>
-              <li className="story-detail-mark">
+              <li
+                className="story-detail-mark"
+                onClick={() => handleMarkStory(story)}
+              >
                 <BsBookmark color="#333" size={"1.2em"} />
                 <span>Đánh dấu</span>
               </li>

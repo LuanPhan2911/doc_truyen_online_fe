@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 import "./StoryReading.scss";
 import { useEffect, useState } from "react";
 import {
-  handleDestroyStoriesReadingService,
-  handleGetStoriesReadingService,
-  handleUpdateStoryNotifiesService,
+  deleteStoryReading,
+  getStoriesReading,
+  putUserNotifies,
 } from "../../services/UserServices";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
@@ -19,7 +19,7 @@ const StoryReading = () => {
   }, []);
   async function fetchStoriesReading() {
     try {
-      let res = await handleGetStoriesReadingService();
+      let res = await getStoriesReading();
       if (res?.success) {
         setStoriesReading(res?.data);
       }
@@ -27,7 +27,7 @@ const StoryReading = () => {
   }
   const handleDestroyStoryReading = async (storyId) => {
     try {
-      const res = await handleDestroyStoriesReadingService(storyId);
+      const res = await deleteStoryReading(storyId);
       if (res?.success) {
         toast.success("Xóa thành công!");
         fetchStoriesReading();
@@ -37,7 +37,7 @@ const StoryReading = () => {
   const handleNotifyStoryReading = async (storyId) => {
     setLoading(true);
     try {
-      let res = await handleUpdateStoryNotifiesService(storyId);
+      let res = await putUserNotifies(storyId);
       if (res?.success) {
         setStoriesReading((prev) => {
           return prev.map((item) => {
@@ -74,8 +74,8 @@ const StoryReading = () => {
             <StorySimple
               key={story?.id}
               story={story}
-              handleDestroyStoryReading={handleDestroyStoryReading}
-              handleNotifyStoryReading={handleNotifyStoryReading}
+              handleDestroyStory={handleDestroyStoryReading}
+              handleNotifyStory={handleNotifyStoryReading}
               loading={loading}
             />
           );

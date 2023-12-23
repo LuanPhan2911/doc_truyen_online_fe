@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import GenreTab from "./GenreTab";
-import { handleGetGenreService } from "../../../services/GenreService";
+import { getGenres } from "../../../services/GenreService";
 
 const GenreIndex = ({ genreType, newGenres, setNewGenres }) => {
   const [genres, setGenres] = useState([...genreType]);
@@ -9,7 +9,7 @@ const GenreIndex = ({ genreType, newGenres, setNewGenres }) => {
   useEffect(() => {
     async function fetchGenre() {
       try {
-        let res = await handleGetGenreService();
+        let res = await getGenres();
         if (res?.success) {
           let genreData = res.data;
           let genreTypeCp = genres.map((item) => {

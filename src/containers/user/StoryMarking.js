@@ -2,14 +2,14 @@
 import { useEffect, useState } from "react";
 import {
   deleteStoryReading,
-  getStoriesReadingPaginate,
+  getStoriesMarkingPaginate,
   putUserNotifies,
 } from "../../services/UserServices";
 import PaginateLink from "../../components/PaginateLink";
 import { useSearchParams } from "react-router-dom";
 import StorySimple from "../story/StorySimple";
 import { toast } from "react-toastify";
-const StoryReading = () => {
+const StoryMarking = () => {
   const [stories, setStories] = useState({});
   const [qs] = useSearchParams();
   const [loading, setLoading] = useState(false);
@@ -18,7 +18,7 @@ const StoryReading = () => {
   }, [qs.get("page")]);
   async function fetchStoriesReading() {
     try {
-      let res = await getStoriesReadingPaginate({
+      let res = await getStoriesMarkingPaginate({
         page: qs.get("page") || 1,
       });
       if (res?.success) {
@@ -26,7 +26,7 @@ const StoryReading = () => {
       }
     } catch (error) {}
   }
-  const handleDestroyStoryReading = async (storyId) => {
+  const handleDestroyStoryMarking = async (storyId) => {
     try {
       const res = await deleteStoryReading(storyId);
       if (res?.success) {
@@ -35,7 +35,7 @@ const StoryReading = () => {
       }
     } catch (error) {}
   };
-  const handleNotifyStoryReading = async (storyId) => {
+  const handleNotifyStoryMarking = async (storyId) => {
     setLoading(true);
     try {
       let res = await putUserNotifies(storyId);
@@ -69,9 +69,10 @@ const StoryReading = () => {
           <StorySimple
             key={story?.id}
             story={story}
-            handleDestroyStory={handleDestroyStoryReading}
-            handleNotifyStory={handleNotifyStoryReading}
+            handleDestroyStory={handleDestroyStoryMarking}
+            handleNotifyStory={handleNotifyStoryMarking}
             loading={loading}
+            isMarked={true}
           />
         );
       })}
@@ -86,4 +87,4 @@ const StoryReading = () => {
     </div>
   );
 };
-export default StoryReading;
+export default StoryMarking;

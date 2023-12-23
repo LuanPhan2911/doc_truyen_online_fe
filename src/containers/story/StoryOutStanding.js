@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
-import { handleGetStoryService } from "../../services/StoryService";
+import { getStories } from "../../services/StoryService";
 import { useFetch } from "../../hooks";
 import Story from "./Story";
 import "./StoryOutStanding.scss";
 const StoryOutStanding = () => {
-  let { data: stories } = useFetch(handleGetStoryService);
+  let { data: stories } = useFetch(getStories);
 
   return (
     <div className="story-out-standing bg-light p-3 rounded">

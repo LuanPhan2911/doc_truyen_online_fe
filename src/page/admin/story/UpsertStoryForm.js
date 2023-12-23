@@ -1,14 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import {
-  handleCreateStoryService,
-  handleShowStoryService,
-  handleUpdateStoryService,
-} from "../../../services/AdminServices";
-import {
-  asset,
-  checkPropertiesIsEmpty,
-  handleErrorApiResponse,
-} from "../../../utils/Helper";
+import { postStory, getStory, putStory } from "../../../services/AdminServices";
+import { asset, handleErrorApiResponse } from "../../../utils/Helper";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import storyDefaultImage from "../../../assets/stories/default.png";
@@ -22,6 +14,7 @@ import { useGenresFilter } from "../../../hooks";
 import StoryAuthor from "../../../containers/admin/story/StoryAuthor";
 
 const UpsertStoryForm = ({ isUpdate }) => {
+  const { slug } = useParams();
   const user = useSelector((state) => state.user);
   const { views } = useSelector((state) => state.story);
   const initStory = {
@@ -86,7 +79,7 @@ const UpsertStoryForm = ({ isUpdate }) => {
 
   async function fetchStory() {
     try {
-      let res = await handleShowStoryService(storyId);
+      let res = await getStory(storyId);
       if (res?.success) {
         let cpStory = { ...res.data };
         let data = computedStory(cpStory);
@@ -136,7 +129,7 @@ const UpsertStoryForm = ({ isUpdate }) => {
         if (!(cpStory.avatar instanceof File)) {
           cpStory["avatar"] = null;
         }
-        let res = await handleUpdateStoryService(cpStory);
+        let res = await putStory(slug, cpStory);
         if (res?.success) {
           toast.success("Cập nhật thành công!");
           let data = res.data;
@@ -148,7 +141,7 @@ const UpsertStoryForm = ({ isUpdate }) => {
       }
     } else {
       try {
-        let res = await handleCreateStoryService(story);
+        let res = await postStory(story);
         if (res?.success) {
           toast.success("Tạo truyện thành công!");
           setStory({

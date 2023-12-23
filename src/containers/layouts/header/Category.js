@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import DropdownBase from "../../../components/DropdownBase";
 import "./Category.scss";
-import { Link, createSearchParams, useNavigate } from "react-router-dom";
+import { Link, createSearchParams } from "react-router-dom";
 import { useGenresFilter } from "../../../hooks";
 import _ from "lodash";
 const Category = ({ btn }) => {
@@ -29,6 +29,7 @@ const Category = ({ btn }) => {
     <DropdownBase>
       <DropdownBase.Button>
         {" "}
+        <i className="bi bi-border-all"></i>
         <button className="btn-dropdown dropdown-toggle">Thể loại</button>
       </DropdownBase.Button>
       <DropdownBase.Body>

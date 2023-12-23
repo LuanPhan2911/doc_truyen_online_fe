@@ -3,14 +3,14 @@ import { useEffect } from "react";
 
 import { useParams } from "react-router-dom";
 import { useQueryString } from "../../hooks";
-import { handleVerifyEmailService } from "../../services/AuthServices";
+import { VerifyEmailUser } from "../../services/AuthServices";
 
 const VerifyEmail = () => {
   const params = useParams();
   const queryString = useQueryString();
   useEffect(() => {
     async function fetch() {
-      await handleVerifyEmailService({
+      await VerifyEmailUser({
         ...queryString,
         ...params,
       });

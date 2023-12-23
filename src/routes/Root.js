@@ -6,6 +6,7 @@ import Admin from "./Admin";
 import User from "./User";
 import HomePage from "../page/HomePage";
 import Logout from "../containers/auth/Logout";
+import Author from "../page/author/Author";
 const Root = () => {
   const router = createBrowserRouter([
     {
@@ -15,6 +16,10 @@ const Root = () => {
     {
       path: "/logout",
       element: <Logout />,
+    },
+    {
+      path: "/author/:slug",
+      element: <Author />,
     },
     ...Story,
     ...Report,

@@ -4,7 +4,7 @@ const DropdownBase = ({ children }) => {
   return <div className="dropdown">{children}</div>;
 };
 const Button = ({ children }) => {
-  return children;
+  return <div className="d-flex">{children}</div>;
 };
 const Body = ({ children }) => {
   return <ul className="dropdown-menu">{children}</ul>;

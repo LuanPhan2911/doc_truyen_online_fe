@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { checkPropertiesIsEmpty } from "../../utils/Helper";
-import { handleCreateReportService } from "../../services/ReportServices";
+import { postReport } from "../../services/ReportServices";
 import { toast } from "react-toastify";
 
 const ReportForm = ({ reportedId, type }) => {
@@ -23,7 +23,7 @@ const ReportForm = ({ reportedId, type }) => {
   const handleSendReport = async () => {
     if (!checkPropertiesIsEmpty(report)) {
       try {
-        let res = await handleCreateReportService(report);
+        let res = await postReport(report);
         if (res?.success) {
           toast.success("Gửi thành công");
           setReport({ ...initReport });

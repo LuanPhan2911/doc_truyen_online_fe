@@ -8,7 +8,7 @@ import CommentForm from "./CommentForm";
 import { asset, diffTime } from "../../utils/Helper";
 import Comments from "./Comments";
 import { useSelector } from "react-redux";
-import { handleLikeCommentService } from "../../services/CommentServices";
+import { putLikeComment } from "../../services/CommentServices";
 import { Modal } from "react-bootstrap";
 import ReportForm from "../reports/ReportForm";
 import StarRatings from "react-star-ratings";
@@ -76,7 +76,7 @@ const Comment = ({
   const handleLikeComment = async (commentId) => {
     if (isAuth) {
       try {
-        let res = await handleLikeCommentService(commentId);
+        let res = await putLikeComment(commentId);
         if (res?.success) {
           let message = res.data;
           if (message === "like") {

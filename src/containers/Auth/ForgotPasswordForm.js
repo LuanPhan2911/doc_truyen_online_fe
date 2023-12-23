@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { handleForgotPasswordService } from "../../services/AuthServices";
+import { forgotPasswordUser } from "../../services/AuthServices";
 
 const ForgotPasswordForm = () => {
   const [email, setEmail] = useState("");
   const handleForgotPassword = async () => {
     try {
-      let res = await handleForgotPasswordService({
+      let res = await forgotPasswordUser({
         email: email,
       });
       if (res?.success) {

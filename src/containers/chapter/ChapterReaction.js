@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { handleChapterReactionService } from "../../services/ChapterService";
+import { postChapterReaction } from "../../services/ChapterService";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import _ from "lodash";
@@ -22,7 +22,7 @@ const ChapterReaction = ({
   }, []);
   const handleChapterReaction = async (id) => {
     try {
-      let res = await handleChapterReactionService({
+      let res = await postChapterReaction({
         slug,
         index: chapterIndex,
         name: id,

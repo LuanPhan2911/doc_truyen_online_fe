@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { AiFillHeart, AiOutlineMenu, AiOutlineSetting } from "react-icons/ai";
+import { CiBookmark } from "react-icons/ci";
 import "./ChapterConfig.scss";
 import ChapterList from "../chapter/ChapterList";
 import ChapterControl from "./ChapterControl";
@@ -8,11 +9,15 @@ import useModal from "../../hooks/useModal";
 import { useSelector } from "react-redux";
 import ChapterReaction from "./ChapterReaction";
 import _ from "lodash";
-const ChapterConfig = ({ storyId, chapterReaction }) => {
+import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
+import { postStoryMarking } from "../../services/UserServices";
+import { BsChatDots } from "react-icons/bs";
+const ChapterConfig = ({ storyId, chapterReaction, handleGoToCommentView }) => {
   const [userReacted, setUserReacted] = useState({});
   const [reactionSummary, setReactionSummary] = useState([]);
   const reactions = useSelector((state) => state.app.reactions);
-
+  const { slug, index } = useParams();
   const isAuth = useSelector((state) => state.auth.isAuth);
   const [isShow, setShow] = useState(false);
   useEffect(() => {
@@ -73,6 +78,28 @@ const ChapterConfig = ({ storyId, chapterReaction }) => {
       ),
       isAuth: true,
     },
+    {
+      id: 4,
+      name: "Đánh dấu",
+      font: <CiBookmark fontSize={"2em"} />,
+      component: null,
+      isAuth: true,
+      isDoesntShow: true,
+      fn: () => {
+        handleMarkingStory();
+      },
+    },
+    {
+      id: 5,
+      name: "Bình luận",
+      font: <BsChatDots fontSize={"2em"} />,
+      component: null,
+      isAuth: false,
+      isDoesntShow: true,
+      fn: () => {
+        handleGoToCommentView();
+      },
+    },
   ];
   const [item, handleShow, handleClose] = useModal({
     isShow,
@@ -82,7 +109,21 @@ const ChapterConfig = ({ storyId, chapterReaction }) => {
   function onClose() {
     handleClose();
   }
-
+  function handleMarkingStory() {
+    try {
+      toast.promise(
+        postStoryMarking({
+          slug,
+          index,
+        }),
+        {
+          pending: "Đang đánh dấu truyện",
+          success: "Đánh dấu thành công 👌",
+          error: "Có lỗi xảy ra🤯",
+        }
+      );
+    } catch (error) {}
+  }
   return (
     <>
       {
@@ -105,12 +146,14 @@ const ChapterConfig = ({ storyId, chapterReaction }) => {
             })}
         </ul>
       }
-      <Modal show={isShow} onHide={() => handleClose()}>
-        <Modal.Header closeButton>
-          <Modal.Title>{item.name}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>{item.component}</Modal.Body>
-      </Modal>
+      {isShow && (
+        <Modal show={isShow} onHide={() => handleClose()}>
+          <Modal.Header closeButton>
+            <Modal.Title>{item.name}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>{item.component}</Modal.Body>
+        </Modal>
+      )}
     </>
   );
 };

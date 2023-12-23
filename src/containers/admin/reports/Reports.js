@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./Reports.scss";
-import { handleGetReportsService } from "../../../services/ReportServices";
-import { handleDeleteCommentService } from "../../../services/CommentServices";
+import { getReports } from "../../../services/ReportServices";
+import { deleteComment } from "../../../services/CommentServices";
 import { toast } from "react-toastify";
 const Reports = () => {
   const [reports, setReports] = useState([]);
@@ -9,7 +9,7 @@ const Reports = () => {
   useEffect(() => {
     async function fetchReport() {
       try {
-        let res = await handleGetReportsService({
+        let res = await getReports({
           type: "comment",
         });
         if (res?.success) {
@@ -22,7 +22,7 @@ const Reports = () => {
   }, []);
   const handleDeleteComment = async (report) => {
     try {
-      let res = await handleDeleteCommentService(report.reportable_id);
+      let res = await deleteComment(report.reportable_id);
       if (res?.success) {
         let cpReports = [...reports];
         cpReports = cpReports.filter((item) => item.id !== report.id);

@@ -1,45 +1,45 @@
 import axios from "../axios";
-const handleCreateStoryService = (data) => {
+const postStory = (data) => {
   return axios.post("/api/admin/stories/create", data);
 };
-const handleUpdateStoryService = (data) => {
-  return axios.post(`/api/admin/stories/${data.id}/update`, data);
+const putStory = (slug, data) => {
+  return axios.post(`/api/admin/stories/${slug}/update`, data);
 };
-const handleGetStoryService = (qs) => {
+const getStories = (qs) => {
   return axios.get("/api/admin/stories", {
     params: qs,
   });
 };
-const handleShowStoryService = (id) => {
-  return axios.get(`/api/admin/stories/${id}/show`);
+const getStory = (slug) => {
+  return axios.get(`/api/admin/stories/${slug}/show`);
 };
-const handleUpdateChapterService = (data, chapterId) => {
-  return axios.post(`/api/admin/stories/chapters/${chapterId}`, data);
+const putChapter = (slug, index, data) => {
+  return axios.post(
+    `/api/admin/stories/${slug}/chapters/${index}/update`,
+    data
+  );
 };
-const handleShowChapterService = (storyId, chapterIndex) => {
-  return axios.get(`/api/admin/stories/${storyId}/chapters/${chapterIndex}`);
+const getChapter = (slug, chapterIndex) => {
+  return axios.get(`/api/admin/stories/${slug}/chapters/${chapterIndex}`);
 };
-const handleCreateChapterService = (data, id) => {
-  return axios.post(`/api/admin/stories/${id}/chapters/create`, data);
+const postChapter = (slug, data) => {
+  return axios.post(`/api/admin/stories/${slug}/chapters/create`, data);
 };
-const handleGetChapterListIdService = (id) => {
-  return axios.get(`/api/admin/stories/${id}/chapters`);
-};
-const handleGetAuthorsService = () => {
+
+const getAuthors = () => {
   return axios.get("/api/admin/authors");
 };
-const handleCreateAuthorsService = (data) => {
+const postAuthor = (data) => {
   return axios.post("/api/admin/authors/create", data);
 };
 export {
-  handleCreateStoryService,
-  handleGetStoryService,
-  handleUpdateStoryService,
-  handleUpdateChapterService,
-  handleShowChapterService,
-  handleCreateChapterService,
-  handleShowStoryService,
-  handleGetChapterListIdService,
-  handleGetAuthorsService,
-  handleCreateAuthorsService,
+  postStory,
+  getStories,
+  putStory,
+  putChapter,
+  getChapter,
+  postChapter,
+  getStory,
+  getAuthors,
+  postAuthor,
 };

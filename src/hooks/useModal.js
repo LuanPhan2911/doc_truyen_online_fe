@@ -12,8 +12,12 @@ const useModal = ({ isShow, setShow, menu }) => {
       dispatch(handleShowModal("login"));
       return;
     }
-    setShow(true);
     let selectedItem = menu.find((item) => item.id === id);
+    if (selectedItem?.isDoesntShow) {
+      selectedItem?.fn();
+    } else {
+      setShow(true);
+    }
     setItem(selectedItem);
   };
   const handleClose = () => {

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { handleLoginService } from "../../services/AuthServices";
+import { loginUser } from "../../services/AuthServices";
 import { toast } from "react-toastify";
 import { login } from "../../features/userSlice";
 import "./LoginForm.scss";
@@ -34,7 +34,7 @@ const LoginForm = () => {
   const handleLogin = async () => {
     if (handleValidateForm(user)) {
       try {
-        let res = await handleLoginService(user);
+        let res = await loginUser(user);
         if (res?.success) {
           toast.success("Đăng nhập thành công");
           let user = res.data;

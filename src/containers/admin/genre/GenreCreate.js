@@ -1,7 +1,7 @@
 import _ from "lodash";
 import { useState } from "react";
 import { toast } from "react-toastify";
-import { handleCreateGenreService } from "../../../services/GenreService";
+import { postGenre } from "../../../services/GenreService";
 const GenreCreate = ({ genreType, setNewGenres }) => {
   const [genre, setGenre] = useState({
     name: "",
@@ -26,7 +26,7 @@ const GenreCreate = ({ genreType, setNewGenres }) => {
       toast.error("Genre is empty!");
     } else {
       try {
-        let res = await handleCreateGenreService(genres);
+        let res = await postGenre(genres);
         if (res?.success) {
           let data = res.data;
           toast.success("Create Genre Success");

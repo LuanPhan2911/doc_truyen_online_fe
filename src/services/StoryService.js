@@ -1,19 +1,18 @@
 import axios from "../axios";
 
-const handleGetStoryService = (qs = {}) => {
+const getStories = (qs = {}) => {
   return axios.get("api/stories", {
     params: qs,
   });
 };
-const handleShowStoryService = (slug) => {
+const getStory = (slug) => {
   return axios.get(`api/stories/${slug}`);
 };
-const handleRateStoryService = (slug, data) => {
+const postRateStory = (slug, data) => {
   return axios.post(`api/stories/${slug}/rate`, data);
 };
-
-export {
-  handleGetStoryService,
-  handleShowStoryService,
-  handleRateStoryService,
+const getAuthorStories = (slug) => {
+  return axios.get(`api/authors/${slug}/show`);
 };
+
+export { getStories, getStory, postRateStory, getAuthorStories };

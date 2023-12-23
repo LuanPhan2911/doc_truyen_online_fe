@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { handleGetUserService } from "../services/AuthServices";
+import { getAuth } from "../services/AuthServices";
 import { login, logout } from "../features/userSlice";
 import { setAuth } from "../features/authSlice";
 
@@ -11,7 +11,7 @@ const useAuth = () => {
   useEffect(() => {
     async function fetchUser() {
       try {
-        let res = await handleGetUserService();
+        let res = await getAuth();
         if (res?.success) {
           let user = res.data;
           dispatch(setAuth(true));

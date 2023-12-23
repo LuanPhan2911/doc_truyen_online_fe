@@ -1,13 +1,11 @@
 import "./Profile.scss";
 import avatarDefault from "../../assets/avatar/default.png";
 import { useEffect, useRef, useState } from "react";
-import { handleGetUser, handleUpdateUser } from "../../services/UserServices";
+import { getUser, putUser } from "../../services/UserServices";
 import { asset } from "../../utils/Helper";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { update } from "../../features/userSlice";
-import HomeLayout from "../layouts/HomeLayout";
-import { useParams } from "react-router-dom";
 
 const Profile = () => {
   const imgRef = useRef();
@@ -38,16 +36,16 @@ const Profile = () => {
   ]);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
-    async function getUser() {
+    async function fetchUser() {
       try {
-        let res = await handleGetUser(userId);
+        let res = await getUser(userId);
         if (res?.success) {
           let data = res.data;
           setUser(computed(data));
         }
       } catch (error) {}
     }
-    getUser();
+    fetchUser();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   useEffect(() => {
@@ -102,7 +100,7 @@ const Profile = () => {
     } = user;
     try {
       const res = await toast.promise(
-        handleUpdateUser(userId, {
+        putUser(userId, {
           name,
           birth_date,
           gender,

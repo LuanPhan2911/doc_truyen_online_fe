@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
-import { handleGetStoryService } from "../../services/StoryService";
+import { getStories } from "../../services/StoryService";
 import { useSearchParams } from "react-router-dom";
 import StoryFilterGenre from "../../containers/story/StoryFilterGenre";
 import DropdownBase from "../../components/DropdownBase";
@@ -39,7 +39,7 @@ const StoryFilter = () => {
       return item.id;
     });
     try {
-      let res = await handleGetStoryService({
+      let res = await getStories({
         view: qs.get("view") || null,
         page: qs.get("page") || 1,
         filter: true,

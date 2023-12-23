@@ -1,8 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  handleDeleteGenreService,
-  handleUpdateGenreService,
-} from "../../../services/GenreService";
+import { deleteGenre, putGenre } from "../../../services/GenreService";
 import { toast } from "react-toastify";
 
 const GenreTab = ({ genres = [], setDeletedGenre }) => {
@@ -37,7 +34,7 @@ const GenreTab = ({ genres = [], setDeletedGenre }) => {
 
       if (genre) {
         try {
-          let res = await handleUpdateGenreService(genreId, {
+          let res = await putGenre(genreId, {
             name: genre.name,
           });
           if (res?.success) {
@@ -60,7 +57,7 @@ const GenreTab = ({ genres = [], setDeletedGenre }) => {
   };
   const handleDeleteGenre = async (genre) => {
     try {
-      let res = await handleDeleteGenreService(genre.id);
+      let res = await deleteGenre(genre.id);
       if (res?.success) {
         toast.success("Delete Genre Success");
         setDeletedGenre(genre);

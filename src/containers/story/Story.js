@@ -9,7 +9,7 @@ const Story = ({ story, isAdmin }) => {
   // const continueRead = useSelector((state) => state.story.continueRead);
   const handleShowStoryDetail = (storyDetail) => {
     if (isAdmin) {
-      navigate(`/admin/story/${storyDetail?.id}`);
+      navigate(`/admin/story/${storyDetail?.slug}`);
     } else {
       navigate(`/story/${storyDetail?.slug}`);
     }

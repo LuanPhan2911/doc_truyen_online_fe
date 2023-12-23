@@ -1,10 +1,10 @@
 import axios from "../axios";
-const handleCreateReportService = (data) => {
+const postReport = (data) => {
   return axios.post("api/reports/create", data);
 };
-const handleGetReportsService = (qs) => {
+const getReports = (qs) => {
   return axios.get("api/reports", {
     params: qs,
   });
 };
-export { handleCreateReportService, handleGetReportsService };
+export { postReport, getReports };

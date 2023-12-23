@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import { useQueryString } from "../../hooks";
-import { handleResetPasswordService } from "../../services/AuthServices";
+import { resetPasswordUser } from "../../services/AuthServices";
 import ResetPasswordForm from "./ResetPasswordForm";
 const ResetPassword = ({ show }) => {
   const [isShown, setIsShown] = useState(show || false);
@@ -10,7 +10,7 @@ const ResetPassword = ({ show }) => {
   const handleResetPassword = async (user) => {
     let { token, email } = queryString;
     try {
-      let res = await handleResetPasswordService({
+      let res = await resetPasswordUser({
         email,
         token,
         ...user,

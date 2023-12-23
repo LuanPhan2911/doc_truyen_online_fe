@@ -3,6 +3,7 @@ import NavTab from "../../components/NavTab";
 import HomeLayout from "../../containers/layouts/HomeLayout";
 import UserSidebar from "../../containers/user/UserSidebar";
 import StoryReading from "../../containers/user/StoryReading";
+import StoryMarking from "../../containers/user/StoryMarking";
 
 const UserStoryReading = () => {
   const tabMenu = [
@@ -16,7 +17,7 @@ const UserStoryReading = () => {
       id: 2,
       name: "Đánh dấu",
       active: false,
-      component: <></>,
+      component: <StoryMarking />,
     },
   ];
   const [tab, setTab] = useState([...tabMenu]);

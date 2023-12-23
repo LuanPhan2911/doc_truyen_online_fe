@@ -1,26 +1,24 @@
 import { useEffect, useState } from "react";
-import {
-  handleEmailNotificationService,
-  handleGetUserService,
-} from "../../services/AuthServices";
+import { notifyEmailUser } from "../../services/AuthServices";
+import { getUser } from "../../services/UserServices";
 
 const VerifyEmailForm = () => {
   const [email, setEmail] = useState("");
   useEffect(() => {
-    const handleGetUser = async () => {
+    const fetchUser = async () => {
       try {
-        let res = await handleGetUserService();
+        let res = await getUser();
         if (res?.success) {
           let { data } = res;
           setEmail(data?.email);
         }
       } catch (error) {}
     };
-    handleGetUser();
+    fetchUser();
   }, []);
   const handleVerifyEmailNotification = async () => {
     try {
-      let res = await handleEmailNotificationService();
+      let res = await notifyEmailUser();
       if (!res?.success) {
         return;
       }

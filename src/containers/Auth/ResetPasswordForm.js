@@ -1,5 +1,5 @@
 import { useState } from "react";
-// import { handleResetPasswordService } from "../../services/AuthServices";
+// import { resetPasswordUser } from "../../services/AuthServices";
 
 const ResetPasswordForm = ({ handleResetPassword }) => {
   const [user, setUser] = useState({

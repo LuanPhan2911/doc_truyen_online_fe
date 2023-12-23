@@ -4,16 +4,13 @@ import {
   handleErrorApiResponse,
 } from "../../../utils/Helper";
 import { toast } from "react-toastify";
-import { handleCreateChapterService } from "../../../services/AdminServices";
+import { postChapter } from "../../../services/AdminServices";
 import { useParams } from "react-router-dom";
-import {
-  handleShowChapterService,
-  handleUpdateChapterService,
-} from "../../../services/AdminServices";
+import { getChapter, putChapter } from "../../../services/AdminServices";
 import AdminLayout from "../../../containers/admin/layouts/AdminLayout";
 import ChapterList from "../../../containers/chapter/ChapterList";
 const UpsertChapter = ({ isUpdate }) => {
-  const { id, index } = useParams();
+  const { slug, index } = useParams();
   const initChapter = {
     id: "",
     name: "",
@@ -28,7 +25,7 @@ const UpsertChapter = ({ isUpdate }) => {
     if (isUpdate) {
       async function fetchChapter() {
         try {
-          let res = await handleShowChapterService(id, index);
+          let res = await getChapter(slug, index);
           if (res?.success) {
             let data = res.data;
             let computedData = computedChapter(data);
@@ -40,6 +37,7 @@ const UpsertChapter = ({ isUpdate }) => {
     } else {
       setChapter({ ...initChapter });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [index]);
 
   const computedChapter = (data) => {
@@ -60,7 +58,7 @@ const UpsertChapter = ({ isUpdate }) => {
     } else {
       if (isUpdate) {
         let cpChapter = { ...chapter };
-        let res = await handleUpdateChapterService(cpChapter, cpChapter.id);
+        let res = await putChapter(slug, index, cpChapter);
         if (res?.success) {
           toast.success("Cập nhật thành công!");
           let data = res.data;
@@ -70,7 +68,7 @@ const UpsertChapter = ({ isUpdate }) => {
       } else {
         try {
           let cpChapter = { ...chapter };
-          let res = await handleCreateChapterService(cpChapter, id);
+          let res = await postChapter(slug, cpChapter);
           if (res && res?.success) {
             toast.success("Thêm thành công");
             setChapter({

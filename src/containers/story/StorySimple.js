@@ -5,9 +5,10 @@ import "./StorySimple.scss";
 
 const StorySimple = ({
   story,
-  handleDestroyStoryReading,
-  handleNotifyStoryReading,
+  handleNotifyStory,
+  handleDestroyStory,
   loading,
+  isMarked,
 }) => {
   const navigate = useNavigate(0);
   const { isAuth } = useSelector((state) => state.auth);
@@ -39,11 +40,14 @@ const StorySimple = ({
         </div>
         <div className="d-flex justify-content-between">
           <div className="chapter-reading fs-small">
-            Đã đọc {story?.pivot?.index}/{story?.chapters_count}{" "}
+            {isMarked
+              ? `Đánh dấu ${story?.pivot?.marked_index}/${story?.chapters_count}`
+              : `Đã đọc ${story?.pivot?.index}/${story?.chapters_count}`}
+
             {isAuth && (
               <i
                 className="bi bi-trash-fill trash-icon"
-                onClick={() => handleDestroyStoryReading(story?.id)}
+                onClick={() => handleDestroyStory(story?.id)}
               ></i>
             )}
             {isAuth && (
@@ -51,7 +55,7 @@ const StorySimple = ({
                 className={`bi bi-bell-fill bell-icon ${
                   story?.pivot?.notified && "active"
                 }`}
-                onClick={() => !loading && handleNotifyStoryReading(story?.id)}
+                onClick={() => !loading && handleNotifyStory(story?.id)}
               ></i>
             )}
           </div>

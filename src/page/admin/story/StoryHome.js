@@ -1,6 +1,6 @@
 import "./StoryHome.scss";
 
-import { handleGetStoryService } from "../../../services/AdminServices";
+import { getStories } from "../../../services/AdminServices";
 import { useEffect } from "react";
 import { useState } from "react";
 import Story from "../../../containers/story/Story";
@@ -17,7 +17,7 @@ const StoryHome = () => {
 
     async function fetchStory() {
       try {
-        let res = await handleGetStoryService({
+        let res = await getStories({
           page,
         });
         if (res?.success) {

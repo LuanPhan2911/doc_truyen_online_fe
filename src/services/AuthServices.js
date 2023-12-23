@@ -1,31 +1,31 @@
 import axios from "../axios";
-const handleLoginService = (user) => {
+const loginUser = (user) => {
   return axios.post("/api/login", user);
 };
 
-const handleLogoutService = () => {
+const logoutUser = () => {
   return axios.get("/api/logout");
 };
-const handleRegisterService = (user) => {
+const registerUser = (user) => {
   return axios.post("/api/register", user);
 };
-const handleGetUserService = () => {
+const getAuth = () => {
   return axios.get("/api/get_user");
 };
-const handleEmailNotificationService = () => {
+const notifyEmailUser = () => {
   return axios.post("api/email/verification_notification");
 };
-const handleVerifyEmailService = ({ id, hash, ...qs }) => {
+const VerifyEmailUser = ({ id, hash, ...qs }) => {
   return axios.get(`api/email/verify/${id}/${hash}`, {
     params: {
       ...qs,
     },
   });
 };
-const handleForgotPasswordService = (data) => {
+const forgotPasswordUser = (data) => {
   return axios.post("/api/forgot_password", data);
 };
-const handleResetPasswordService = ({ email, token, ...data }) => {
+const resetPasswordUser = ({ email, token, ...data }) => {
   return axios.post(
     "/api/reset-password",
     { ...data },
@@ -38,12 +38,12 @@ const handleResetPasswordService = ({ email, token, ...data }) => {
   );
 };
 export {
-  handleLoginService,
-  handleLogoutService,
-  handleRegisterService,
-  handleGetUserService,
-  handleEmailNotificationService,
-  handleVerifyEmailService,
-  handleForgotPasswordService,
-  handleResetPasswordService,
+  loginUser,
+  logoutUser,
+  registerUser,
+  getAuth,
+  notifyEmailUser,
+  VerifyEmailUser,
+  forgotPasswordUser,
+  resetPasswordUser,
 };
