@@ -5,10 +5,8 @@ import {
 } from "../../../utils/Helper";
 import { toast } from "react-toastify";
 import { postChapter } from "../../../services/AdminServices";
-import { useParams } from "react-router-dom";
+import { useOutletContext, useParams } from "react-router-dom";
 import { getChapter, putChapter } from "../../../services/AdminServices";
-import AdminLayout from "../../../containers/admin/layouts/AdminLayout";
-import ChapterList from "../../../containers/chapter/ChapterList";
 const UpsertChapter = ({ isUpdate }) => {
   const { slug, index } = useParams();
   const initChapter = {
@@ -21,6 +19,7 @@ const UpsertChapter = ({ isUpdate }) => {
   const [chapter, setChapter] = useState({
     ...initChapter,
   });
+  const [setShowChapterList] = useOutletContext();
   useEffect(() => {
     if (isUpdate) {
       async function fetchChapter() {
@@ -37,6 +36,7 @@ const UpsertChapter = ({ isUpdate }) => {
     } else {
       setChapter({ ...initChapter });
     }
+    setShowChapterList(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [index]);
 
@@ -83,10 +83,7 @@ const UpsertChapter = ({ isUpdate }) => {
   };
 
   return (
-    <AdminLayout
-      offcanvasTitle={"Danh sách chương"}
-      offcanvasBody={<ChapterList isAdmin={true} />}
-    >
+    <>
       <div className="container">
         <div className="row">
           <div className="col">
@@ -118,7 +115,7 @@ const UpsertChapter = ({ isUpdate }) => {
           {isUpdate ? "Cập nhật" : "Thêm"}
         </button>
       </div>
-    </AdminLayout>
+    </>
   );
 };
 export default UpsertChapter;

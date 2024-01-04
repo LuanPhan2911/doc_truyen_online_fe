@@ -4,15 +4,15 @@ import StoryFilter from "../page/story/StoryFilter";
 
 const Story = [
   {
-    path: "/story/:slug",
+    path: "story/:slug",
     element: <StoryDetail />,
   },
   {
-    path: "/story",
+    path: "story",
     element: <StoryFilter />,
   },
   {
-    path: "/story/:slug/chapter/:index",
+    path: "story/:slug/chapter/:index",
     element: <Chapter />,
   },
 ];

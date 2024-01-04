@@ -1,5 +1,4 @@
 import { useParams } from "react-router-dom";
-import HomeLayout from "../../containers/layouts/HomeLayout";
 import { useEffect, useState } from "react";
 import { getAuthorStories } from "../../services/StoryService";
 import Story from "../../containers/story/Story";
@@ -20,7 +19,7 @@ const Author = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
-    <HomeLayout>
+    <>
       <div className="author-name mb-3">
         <h3 className="text-bold">{author?.name}</h3>
       </div>
@@ -33,7 +32,7 @@ const Author = () => {
           );
         })}
       </div>
-    </HomeLayout>
+    </>
   );
 };
 export default Author;

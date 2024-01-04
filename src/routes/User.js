@@ -6,23 +6,23 @@ import UserStoryReading from "../page/user/UserStoryReading";
 
 const User = [
   {
-    path: "/user",
+    path: "user",
     element: <UserHome />,
   },
   {
-    path: "/user/story",
+    path: "user/story",
     element: <UserStoryReading />,
   },
   {
-    path: "/user/profile/:id",
+    path: "user/profile/:id",
     element: <UserProfile />,
   },
   {
-    path: "/user/notify/",
+    path: "user/notify/",
     element: <UserNotify />,
   },
   {
-    path: "/user/setting/",
+    path: "user/setting/",
     element: <UserSetting />,
   },
 ];

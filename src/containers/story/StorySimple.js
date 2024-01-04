@@ -40,9 +40,13 @@ const StorySimple = ({
         </div>
         <div className="d-flex justify-content-between">
           <div className="chapter-reading fs-small">
-            {isMarked
-              ? `Đánh dấu ${story?.pivot?.marked_index}/${story?.chapters_count}`
-              : `Đã đọc ${story?.pivot?.index}/${story?.chapters_count}`}
+            {isAuth && (
+              <>
+                {isMarked
+                  ? `Đánh dấu ${story?.pivot?.marked_index}/${story?.chapters_count}`
+                  : `Đã đọc ${story?.pivot?.index}/${story?.chapters_count}`}
+              </>
+            )}
 
             {isAuth && (
               <i

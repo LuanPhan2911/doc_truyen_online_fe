@@ -1,14 +1,11 @@
-import HomeLayout from "../../containers/layouts/HomeLayout";
 import UserSidebar from "../../containers/user/UserSidebar";
 
 const UserProfile = () => {
   return (
-    <HomeLayout>
-      <div className="row">
-        <UserSidebar />
-        <div className="col">Hồ sơ</div>
-      </div>
-    </HomeLayout>
+    <div className="row">
+      <UserSidebar />
+      <div className="col">Hồ sơ</div>
+    </div>
   );
 };
 export default UserProfile;

@@ -1,6 +1,5 @@
 import { useState } from "react";
 import NavTab from "../../components/NavTab";
-import HomeLayout from "../../containers/layouts/HomeLayout";
 import UserSidebar from "../../containers/user/UserSidebar";
 import StoryReading from "../../containers/user/StoryReading";
 import StoryMarking from "../../containers/user/StoryMarking";
@@ -22,14 +21,12 @@ const UserStoryReading = () => {
   ];
   const [tab, setTab] = useState([...tabMenu]);
   return (
-    <HomeLayout>
-      <div className="row">
-        <UserSidebar />
-        <div className="col">
-          <NavTab navTab={tab} setNavTab={setTab} />
-        </div>
+    <div className="row">
+      <UserSidebar />
+      <div className="col">
+        <NavTab navTab={tab} setNavTab={setTab} />
       </div>
-    </HomeLayout>
+    </div>
   );
 };
 export default UserStoryReading;

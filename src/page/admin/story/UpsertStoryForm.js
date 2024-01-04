@@ -4,9 +4,7 @@ import { asset, handleErrorApiResponse } from "../../../utils/Helper";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import storyDefaultImage from "../../../assets/stories/default.png";
-import { useNavigate, useParams } from "react-router-dom";
-import ChapterList from "../../../containers/chapter/ChapterList";
-import AdminLayout from "../../../containers/admin/layouts/AdminLayout";
+import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import "./UpsertStoryForm.scss";
 import _ from "lodash";
 import StoryGenre from "../../../containers/admin/story/StoryGenre";
@@ -27,7 +25,7 @@ const UpsertStoryForm = ({ isUpdate }) => {
     author_id: "",
     description: "",
   };
-  const { id: storyId } = useParams();
+  const [setShowChapterList] = useOutletContext();
   const [genres, setGenres] = useGenresFilter();
   const [selectedGenres, setSelectedGenres] = useState([]);
   const imgRef = useRef();
@@ -40,6 +38,7 @@ const UpsertStoryForm = ({ isUpdate }) => {
 
   // const [showChapterList, setShowChapterList] = useState(false);
   useEffect(() => {
+    setShowChapterList(true);
     if (isUpdate) {
       fetchStory();
     }
@@ -79,7 +78,7 @@ const UpsertStoryForm = ({ isUpdate }) => {
 
   async function fetchStory() {
     try {
-      let res = await getStory(storyId);
+      let res = await getStory(slug);
       if (res?.success) {
         let cpStory = { ...res.data };
         let data = computedStory(cpStory);
@@ -156,12 +155,7 @@ const UpsertStoryForm = ({ isUpdate }) => {
     }
   };
   return (
-    <AdminLayout
-      offcanvasTitle={"Danh sách chương"}
-      offcanvasBody={
-        story?.id && <ChapterList isAdmin={true} storyId={story?.id} />
-      }
-    >
+    <>
       <div className="container content">
         <div className="row">
           <div className="mb-3">
@@ -252,7 +246,7 @@ const UpsertStoryForm = ({ isUpdate }) => {
           {isUpdate ? "Cập nhât" : "Tạo"}
         </button>
       </div>
-    </AdminLayout>
+    </>
   );
 };
 export default UpsertStoryForm;

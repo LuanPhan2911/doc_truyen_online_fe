@@ -1,5 +1,4 @@
 import { useState } from "react";
-import HomeLayout from "../../containers/layouts/HomeLayout";
 import UserSidebar from "../../containers/user/UserSidebar";
 import NavTab from "../../components/NavTab";
 import Profile from "../../containers/user/Profile";
@@ -27,14 +26,12 @@ const UserSetting = () => {
   ];
   const [tab, setTab] = useState([...tabMenu]);
   return (
-    <HomeLayout>
-      <div className="row">
-        <UserSidebar />
-        <div className="col">
-          <NavTab navTab={tab} setNavTab={setTab} />
-        </div>
+    <div className="row">
+      <UserSidebar />
+      <div className="col">
+        <NavTab navTab={tab} setNavTab={setTab} />
       </div>
-    </HomeLayout>
+    </div>
   );
 };
 export default UserSetting;

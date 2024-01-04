@@ -8,7 +8,6 @@ import "./StoryDetail.scss";
 import { asset } from "../../utils/Helper";
 import ChapterList from "../../containers/chapter/ChapterList";
 import { getStory } from "../../services/StoryService";
-import HomeLayout from "../../containers/layouts/HomeLayout";
 import StoryDescription from "../../containers/story/StoryDescription";
 import { useSelector } from "react-redux";
 import _ from "lodash";
@@ -109,119 +108,117 @@ const StoryDetail = () => {
     } catch (error) {}
   };
   return (
-    <HomeLayout>
-      <div className="container story-detail-main p-3 rounded">
-        <div className="story-detail row">
-          <div className="story-detail-image col-lg-4">
-            <img
-              src={story?.avatar && asset(story?.avatar)}
-              alt="Not found"
-              className="img-fluid w-100"
-            />
-          </div>
-          <div className="story-detail-info col-lg-8">
-            <div className="story-detail-title">{story?.name}</div>
-            <ul className="story-detail-genre">
-              <li className={`border ${_.sample(borderColor)} rounded-pill`}>
-                <Link
-                  className="text-decoration-none"
-                  to={`/author/${story?.author?.slug}`}
-                >
-                  {story?.author?.name}
-                </Link>
-              </li>
-              {story?.genres?.length > 0 &&
-                story?.genres.map((item) => {
-                  return (
-                    <li
-                      key={item.id}
-                      className={`border ${_.sample(borderColor)} rounded-pill`}
-                    >
-                      <Link
-                        to={`/story/?genres=${item.slug}`}
-                        className="text-decoration-none"
-                      >
-                        {item.name}
-                      </Link>
-                    </li>
-                  );
-                })}
-              <li className={`border ${_.sample(borderColor)} rounded-pill`}>
-                <Link
-                  className="text-decoration-none"
-                  to={`/story?view=${viewStory?.id}`}
-                >
-                  {viewStory?.view}
-                </Link>
-              </li>
-            </ul>
-            <ul className="story-detail-full">
-              <li>
-                {story?.chapters_count}
-                <span className="fs-small">Chương</span>
-              </li>
-              <li>
-                11
-                <span className="fs-small">Chương/Tuần</span>
-              </li>
-              <li>
-                95.5k
-                <span className="fs-small">Lượt đọc</span>
-              </li>
-              <li>
-                1000
-                <span className="fs-small">Cất trữ</span>
-              </li>
-            </ul>
-            <div className="story-detail-rate">
-              <div className="star">
-                <StarRatings
-                  rating={rateStory || 0}
-                  starRatedColor="yellow"
-                  numberOfStars={5}
-                  name="rating"
-                  starDimension="16px"
-                  starSpacing="2px"
-                />
-              </div>
-              <div className="rate">
-                {rateStory || 0}/5
-                <span className="fs-small">
-                  ({story?.rate_comments_count} lượt đánh giá)
-                </span>
-              </div>
-            </div>
-            <ul className="story-detail-action">
-              <li
-                className={`story-detail-read ${
-                  story?.chapter_index && "active"
-                }`}
-                onClick={() => handleShowChapter(story)}
-              >
-                <FaGlasses color="white" size={"1.2em"} />
-                {story?.chapter_index ? (
-                  <span>Đọc tiếp</span>
-                ) : (
-                  <span>Đọc truyện</span>
-                )}
-              </li>
-              <li
-                className="story-detail-mark"
-                onClick={() => handleMarkStory(story)}
-              >
-                <BsBookmark color="#333" size={"1.2em"} />
-                <span>Đánh dấu</span>
-              </li>
-              <li className="story-detail-suggest">
-                <GiCottonFlower />
-                <span>Đề cử</span>
-              </li>
-            </ul>
-          </div>
+    <div className="container story-detail-main p-3 rounded">
+      <div className="story-detail row">
+        <div className="story-detail-image col-lg-4">
+          <img
+            src={story?.avatar && asset(story?.avatar)}
+            alt="Not found"
+            className="img-fluid w-100"
+          />
         </div>
-        <NavTab navTab={storyTag} setNavTab={setStoryTag} />
+        <div className="story-detail-info col-lg-8">
+          <div className="story-detail-title">{story?.name}</div>
+          <ul className="story-detail-genre">
+            <li className={`border ${_.sample(borderColor)} rounded-pill`}>
+              <Link
+                className="text-decoration-none"
+                to={`/author/${story?.author?.slug}`}
+              >
+                {story?.author?.name}
+              </Link>
+            </li>
+            {story?.genres?.length > 0 &&
+              story?.genres.map((item) => {
+                return (
+                  <li
+                    key={item.id}
+                    className={`border ${_.sample(borderColor)} rounded-pill`}
+                  >
+                    <Link
+                      to={`/story/?genres=${item.slug}`}
+                      className="text-decoration-none"
+                    >
+                      {item.name}
+                    </Link>
+                  </li>
+                );
+              })}
+            <li className={`border ${_.sample(borderColor)} rounded-pill`}>
+              <Link
+                className="text-decoration-none"
+                to={`/story?view=${viewStory?.id}`}
+              >
+                {viewStory?.view}
+              </Link>
+            </li>
+          </ul>
+          <ul className="story-detail-full">
+            <li>
+              {story?.chapters_count}
+              <span className="fs-small">Chương</span>
+            </li>
+            <li>
+              11
+              <span className="fs-small">Chương/Tuần</span>
+            </li>
+            <li>
+              95.5k
+              <span className="fs-small">Lượt đọc</span>
+            </li>
+            <li>
+              1000
+              <span className="fs-small">Cất trữ</span>
+            </li>
+          </ul>
+          <div className="story-detail-rate">
+            <div className="star">
+              <StarRatings
+                rating={rateStory || 0}
+                starRatedColor="yellow"
+                numberOfStars={5}
+                name="rating"
+                starDimension="16px"
+                starSpacing="2px"
+              />
+            </div>
+            <div className="rate">
+              {rateStory || 0}/5
+              <span className="fs-small">
+                ({story?.rate_comments_count} lượt đánh giá)
+              </span>
+            </div>
+          </div>
+          <ul className="story-detail-action">
+            <li
+              className={`story-detail-read ${
+                story?.chapter_index && "active"
+              }`}
+              onClick={() => handleShowChapter(story)}
+            >
+              <FaGlasses color="white" size={"1.2em"} />
+              {story?.chapter_index ? (
+                <span>Đọc tiếp</span>
+              ) : (
+                <span>Đọc truyện</span>
+              )}
+            </li>
+            <li
+              className="story-detail-mark"
+              onClick={() => handleMarkStory(story)}
+            >
+              <BsBookmark color="#333" size={"1.2em"} />
+              <span>Đánh dấu</span>
+            </li>
+            <li className="story-detail-suggest">
+              <GiCottonFlower />
+              <span>Đề cử</span>
+            </li>
+          </ul>
+        </div>
       </div>
-    </HomeLayout>
+      <NavTab navTab={storyTag} setNavTab={setStoryTag} />
+    </div>
   );
 };
 export default StoryDetail;

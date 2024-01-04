@@ -1,5 +1,4 @@
 import GenreHome from "../page/admin/genre/GenreHome";
-import Home from "../page/admin/Home";
 import StoryHome from "../page/admin/story/StoryHome";
 import UpsertStoryForm from "../page/admin/story/UpsertStoryForm";
 import UpsertChapter from "../page/admin/chapter/UpsertChapter";
@@ -7,37 +6,33 @@ import ChapterHome from "../page/admin/chapter/ChapterHome";
 
 const Admin = [
   {
-    path: "/admin",
-    element: <Home />,
-  },
-  {
-    path: "/admin/genre",
+    path: "genre",
     element: <GenreHome />,
   },
 
   {
-    path: "/admin/story",
+    path: "story",
     element: <StoryHome />,
   },
   {
-    path: "/admin/story/create",
+    path: "story/create",
     element: <UpsertStoryForm />,
   },
   {
-    path: "/admin/story/:id",
+    path: "story/:slug",
     element: <UpsertStoryForm isUpdate={true} />,
   },
   {
-    path: "/admin/story/:id/chapter",
+    path: "story/:slug/chapter",
     element: <ChapterHome />,
   },
   {
-    path: "/admin/story/:id/chapter/create",
+    path: "story/:slug/chapter/create",
     element: <UpsertChapter />,
   },
 
   {
-    path: "/admin/story/:id/chapter/:index",
+    path: "story/:slug/chapter/:index",
     element: <UpsertChapter isUpdate={true} />,
   },
 ];

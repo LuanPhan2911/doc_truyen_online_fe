@@ -4,6 +4,7 @@ import "./Notifies.scss";
 import { Link } from "react-router-dom";
 import { getUserNotifies } from "../../../services/UserServices";
 import { asset } from "../../../utils/Helper";
+
 const Notifies = () => {
   const [notifies, setNotifies] = useState([]);
   useEffect(() => {
@@ -23,7 +24,7 @@ const Notifies = () => {
       <DropdownBase.Button>
         <i className="bi bi-bell position-relative">
           {notifies?.length > 0 && (
-            <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"></span>
+            <span className="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"></span>
           )}
         </i>
         <button className="btn-dropdown dropdown-toggle position-relative">
@@ -47,7 +48,7 @@ const Notifies = () => {
             {notifies?.length > 0 &&
               notifies.map((item) => {
                 return (
-                  <div className="row notify-item">
+                  <div className="row notify-item" key={item.id}>
                     <div className="col-3">
                       <img
                         alt="?"

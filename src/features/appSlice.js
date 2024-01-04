@@ -110,7 +110,6 @@ export const appSlice = createSlice({
       "border-primary",
       "border-danger",
       "border-success",
-      "border-secondary",
       "border-warning",
       "border-info",
       "border-black",

@@ -7,7 +7,7 @@ const StoryOutStanding = () => {
   let { data: stories } = useFetch(getStories);
 
   return (
-    <div className="story-out-standing bg-light p-3 rounded">
+    <div className="story-out-standing p-3 rounded">
       <div className="d-flex justify-content-between">
         <div className="all-story-title">Biên tập viên đề cử</div>
         <Link className="all-story" to={"/story"}>
